@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application{
 	Stage window;
-	Scene mainScene, settingSelect;
+	Scene mainScene;
 	
 	public static void main (String[] args) {
 		launch(args);
@@ -19,8 +19,7 @@ public class Main extends Application{
 		primaryStage.setTitle("Gridlock");
 		//bind the window with primaryStage in default
 		window = primaryStage;
-		new Bgm().play("music/Havana.mp3");
-		
+		Bgm.play("music/Havana.mp3");
 		
 		//Generate components on the main page
 		//Game Title
