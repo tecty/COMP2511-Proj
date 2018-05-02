@@ -19,7 +19,9 @@ public class Main extends Application{
 		primaryStage.setTitle("Gridlock");
 		//bind the window with primaryStage in default
 		window = primaryStage;
-		Bgm.play("music/Havana.mp3");
+		//Music file is not included in the file right now
+		//But the function works
+		// Bgm.play("music/Havana.mp3");
 		
 		//Generate components on the main page
 		//Game Title
