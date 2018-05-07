@@ -10,11 +10,7 @@ public class Bgm {
 	{
 	    Media hit = new Media(Paths.get(musicFile).toUri().toString());
 	    mediaPlayer = new MediaPlayer(hit);
-	    mediaPlayer.setOnEndOfMedia(new Runnable() {
-	        public void run() {
-	          mediaPlayer.seek(Duration.ZERO);
-	        }
-	    });
+	    mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
 	    mediaPlayer.setAutoPlay(true);
 	}
 }
