@@ -110,7 +110,7 @@
                   <Font size="43.0" />
                </font>
                <BorderPane.margin>
-                  <Insets top="20.0" />
+                  <Insets left="20.0" right="20.0" top="20.0" />
                </BorderPane.margin>
             </Label>
          </top>

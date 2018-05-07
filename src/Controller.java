@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,4 +40,25 @@ public class Controller {
         primaryStage.setScene(new Scene(root));
     }
 
+    @FXML
+    private void settingAction(ActionEvent actionEvent) throws IOException {
+        // get the current Stage
+        Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
+
+
+        // try to load level select scene
+        Parent root = FXMLLoader.load(getClass().getResource("settings/Setting.fxml"));
+        System.out.println("User get to settings ");
+        // checkout to level select scene
+        primaryStage.setScene(new Scene(root));
+    }
+
+    @FXML
+    private void quitAction(ActionEvent actionEvent) {
+        // try to exit this.
+        // get the current Stage
+        Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
+        // call the function set in main, close the programme gracefully
+        primaryStage.close();
+    }
 }
