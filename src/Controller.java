@@ -47,7 +47,7 @@ public class Controller {
 
 
         // try to load level select scene
-        Parent root = FXMLLoader.load(getClass().getResource("settings/Setting.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("setting/Setting.fxml"));
         System.out.println("User get to settings ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
