@@ -43,6 +43,9 @@ public class Grid extends Rectangle {
     }
 
     public void setCar(Car car) {
-        this.car = car;
+        // only can set car with no car in there
+        if (!hasCar()){
+            this.car = car;
+        }
     }
 }

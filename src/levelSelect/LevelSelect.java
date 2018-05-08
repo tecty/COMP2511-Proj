@@ -48,7 +48,7 @@ public class LevelSelect {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("go to play a game//~ ");
+        System.out.println("go to play a game of level "+ ((Button)actionEvent.getSource()).getText());
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
     }

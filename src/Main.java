@@ -12,8 +12,7 @@ import javafx.stage.WindowEvent;
 
 public class Main extends Application {
 	Stage window;
-	Scene mainScene,levelScene;
-    Button newGame;
+
 	public static void main (String[] args) {
 		launch(args);
 	}
