@@ -19,7 +19,11 @@ public class Grid extends Rectangle {
         setHeight(GameController.GRID_SIZE);
         // set this rectangle has a border
         setStroke(Color.BLACK);
-        setStrokeWidth(3);
+        setStrokeWidth(1);
+
+        // set the background color
+        setFill(Color.GREY);
+
 
         // set up this's grid's location
         relocate(

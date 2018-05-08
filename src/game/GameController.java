@@ -16,7 +16,7 @@ public class GameController {
     Group gridGroup = new Group();
 
     // the size of each grid
-    public static int GRID_SIZE = 50;
+    public final static int GRID_SIZE = 50;
 
     @FXML
     private void initialize(){
@@ -28,11 +28,14 @@ public class GameController {
                 gridGroup.getChildren().add(grid);
             }
         }
-        // add the group to the pane to show in the scene
-        rootPane.getChildren().addAll(gridGroup);
 
+        // add the group to the pane and group of car
+        // to show in the scene
+        rootPane.getChildren().addAll(gridGroup,carGroup);
     }
 
 
+    private void  showGame(Game game){
 
+    }
 }
