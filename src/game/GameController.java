@@ -54,6 +54,8 @@ public class GameController {
         // add to the group to show
         carGroup.getChildren().add(thisCar);
 
+//        board[1][1].setCar(thisCar);
+        
         // reference it from the board
         if(dir == MoveDir.VERTICAL){
             for (int y = 0; y < len; y++) {
