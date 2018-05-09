@@ -16,6 +16,10 @@ public class Car extends StackPane {
     private int gridY;
     // the length of this car
     final private int len;
+    
+    //real location for the car
+    private double mouseX, mouseY;
+    private double oldX, oldY;
 
 
     public Car(MoveDir dir, int carId, int gridX, int gridY, int len,Paint color){
@@ -50,19 +54,32 @@ public class Car extends StackPane {
         // set the style of this car
         if (dir == MoveDir.HORIZONTAL) {
             // height ==1
-            carRectangle.setWidth(0.9*getLen() * GameController.GRID_SIZE);
-            carRectangle.setHeight(0.9*GameController.GRID_SIZE);
+            carRectangle.setWidth(getLen() * GameController.GRID_SIZE);
+            carRectangle.setHeight(GameController.GRID_SIZE);
         }
         else if (dir == MoveDir.VERTICAL){
             // width ==1
-            carRectangle.setWidth(0.9*GameController.GRID_SIZE);
-            carRectangle.setHeight(0.9*getLen() * GameController.GRID_SIZE);
+            carRectangle.setWidth(GameController.GRID_SIZE);
+            carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
         }
         // don't know how to center the color block
 
 
         // set the color by given.
         carRectangle.setFill(color);
+        
+        //set the function for mouse clicking on
+        setOnMousePressed(e -> {
+        	this.mouseX = e.getLayoutX();
+        	this.mouseY = e.getLayoutY();
+//        	this.mouseX = e.getSceneX();
+//        	this.mouseY = e.getSceneY();        	
+        });
+        
+        //set the function for mouse dragging
+        setOnMouseDragged(e -> {
+        	relocate(e.getSceneX() - mouseX + oldX, e.getSceneY() - mouseY + oldY);
+        });
 
     }
 
@@ -99,5 +116,11 @@ public class Car extends StackPane {
 
     public int getLen() {
         return len;
+    }
+    
+    public void move (int gridX, int gridY) {
+    	oldX = gridX * GameController.GRID_SIZE;
+    	oldY = gridY * GameController.GRID_SIZE;
+    	relocate(oldX, oldY);    	
     }
 }
