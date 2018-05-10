@@ -8,6 +8,7 @@ public class Car extends StackPane {
 
 
     // the actual car move in each grid
+	boolean targetCar;
     final private MoveDir dir;
     final private int carId;
     private int gridX;
@@ -19,8 +20,9 @@ public class Car extends StackPane {
 //    private double oldX, oldY;
 
 
-    public Car(MoveDir dir, int carId, int gridX, int gridY, int len,Paint color){
+    public Car(boolean targetCar, MoveDir dir, int carId, int gridX, int gridY, int len,Paint color){
         // set the information of this car
+    	this.targetCar = targetCar;
         this.dir = dir;
         this.carId = carId;
         this.len = len;
@@ -63,12 +65,14 @@ public class Car extends StackPane {
         // set the color by given.
         carRectangle.setFill(color);
         
-
-
     }
 
 
 
+    public boolean isTarget() {
+    	return this.targetCar;
+    }
+    
     public int getCarId() {
         return carId;
     }
@@ -84,22 +88,6 @@ public class Car extends StackPane {
         relocate(newX, newY);
 
     }
-//
-//    public double getOldX() {
-//        return oldX;
-//    }
-//
-//    public void setOldX(double oldX) {
-//        this.oldX = oldX;
-//    }
-//
-//    public double getOldY() {
-//        return oldY;
-//    }
-//
-//    public void setOldY(double oldY) {
-//        this.oldY = oldY;
-//    }
 
     public void setGridX(int gridX) {
         this.gridX = gridX;
