@@ -1,7 +1,9 @@
 package game;
 
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -22,6 +24,10 @@ public class GameController {
 
     // the size of each grid
     public final static int GRID_SIZE = 50;
+
+    // when a click on a car, it would set
+    private double mouseX, mouseY;
+
 
     @FXML
     private void initialize(){
@@ -67,6 +73,81 @@ public class GameController {
                 // only need to change x
                 board[gridX +x ][gridY].setCar(thisCar);
             }
+        }
+
+        //set the function for mouse clicking on
+        thisCar.setOnMousePressed(e -> {
+            this.mouseX = e.getSceneX();
+            this.mouseY = e.getSceneY();
+        });
+
+        //set the function for mouse dragging
+        thisCar.setOnMouseDragged(e -> {
+            int mouseGridX = (int)(e.getSceneX() - this.mouseX + thisCar.getGridX()*this.GRID_SIZE)/this.GRID_SIZE;
+            int mouseGridY = 0;
+            // calculate the suppose grid x and grid y
+            // by mouse position
+            if(thisCar.getDir() == MoveDir.HORIZONTAL){
+                if (!isCollision(thisCar, mouseGridX, thisCar.getGridY())){
+                    // no collision, relocate the block
+                    thisCar.relocate(mouseGridX * this.GRID_SIZE,
+                            thisCar.getGridY() * this.GRID_SIZE);
+                }
+            }
+            else{
+                if (!isCollision(thisCar, thisCar.getGridX()*this.GRID_SIZE,mouseGridY)){
+                    // no collision, relocate the block
+
+                    thisCar.relocate(thisCar.getGridX() * GameController.GRID_SIZE,
+                            e.getSceneY() - this.mouseY+ thisCar.getGridY()*this.GRID_SIZE);
+                }
+            }
+
+
+        });
+        thisCar.setOnMouseReleased(mouseEvent -> {
+            int newX = toBoard(thisCar.getLayoutX());
+            int newY = toBoard(thisCar.getLayoutY());
+
+            tryMove(thisCar, newX, newY);
+        });
+    }
+
+    private int toBoard(double position){
+        // return the number of the grid on the board
+        return (int ) (position +0.5 * this.GRID_SIZE)/ this.GRID_SIZE;
+    }
+
+    public boolean isCollision(Car car, int gridX, int gridY){
+        // bug? 
+        if (gridX < 0  || gridX + car.getLen()>=6 ||
+                gridY < 0  || gridY+ car.getLen()>=6) {
+            return true;
+        }
+        return false;
+    }
+
+
+    private void tryMove(Car car, int gridX, int gridY){
+        // call when try to move
+
+        // TODO: this functionality
+        // try assign this car to the position it would belong
+        // identify whether it has collision
+
+
+
+        // remove the old gird information
+        for (int i = 0; i < car.getLen(); i++) {
+            board[car.getGridX()][car.getGridY()+i].setCar(null);
+        }
+
+
+        // set the car's coordinate to board
+        car.setPos(gridX*this.GRID_SIZE,gridY*this.GRID_SIZE);
+        // refresh the board's information
+        for (int i = 0; i < car.getLen(); i++) {
+            board[car.getGridX()][car.getGridY()+i].setCar(car);
         }
 
     }

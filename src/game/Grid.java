@@ -34,8 +34,8 @@ public class Grid extends Rectangle {
         this.x = x; this.y = y;
     }
 
-    public boolean hasCar(){
-        return car != null;
+    public boolean hasCar(Car car){
+        return !(car == this.car ||this.car ==null);
     }
 
     public Car getCar() {
@@ -44,7 +44,7 @@ public class Grid extends Rectangle {
 
     public void setCar(Car car) {
         // only can set car with no car in there
-        if (!hasCar()){
+        if (!hasCar(car)){
             this.car = car;
         }
     }
