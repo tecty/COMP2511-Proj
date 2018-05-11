@@ -1,14 +1,13 @@
 package game;
 
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -30,7 +29,7 @@ public class GameController {
     public final static int GRID_SIZE = 50;
 
     // when a click on a car, it would set
-    private double mouseX, mouseY;
+    private double mouseOriginX, mouseOriginY;
 
 
     @FXML
@@ -59,14 +58,10 @@ public class GameController {
                          int carId, int gridX,
                          int gridY, int len, Paint color){
         // pass through the argument
-    	
-    	//this is only a TARGET car (which will check if successfully moved out later)
-        Car thisCar = new Car(true, dir, carId, gridX,gridY,len,color);
+        Car thisCar = new Car(dir, carId, gridX,gridY,len,color);
         // add to the group to show
         carGroup.getChildren().add(thisCar);
 
-//        board[1][1].setCar(thisCar);
-        
         // reference it from the board
         if(dir == MoveDir.VERTICAL){
             for (int y = 0; y < len; y++) {
@@ -81,56 +76,45 @@ public class GameController {
         }
 
         //set the function for mouse clicking on
-        thisCar.setOnMousePressed(e -> {
-            this.mouseX = e.getSceneX();
-            this.mouseY = e.getSceneY();
+        thisCar.setOnMousePressed(mouseEvent -> {
+            // only record the original mouse position
+            mouseOriginX = mouseEvent.getSceneX();
+            mouseOriginY = mouseEvent.getSceneY();
+            System.out.println("mouse offset x"+ mouseOriginX +" , "+ mouseOriginY);
         });
 
         //set the function for mouse dragging
-        //Now the cars can be smoothly moved
-        thisCar.setOnMouseDragged(e -> {
-            // calculate the suppose grid x and grid y
-            // by mouse position
-            if(thisCar.getDir() == MoveDir.HORIZONTAL){
-            	double mouseGridX = e.getSceneX() - this.mouseX + thisCar.getGridX()*this.GRID_SIZE;
-                if (!isCollision(thisCar, mouseGridX, thisCar.getGridY())){
-                    // no collision, relocate the block
-                    thisCar.relocate(mouseGridX, thisCar.getGridY() * this.GRID_SIZE);
-                }
-            }
-            else{
-            	double mouseGridY = e.getSceneX() - this.mouseY + thisCar.getGridY()*this.GRID_SIZE;
-                if (!isCollision(thisCar, thisCar.getGridX(), mouseGridY)){
-                    // no collision, relocate the block
-                    thisCar.relocate(thisCar.getGridX() * this.GRID_SIZE, mouseGridY);
-                }
-            }
+        thisCar.setOnMouseDragged(mouseEvent -> {
+            // TODO: Handle the collision
+            thisCar.relocateByOffset(
+                    mouseEvent.getSceneX()-mouseOriginX,
+                    mouseEvent.getSceneY()-mouseOriginY
+            );
 
         });
         thisCar.setOnMouseReleased(mouseEvent -> {
-            int newX = toBoard(thisCar.getLayoutX());
-            int newY = toBoard(thisCar.getLayoutY());
+            // calculate the gird offset,
+            int gridOffsetX = getGridOffset(
+                    mouseEvent.getSceneX() - mouseOriginX
+            );
+            int gridOffsetY = getGridOffset(
+                    mouseEvent.getSceneY() - mouseOriginY
+            );
 
-            tryMove(thisCar, newX, newY);
-            
-            //check if the new position reaches the goal
-            //and this car is the target car
-            if(newX==4 && newY==2 && thisCar.isTarget()) {
-            	levelClear(thisCar);
-            }
+
+
         });
     }
 
     
     //this function will crash currently
-    @FXML
     private void levelClear(Car car)  {
         // get the current Stage
         Stage primaryStage = (Stage) car.getScene().getWindow();
         // try to load level select scene
         Parent root = null;
         try {
-            root = FXMLLoader.load(getClass().getResource("../levelClear.fxml"));
+            root = FXMLLoader.load(getClass().getResource("../levelClear/levelClear.fxml"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -138,48 +122,41 @@ public class GameController {
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
     }
-    
-    private int toBoard(double position){
+
+    /**
+     * Return the actual grid offset of the car by that move and
+     * that direction.
+     * @param offset The offset has dragged by mouse;
+     * @return Integer offset of the grid.
+     */
+    private int getGridOffset(double offset){
         // return the number of the grid on the board
-        return (int ) (position +0.5 * this.GRID_SIZE)/ this.GRID_SIZE;
+        return (int ) (offset +0.5 * this.GRID_SIZE)/ this.GRID_SIZE;
     }
 
-    public boolean isCollision(Car car, double gridX, double gridY){
-        // bug? 
-    	int unitX = (int)gridX/this.GRID_SIZE;
-    	int unitY = (int)gridY/this.GRID_SIZE;
-        if (unitX < 0  || unitX + car.getLen()>=6 ||
-                unitY < 0  || unitY+ car.getLen()>=6) {
-            return true;
-        }
+    public boolean isCollision(Car car, double screenX, double screenY){
         return false;
     }
 
 
-    private void tryMove(Car car, int gridX, int gridY){
-        // call when try to move
+    private void tryMove(Car car, MouseEvent moueEvent){
+        // call when dragging the car.
 
-        // TODO: this functionality
-        // try assign this car to the position it would belong
-        // identify whether it has collision
+        // handle collision
 
-
-
-        // remove the old gird information
-        for (int i = 0; i < car.getLen(); i++) {
-            board[car.getGridX()][car.getGridY()+i].setCar(null);
-        }
-
-
-        // set the car's coordinate to board
-        car.setPos(gridX*this.GRID_SIZE,gridY*this.GRID_SIZE);
-        // refresh the board's information
-        for (int i = 0; i < car.getLen(); i++) {
-            board[car.getGridX()][car.getGridY()+i].setCar(car);
-        }
+        // relocate the block
 
     }
 
+    private void move(Car car, MouseEvent mouseEvent){
+        // calling when the mouse is released and car is going to settle
+        // move to its gird
+
+        // add up move counter
+    }
+
+
+//    TODO: Pass in a valid game
 //    private void  showGame(Game game){
 //
 //    }

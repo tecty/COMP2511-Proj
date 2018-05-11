@@ -27,7 +27,7 @@ public class Grid extends Rectangle {
 
         // set up this's grid's location
         relocate(
-                x* GameController.GRID_SIZE,
+                x*GameController.GRID_SIZE,
                 y*GameController.GRID_SIZE
         );
 
