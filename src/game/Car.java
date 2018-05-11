@@ -31,7 +31,7 @@ public class Car extends StackPane {
 
 
         // set this car's position as given.
-        this.relocate(gridX * GameController.GRID_SIZE, gridY * GameController.GRID_SIZE);
+        this.refresh();
 
         // set the size of this car in the gird
         if (dir == MoveDir.HORIZONTAL) {
@@ -69,6 +69,12 @@ public class Car extends StackPane {
         
     }
 
+    public void refresh() {
+        // show in screen by it's grid coordinate
+        relocate(
+                gridX * GameController.GRID_SIZE,
+                gridY * GameController.GRID_SIZE);
+    }
 
 
     public boolean isTarget() {
@@ -108,6 +114,8 @@ public class Car extends StackPane {
         relocate(getGridX()*GameController.GRID_SIZE + offsetX,
                  getGridY()*GameController.GRID_SIZE + offsetY);
     }
+
+
 
     public void setGrid(int gridX, int gridY){
         // set the grid and keep the Invariant:
