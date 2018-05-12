@@ -3,17 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="382c67af-60da-4c2a-a2c1-7fc01ce2e3f4" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/.classpath" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/.project" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/.settings/org.eclipse.jdt.core.prefs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/src/Board.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/src/Car.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Lecture wee9/src/Coordinate.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/Car.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Car.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/game/Game.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Game.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/GameController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/GameController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/game/Grid.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/game/Grid.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/levelClear.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/levelClear/levelClear.fxml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -40,11 +32,11 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="Grid.java" pinned="false" current-in-tab="false">
+            <file leaf-file-name="Grid.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/game/Grid.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="446">
-                    <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
+                  <state relative-caret-position="669">
+                    <caret line="47" column="39" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
                     <folding>
                       <element signature="imports" expanded="true" />
                     </folding>
@@ -52,11 +44,11 @@
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="Car.java" pinned="false" current-in-tab="true">
+            <file leaf-file-name="Car.java" pinned="false" current-in-tab="false">
               <entry file="file://$PROJECT_DIR$/src/game/Car.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="425">
-                    <caret line="106" column="70" lean-forward="true" selection-start-line="106" selection-start-column="70" selection-end-line="106" selection-end-column="70" />
+                  <state relative-caret-position="15">
+                    <caret line="104" column="30" selection-start-line="104" selection-start-column="30" selection-end-line="104" selection-end-column="30" />
                     <folding>
                       <element signature="imports" expanded="true" />
                       <element signature="e#3432#3433#0" expanded="true" />
@@ -72,50 +64,44 @@
                 </provider>
               </entry>
             </file>
+            <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/game/GameController.java">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="1494">
+                    <caret line="189" selection-start-line="189" selection-end-line="189" />
+                    <folding>
+                      <element signature="e#10888#10889#0" expanded="true" />
+                      <element signature="e#10922#10923#0" expanded="true" />
+                      <element signature="e#10958#10959#0" expanded="true" />
+                      <element signature="e#10993#10994#0" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
           </leaf>
         </state>
       </content>
     </window>
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.5">
-      <split-first>
-        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="GameController.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/game/GameController.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="200">
-                  <caret line="21" column="17" selection-start-line="21" selection-start-column="17" selection-end-line="21" selection-end-column="17" />
-                  <folding>
-                    <element signature="e#4389#4390#0" expanded="true" />
-                    <element signature="e#4417#4418#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="Main.fxml" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/Main.fxml">
-              <provider editor-type-id="text-editor" />
-              <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-            </entry>
-          </file>
-        </leaf>
-      </split-first>
-      <split-second>
-        <leaf>
-          <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/game/GameController.java">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="679">
-                  <caret line="151" column="72" selection-start-line="151" selection-start-column="72" selection-end-line="151" selection-end-column="72" />
-                </state>
-              </provider>
-            </entry>
-          </file>
-        </leaf>
-      </split-second>
-    </splitter>
+    <leaf>
+      <file leaf-file-name="GameController.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/game/GameController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="271">
+              <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
+              <folding>
+                <element signature="e#10888#10889#0" expanded="true" />
+                <element signature="e#10922#10923#0" expanded="true" />
+                <element signature="e#10958#10959#0" expanded="true" />
+                <element signature="e#10993#10994#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -148,9 +134,9 @@
         <option value="$PROJECT_DIR$/src/levelSelect/LevelSelect.java" />
         <option value="$PROJECT_DIR$/src/setting/Setting.fxml" />
         <option value="$PROJECT_DIR$/src/levelSelect/LevelSelect.fxml" />
-        <option value="$PROJECT_DIR$/src/game/Grid.java" />
         <option value="$PROJECT_DIR$/src/game/Game.fxml" />
         <option value="$PROJECT_DIR$/src/game/Car.java" />
+        <option value="$PROJECT_DIR$/src/game/Grid.java" />
         <option value="$PROJECT_DIR$/src/game/GameController.java" />
       </list>
     </option>
@@ -165,10 +151,10 @@
     <packageJsonPaths />
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="64" />
-    <option name="y" value="47" />
-    <option name="width" value="1598" />
-    <option name="height" value="896" />
+    <option name="x" value="2675" />
+    <option name="y" value="606" />
+    <option name="width" value="790" />
+    <option name="height" value="587" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -315,7 +301,7 @@
       <workItem from="1525687269005" duration="4982000" />
       <workItem from="1525752937274" duration="134000" />
       <workItem from="1525753149942" duration="9159000" />
-      <workItem from="1526054060409" duration="5048000" />
+      <workItem from="1526054060409" duration="14643000" />
     </task>
     <task id="LOCAL-00001" summary="Refactor the settings, remove the bug, generate the grid.">
       <created>1525785429121</created>
@@ -331,32 +317,47 @@
       <option name="project" value="LOCAL" />
       <updated>1525854684583</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Delete not used files, refactor the file structure, redo the drag codes.">
+      <created>1526059180799</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1526059180799</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Try to write collision criteria, there is a bug when moving block vertically.">
+      <created>1526067063604</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1526067063604</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35176000" />
+    <option name="totallyTimeSpent" value="44771000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="218" width="1920" height="1055" extended-state="6" />
+    <frame x="1920" y="191" width="1920" height="1082" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32698414" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.3261317" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" weight="0.32910052" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.32698414" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.41049382" />
       <window_info anchor="bottom" id="Version Control" order="7" weight="0.32098764" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.12135417" />
+      <window_info content_ui="combo" id="Project" order="0" weight="0.12135417" />
       <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3281893" />
       <window_info id="Learn" order="2" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -369,7 +370,6 @@
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32910052" />
     </layout>
     <layout-to-restore>
       <window_info anchor="right" id="Palette" order="3" />
@@ -438,19 +438,11 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactor the settings, remove the bug, generate the grid." />
     <MESSAGE value="Try to move and restrict the block." />
-    <option name="LAST_COMMIT_MESSAGE" value="Try to move and restrict the block." />
+    <MESSAGE value="Delete not used files, refactor the file structure, redo the drag codes." />
+    <MESSAGE value="Try to write collision criteria, there is a bug when moving block vertically." />
+    <option name="LAST_COMMIT_MESSAGE" value="Try to write collision criteria, there is a bug when moving block vertically." />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/Controller.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="39" column="47" lean-forward="true" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar!/javafx/application/Application.class" />
     <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar!/javafx/event/EventHandler.class" />
     <entry file="file://$PROJECT_DIR$/src/Game.java">
@@ -739,13 +731,14 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/Grid.java">
+    <entry file="file://$PROJECT_DIR$/src/game/Game.fxml">
+      <provider editor-type-id="text-editor" />
+      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
+    </entry>
+    <entry file="jar:///usr/lib/jvm/java-8-openjdk-amd64/jre/lib/ext/jfxrt.jar!/com/sun/javafx/tk/quantum/GlassViewEventHandler.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="446">
-          <caret line="33" column="30" lean-forward="true" selection-start-line="33" selection-start-column="30" selection-end-line="33" selection-end-column="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="203">
+          <caret line="1119" selection-start-line="1119" selection-end-line="1119" />
         </state>
       </provider>
     </entry>
@@ -753,14 +746,10 @@
       <provider editor-type-id="text-editor" />
       <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/game/Game.fxml">
-      <provider editor-type-id="text-editor" />
-      <provider selected="true" editor-type-id="JavaFX-Scene-Builder" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/game/Car.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="425">
-          <caret line="106" column="70" lean-forward="true" selection-start-line="106" selection-start-column="70" selection-end-line="106" selection-end-column="70" />
+        <state relative-caret-position="15">
+          <caret line="104" column="30" selection-start-line="104" selection-start-column="30" selection-end-line="104" selection-end-column="30" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#3432#3433#0" expanded="true" />
@@ -775,10 +764,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/game/Grid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="669">
+          <caret line="47" column="39" selection-start-line="47" selection-start-column="39" selection-end-line="47" selection-end-column="39" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/game/GameController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="679">
-          <caret line="151" column="72" selection-start-line="151" selection-start-column="72" selection-end-line="151" selection-end-column="72" />
+        <state relative-caret-position="271">
+          <caret line="89" column="35" selection-start-line="89" selection-start-column="35" selection-end-line="89" selection-end-column="35" />
+          <folding>
+            <element signature="e#10888#10889#0" expanded="true" />
+            <element signature="e#10922#10923#0" expanded="true" />
+            <element signature="e#10958#10959#0" expanded="true" />
+            <element signature="e#10993#10994#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

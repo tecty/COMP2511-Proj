@@ -1,6 +1,5 @@
 package game;
 
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -30,6 +29,14 @@ public class GameController {
 
     // when a click on a car, it would set
     private double mouseOriginX, mouseOriginY;
+    // cleaner code to handle collision
+    // record the mouse offset of this drag
+    private double mouseOffsetX, mouseOffsetY;
+
+    // the range of the offset of mouse movement can achieve
+    // for clicked particular car
+    private double offsetMax, offsetMin;
+
     // the move counter of this game
     private int moveCounter;
 
@@ -76,28 +83,35 @@ public class GameController {
             // only record the original mouse position
             mouseOriginX = mouseEvent.getSceneX();
             mouseOriginY = mouseEvent.getSceneY();
+
+            // calculate the offset range of current car
+            getOffsetRange(thisCar);
+
+            // TODO: need to delete
+            System.out.println("Dump the System while " +
+                    "click, a demo of this function");
+            dumpState(thisCar);
+
         });
 
         //set the function for mouse dragging
         thisCar.setOnMouseDragged(mouseEvent -> {
-            // local var of mouse offset to remove strange situation
+            // global var for record mouse offset
             // by not fetch mouse position twice
-            double offsetX = mouseEvent.getSceneX()-mouseOriginX;
-            double offsetY = mouseEvent.getSceneY()-mouseOriginY;
+            mouseOffsetX = mouseEvent.getSceneX()-mouseOriginX;
+            mouseOffsetY = mouseEvent.getSceneY()-mouseOriginY;
 
-            if (isCollision(thisCar,offsetX,offsetY)){
-                // couldn't move if there is an collision
-                return;
-            }
+            handleCollision(thisCar);
+
             // relocate this car's position in GUI
-            thisCar.relocateByOffset(offsetX,offsetY);
+            thisCar.relocateByOffset(mouseOffsetX,mouseOffsetY);
         });
         thisCar.setOnMouseReleased(mouseEvent -> {
-            double mouseOffsetX = mouseEvent.getSceneX() - mouseOriginX;
-            double mouseOffsetY = mouseEvent.getSceneY() - mouseOriginY;
+            mouseOffsetX = mouseEvent.getSceneX() - mouseOriginX;
+            mouseOffsetY = mouseEvent.getSceneY() - mouseOriginY;
 
             // couldn't be correctly release if there is a collision
-            if (isCollision(thisCar,mouseOffsetX,mouseOffsetY))
+            if (handleCollision(thisCar))
                 return;
             // calculate the gird offset
             int gridOffsetX = getGridOffset(mouseOffsetX);
@@ -131,16 +145,16 @@ public class GameController {
                 gridX = 6-car.getLen();
 
             // clean the old board record
-            for (int i = car.getGridX();
-                 i < car.getGridX()+car.getLen(); i++) {
+            for (int x = car.getGridX();
+                 x < car.getGridX()+car.getLen(); x++) {
                 // keep the invariant that y = y_0
-                board[i][car.getGridY()].setCar(null);
+                board[x][car.getGridY()].setCar(null);
             }
             // add new board record
-            for (int i = gridX;
-                 i < gridX + car.getLen() ; i++) {
+            for (int x = gridX;
+                 x < gridX + car.getLen() ; x++) {
                 // keep the invariant that y = y_0
-                board[i][car.getGridY()].setCar(car);
+                board[x][car.getGridY()].setCar(car);
             }
         }
         else{
@@ -154,16 +168,16 @@ public class GameController {
                 gridY = 6-car.getLen();
 
             // value in board change in y
-            for (int i = car.getGridY();
-                 i < car.getGridY()+car.getLen(); i++) {
+            for (int y = car.getGridY();
+                 y < car.getGridY()+car.getLen(); y++) {
                 // keep the invariant that y = y_0
-                board[car.getGridX()][i].setCar(null);
+                board[car.getGridX()][y].setCar(null);
             }
             // add new board record
-            for (int i = gridY;
-                 i < gridY + car.getLen(); i++) {
+            for (int y = gridY;
+                 y < gridY + car.getLen(); y++) {
                 // keep the invariant that y = y_0
-                board[car.getGridX()][i].setCar(car);
+                board[car.getGridX()][y].setCar(car);
             }
         }
 
@@ -210,64 +224,93 @@ public class GameController {
         return 0;
     }
 
-    public boolean isCollision(Car car, double offsetX, double offsetY){
-        // the range of the largest offset can move of this car
-        // in current board state
-        double offsetMax, offsetMin;
+    public boolean handleCollision(Car car){
+
 
         if (car.getDir() == MoveDir.HORIZONTAL){
             // y = y_0
-            // the minimum and maximum of this offset range
-            offsetMin = (0-car.getGridX())             *GRID_SIZE;
-            offsetMax = (6-car.getGridX()-car.getLen())*GRID_SIZE;
 
-            for (int x = car.getGridX(); x >=0; x--) {
-                // try to reach min
-                if (board[x][car.getGridY()].hasCar(car)){
-                    // some block lock the position before the boundary
-                    // reset the min and break
-                    offsetMin = (x - car.getGridX() + 1)* GRID_SIZE;
-                    break;
-                }
-            }
-            for (int x = car.getGridX()+car.getLen(); x < 6; x++) {
-                // try to reach max
-                if(board[x][car.getGridY()].hasCar(car)){
-                    // recalculate the max and break
-                    offsetMax = (x - car.getGridX() -1)*GRID_SIZE;
-                }
-            }
-            // the offset x shouldn't be outside the range
-            if (offsetMax<offsetX || offsetX< offsetMin)
-                return  true;
+            // reset the offset base on the range
+            if (mouseOffsetX> offsetMax)
+                mouseOffsetX = offsetMax;
+            if (mouseOffsetX< offsetMin)
+                mouseOffsetX = offsetMin;
+
         }else{
             // Vertical move x = x_0
-            // the minimum and maximum of this offset range
-            offsetMin = (0-car.getGridY())             *GRID_SIZE;
-            offsetMax = (6-car.getGridY()-car.getLen())*GRID_SIZE;
 
-            for (int y = car.getGridY(); y >=0; y--) {
-                // try to reach min
-                if (board[car.getGridX()][y].hasCar(car)){
-                    // some block lock the position before the boundary
-                    // reset the min and break
-                    offsetMin = (y - car.getGridY() + 1)* GRID_SIZE;
-                    break;
-                }
-            }
-            for (int y = car.getGridY()+car.getLen(); y < 6; y++) {
-                // try to reach max
-                if(board[car.getGridX()][y].hasCar(car)){
-                    // recalculate the max and break
-                    offsetMax = (y - car.getGridY() -1)*GRID_SIZE;
-                }
-            }
-            // the offset x shouldn't be outside the range
-            if (offsetMax<offsetY || offsetY< offsetMin)
-                return true;
+            // the offset y shouldn't be outside the range
+            if (mouseOffsetY> offsetMax)
+                mouseOffsetY = offsetMax;
+            if (mouseOffsetY< offsetMin)
+                mouseOffsetY = offsetMin;
         }
 
         return false;
+    }
+
+
+    private void getOffsetRange(Car car){
+        // Logic : [leftBoundary ,(minGridCar,) car , (maxGridCar,) rightBoundary]
+
+        if (car.getDir() == MoveDir.HORIZONTAL){
+            // setup the leftBoundary and rightBoundary
+            offsetMin = -car.getGridX()                   * GRID_SIZE;
+            offsetMax = (6 - car.getGridX()- car.getLen())* GRID_SIZE;
+            // get the range of x
+
+            // find the min
+            for (int x = 0; x < 6; x++) {
+                if (board[x][car.getGridY()].getCar() == car)
+                    break;
+                if (board[x][car.getGridY()].getCar() != null ){
+                    // set the new min offset
+                    offsetMin = -(car.getGridX() -x-1)*GRID_SIZE;
+                }
+            }
+
+            // find the max
+            for (int x = car.getGridX() + car.getLen(); x < 6; x++) {
+                // car length = 2 and star at 2, then search start from 4
+                // but board[4] wouldn't contain this car
+                if (board[x][car.getGridY()].getCar()!= null){
+                    // set the offset max
+                    offsetMax = (x - car.getGridX()- car.getLen() -1)*GRID_SIZE;
+                    // not need to find the next car would be collision
+                    break;
+                }
+            }
+
+        }else{
+            // Vertical: get the range of y
+            // setup the topBoundary and bottomBoundary
+            offsetMin = -car.getGridY()                   * GRID_SIZE;
+            offsetMax = (6 - car.getGridY()- car.getLen())* GRID_SIZE;
+            // get the range of x
+
+            // find the min
+            for (int y = 0; y < 6; y++) {
+                if (board[car.getGridX()][y].getCar() == car)
+                    break;
+                if (board[car.getGridX()][y].getCar() != null){
+                    // set the new min offset
+                    offsetMin = -(car.getGridY() -y-1)*GRID_SIZE;
+                }
+            }
+
+            // find the max
+            for (int y = car.getGridY() + car.getLen(); y < 6; y++) {
+                // car length = 2 and star at 2, then search start from 4
+                // but board[4] wouldn't contain this car
+                if (board[car.getGridX()][y].hasCar(car)){
+                    // set the offset max
+                    offsetMax = (y - car.getGridY()- car.getLen() -1)*GRID_SIZE;
+                    // not need to find the next car would be collision
+                    break;
+                }
+            }
+        }
+//        dumpState(car);
     }
 
 
@@ -277,6 +320,27 @@ public class GameController {
 
     public void addMoveCounter() {
         this.moveCounter ++;
+    }
+    private void dumpState(Car car){
+        // dump the current state of this board
+        System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
+        System.out.println("OffsetRange "+ offsetMin + " ," + offsetMax);
+        System.out.println("MoveCounter "+ getMoveCounter());
+        printBoard();
+        System.out.println();
+    }
+
+    private void  printBoard(){
+        // test function to print this board
+        for (int y = 0; y < 6; y++) {
+            for (int x = 0; x < 6; x++) {
+                if (board[x][y].getCar()== null)
+                    System.out.print("#");
+                else
+                    System.out.print(board[x][y].getCar().getCarId());
+            }
+            System.out.print("\n");
+        }
     }
 
 

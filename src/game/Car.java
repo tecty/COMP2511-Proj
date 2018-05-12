@@ -102,7 +102,7 @@ public class Car extends StackPane {
         }
         else {
             // vertical == x is not changeable
-            screenX = getGridY()* GameController.GRID_SIZE;
+            screenX = getGridX()* GameController.GRID_SIZE;
         }
         // set the screen location
         super.relocate(screenX, screenY);
