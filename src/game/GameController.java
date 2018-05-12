@@ -62,7 +62,7 @@ public class GameController {
 
         // set the car 0
         makeCar(MoveDir.HORIZONTAL,
-                0, 0, 2, 2, Color.RED);
+                0, 4, 2, 2, Color.RED);
         makeCar(MoveDir.VERTICAL,
                 1, 2, 2, 2, Color.BLUE);
     }
@@ -127,6 +127,9 @@ public class GameController {
                     thisCar.getGridY()+ gridOffsetY);
             // refresh the position of the car in GUI
             thisCar.refresh();
+
+            // check whether the game is finished
+            handleLevelClear(thisCar);
         });
     }
 
@@ -190,20 +193,22 @@ public class GameController {
     }
 
 
-    //this function will crash currently
-    private void levelClear(Car car)  {
-        // get the current Stage
-        Stage primaryStage = (Stage) car.getScene().getWindow();
-        // try to load level select scene
-        Parent root = null;
-        try {
-            root = FXMLLoader.load(getClass().getResource("../levelClear/levelClear.fxml"));
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void handleLevelClear(Car car)  {
+        if (car.isTarget() && car.getGridX()== 0){
+            // this level is finished by Gridlock
+            // get the current Stage
+            Stage primaryStage = (Stage) car.getScene().getWindow();
+            // try to load level select scene
+            Parent root = null;
+            try {
+                root = FXMLLoader.load(getClass().getResource("../levelClear/levelClear.fxml"));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("level cleared");
+            // checkout to level select scene
+            primaryStage.setScene(new Scene(root));
         }
-        System.out.println("level cleared");
-        // checkout to level select scene
-        primaryStage.setScene(new Scene(root));
     }
 
     /**
