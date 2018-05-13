@@ -280,6 +280,7 @@ public class GameController {
     private void handleLevelClear()throws IOException  {
     	//first stop the timer
     	timer.stop();
+    	System.out.println(time.doubleValue()+" seconds");
     	
     	//check if fxml file exists
     	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
