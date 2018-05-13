@@ -12,6 +12,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -22,6 +23,10 @@ public class GameController {
     // create game in this controller
     @FXML
     Pane rootPane;
+    @FXML 
+    private Label stepCount = new Label();
+    @FXML
+    private Label timeCount = new Label();
 
     // reference to the board
     private Grid[][] board = new Grid[6][6];
@@ -75,7 +80,7 @@ public class GameController {
         makeCar(MoveDir.VERTICAL,
                 2, 2, 2, 2, Color.YELLOW);
     }
-
+    
     //check if the car making is valid
     private boolean validPosition(int gridX, int gridY, int len, MoveDir dir) {
     	if(dir==MoveDir.HORIZONTAL) {
@@ -357,7 +362,14 @@ public class GameController {
 
     public void addMoveCounter() {
         this.moveCounter ++;
+        outputStepCount();
     }
+    
+    @FXML 
+    protected void outputStepCount(){
+        stepCount.setText(""+this.moveCounter);
+    }
+    
     private void dumpState(Car car){
         // dump the current state of this board
         System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
