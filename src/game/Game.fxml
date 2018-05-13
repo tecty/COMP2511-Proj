@@ -24,7 +24,7 @@
                </BorderPane.margin></Pane>
          </center>
          <top>
-            <Label text="Gridlock Leve 1" BorderPane.alignment="CENTER">
+            <Label text="Gridlock Level 1" BorderPane.alignment="CENTER">
                <font>
                   <Font size="43.0" />
                </font>
