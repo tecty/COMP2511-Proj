@@ -1,6 +1,7 @@
 package game;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
 import javax.management.loading.MLet;
@@ -89,7 +90,7 @@ public class GameController {
 
 
     @FXML
-    private void initialize() {
+    private void initialize() throws MalformedURLException {
 		//bind the timeCount label with the running timer
 	    timeCount.textProperty().bind(time.asString("%.1f"));
 
@@ -106,10 +107,6 @@ public class GameController {
             }
         }
 
-        // add the group to the pane and group of car
-        // to show in the scene
-        rootPane.getChildren().addAll(gridGroup, carGroup);
-
         // set the car 0
         makeCar(MoveDir.HORIZONTAL,
                 0, 4, 2, 2, Color.RED);
@@ -118,6 +115,10 @@ public class GameController {
         //this car is for testing invalidity
         makeCar(MoveDir.VERTICAL,
                 2, 2, 2, 2, Color.YELLOW);
+        
+        // add the group to the pane and group of car
+        // to show in the scene
+        rootPane.getChildren().addAll(gridGroup, carGroup);
         
         timer.start();
     }
@@ -139,7 +140,7 @@ public class GameController {
     
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
-                         int gridY, int len, Paint color){
+                         int gridY, int len, Paint color) throws MalformedURLException{
     	//if the car cannot be made, ignore this car
     	if(!validPosition(gridX, gridY, len, dir)) return;
         // pass through the argument
