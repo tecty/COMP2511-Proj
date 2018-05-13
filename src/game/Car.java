@@ -1,18 +1,10 @@
 package game;
 
-import java.io.File;
 import java.net.MalformedURLException;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.management.loading.MLet;
-
-import javafx.fxml.FXML;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Car extends StackPane {
@@ -32,7 +24,7 @@ public class Car extends StackPane {
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
-               int len,Paint color) throws MalformedURLException{
+               int len) throws MalformedURLException{
         // set the information of this car
         this.dir = dir;
         this.carId = carId;
@@ -57,54 +49,44 @@ public class Car extends StackPane {
         }
 
         // set the appearance of this car
-//        Rectangle carRectangle = new Rectangle();
-        Image img = new Image(new File("/game/car.jpg").toURI().toString());
-        ImageView tile = new ImageView();
-        tile.setImage(img);	
-        tile.setCache(true);
-        Rectangle2D carRectangle;
-        if(dir == MoveDir.HORIZONTAL) {
-        	carRectangle = new Rectangle2D(
-        			GameController.GRID_SIZE * gridX, 
-					GameController.GRID_SIZE * gridY, 
-					GameController.GRID_SIZE * getLen(), 
-					GameController.GRID_SIZE
-			);
-        }
-        else {
-        	carRectangle = new Rectangle2D(
-        			GameController.GRID_SIZE * gridX, 
-					GameController.GRID_SIZE * gridY, 
-					GameController.GRID_SIZE , 
-					GameController.GRID_SIZE * getLen()
-			);
-        }
-        							
-        tile.setViewport(carRectangle);
+        Pane img = new Pane();
+        Rectangle carRectangle = new Rectangle();
         
-        
-//        carRectangle.setFill(new ImagePattern(img, 0, 0, 1, 1, true));
-        getChildren().add(tile);
+        getChildren().addAll(carRectangle, img);
 
         // set the style of this car
-//        if (dir == MoveDir.HORIZONTAL) {
-//            // height ==1
-//            carRectangle.setWidth(getLen() * GameController.GRID_SIZE);
-//            carRectangle.setHeight(GameController.GRID_SIZE);
-//        }
-//        else if (dir == MoveDir.VERTICAL){
-//            // width ==1
-//            carRectangle.setWidth(GameController.GRID_SIZE);
-//            carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
-//        }
+        if (dir == MoveDir.HORIZONTAL) {
+            // height ==1
+            carRectangle.setWidth(getLen() * GameController.GRID_SIZE);
+            carRectangle.setHeight(GameController.GRID_SIZE);
+            if(getLen()==2) { //a horizontal car
+            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTarget.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            	else img.setStyle("-fx-background-image: url(\"/img/car.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+            else { //a horizontal truck
+                img.setStyle("-fx-background-image: url(\"/img/truck.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+        }
+        else if (dir == MoveDir.VERTICAL){
+            // width ==1
+            carRectangle.setWidth(GameController.GRID_SIZE);
+            carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
+            if(getLen()==2) {
+            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTargetV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            	else img.setStyle("-fx-background-image: url(\"/img/carV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+            else {
+                img.setStyle("-fx-background-image: url(\"/img/truckV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+        }
         // TODO: Style and center the car
         // don't know how to center the color block
 
 
         // set the color by given.
-//        carRectangle.setFill(color);
+        carRectangle.setFill(Color.TRANSPARENT);
+        
     }
-
     
     public void refresh() {
         // show in screen by it's grid coordinate

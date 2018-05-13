@@ -109,12 +109,14 @@ public class GameController {
 
         // set the car 0
         makeCar(MoveDir.HORIZONTAL,
-                0, 4, 2, 2, Color.RED);
+                0, 4, 2, 2);
         makeCar(MoveDir.VERTICAL,
-                1, 2, 2, 2, Color.BLUE);
+                1, 2, 2, 2);
+        makeCar(MoveDir.VERTICAL,
+        		2, 0, 0, 3);
         //this car is for testing invalidity
         makeCar(MoveDir.VERTICAL,
-                2, 2, 2, 2, Color.YELLOW);
+                3, 2, 2, 2);
         
         // add the group to the pane and group of car
         // to show in the scene
@@ -140,11 +142,11 @@ public class GameController {
     
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
-                         int gridY, int len, Paint color) throws MalformedURLException{
+                         int gridY, int len) throws MalformedURLException{
     	//if the car cannot be made, ignore this car
     	if(!validPosition(gridX, gridY, len, dir)) return;
         // pass through the argument
-        Car thisCar = new Car(dir, carId, gridX,gridY,len,color);
+        Car thisCar = new Car(dir, carId, gridX,gridY,len);
         // add to the group to show
         carGroup.getChildren().add(thisCar);
 
