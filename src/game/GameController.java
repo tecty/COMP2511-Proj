@@ -2,11 +2,17 @@ package game;
 
 import java.io.IOException;
 
+import javax.management.loading.MLet;
+import javax.print.DocFlavor.URL;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -65,11 +71,31 @@ public class GameController {
                 0, 4, 2, 2, Color.RED);
         makeCar(MoveDir.VERTICAL,
                 1, 2, 2, 2, Color.BLUE);
+        //this car is for testing invalidity
+        makeCar(MoveDir.VERTICAL,
+                2, 2, 2, 2, Color.YELLOW);
     }
 
+    //check if the car making is valid
+    private boolean validPosition(int gridX, int gridY, int len, MoveDir dir) {
+    	if(dir==MoveDir.HORIZONTAL) {
+    		for(int pos = gridX; pos < gridX+len; pos ++) {
+    			if(board[pos][gridY].getCar()!=null) return false;
+    		}
+    	}
+    	else {
+    		for(int pos = gridY; pos < gridY+len; pos ++) {
+    			if(board[gridX][pos].getCar()!=null) return false;
+    		}
+    	}
+    	return true;
+    }
+    
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
                          int gridY, int len, Paint color){
+    	//if the car cannot be made, ignore this car
+    	if(!validPosition(gridX, gridY, len, dir)) return;
         // pass through the argument
         Car thisCar = new Car(dir, carId, gridX,gridY,len,color);
         // add to the group to show
@@ -129,7 +155,13 @@ public class GameController {
             thisCar.refresh();
 
             // check whether the game is finished
-            handleLevelClear(thisCar);
+            if(checkLevelClear(thisCar)) {
+            	 try {
+            		 handleLevelClear();
+            	 } catch (IOException e) {
+                   e.printStackTrace();
+               }
+            }
         });
     }
 
@@ -191,24 +223,24 @@ public class GameController {
             addMoveCounter();
         }
     }
-
-
-    private void handleLevelClear(Car car)  {
-        if (car.isTarget() && car.getGridX()== 0){
-            // this level is finished by Gridlock
-            // get the current Stage
-            Stage primaryStage = (Stage) car.getScene().getWindow();
-            // try to load level select scene
-            Parent root = null;
-            try {
-                root = FXMLLoader.load(getClass().getResource("../levelClear/levelClear.fxml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("level cleared");
-            // checkout to level select scene
-            primaryStage.setScene(new Scene(root));
-        }
+    
+    //these functions are for checking if the level is cleared
+    private boolean checkLevelClear(Car car){
+    	if(car.isTarget() && car.getGridX()==0) return true;
+    	return false;
+    }
+    
+    @FXML
+    private void handleLevelClear()throws IOException  {
+    	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
+    	if (u == null) {
+    	        System.out.println("File loading failed");
+    	        System.exit(1);
+    	}
+    	Parent pane = FXMLLoader.load(getClass().getResource("/levelClear/LevelClear.fxml"));
+    	pane.setStyle("-fx-background-color: #fff; -fx-border-color: #000");
+    	this.rootPane.getChildren().add(pane);
+    	 
     }
 
     /**
@@ -329,10 +361,9 @@ public class GameController {
     private void dumpState(Car car){
         // dump the current state of this board
         System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
-        System.out.println("OffsetRange "+ offsetMin + " ," + offsetMax);
-        System.out.println("MoveCounter "+ getMoveCounter());
-        printBoard();
+        System.out.println("OffsetRange "+ offsetMin/this.GRID_SIZE + " ," + offsetMax/this.GRID_SIZE);
         System.out.println();
+        printBoard();
     }
 
     private void  printBoard(){
@@ -346,6 +377,7 @@ public class GameController {
             }
             System.out.print("\n");
         }
+        System.out.println("MoveCounter "+ getMoveCounter());
     }
 
 
