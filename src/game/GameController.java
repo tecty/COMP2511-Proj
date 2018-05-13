@@ -1,10 +1,16 @@
 package game;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import javax.management.loading.MLet;
 import javax.print.DocFlavor.URL;
 
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +29,11 @@ public class GameController {
     // create game in this controller
     @FXML
     Pane rootPane;
-    @FXML 
-    private Label stepCount = new Label();
     @FXML
     private Label timeCount = new Label();
-
+    @FXML 
+    private Label stepCount = new Label();
+    
     // reference to the board
     private Grid[][] board = new Grid[6][6];
 
@@ -35,6 +41,36 @@ public class GameController {
     Group carGroup = new Group();
     Group gridGroup = new Group();
 
+    
+    //timer
+	//variables prepared for timer
+	DoubleProperty time = new SimpleDoubleProperty();    	
+	
+	BooleanProperty running = new SimpleBooleanProperty();
+	
+	AnimationTimer timer = new AnimationTimer() {
+	    private long startTime ;
+	
+	    @Override
+	    public void start() {
+	        startTime = System.currentTimeMillis();
+	        running.set(true);
+	        super.start();
+	    }
+	
+	    @Override
+	    public void stop() {
+	        running.set(false);
+	        super.stop();
+	    }
+	    
+	    @Override
+	    public void handle(long timestamp) {
+	        long now = System.currentTimeMillis();
+	        time.set((now - startTime) / 1000.0);
+	    }
+	};
+    
     // the size of each grid
     public final static int GRID_SIZE = 50;
 
@@ -54,6 +90,9 @@ public class GameController {
 
     @FXML
     private void initialize() {
+		//bind the timeCount label with the running timer
+	    timeCount.textProperty().bind(time.asString("%.1f"));
+
         // move counter of each game should be set to 0
         moveCounter = 0;
         // set up all the grid
@@ -79,6 +118,8 @@ public class GameController {
         //this car is for testing invalidity
         makeCar(MoveDir.VERTICAL,
                 2, 2, 2, 2, Color.YELLOW);
+        
+        timer.start();
     }
     
     //check if the car making is valid
@@ -237,11 +278,17 @@ public class GameController {
     
     @FXML
     private void handleLevelClear()throws IOException  {
+    	//first stop the timer
+    	timer.stop();
+    	
+    	//check if fxml file exists
     	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
     	if (u == null) {
     	        System.out.println("File loading failed");
     	        System.exit(1);
     	}
+    	
+    	//if exists, continue printing the info of clearing the level
     	Parent pane = FXMLLoader.load(getClass().getResource("/levelClear/LevelClear.fxml"));
     	pane.setStyle("-fx-background-color: #fff; -fx-border-color: #000");
     	this.rootPane.getChildren().add(pane);
