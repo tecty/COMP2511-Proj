@@ -1,7 +1,10 @@
 package game;
 
+import java.net.MalformedURLException;
+
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class Car extends StackPane {
@@ -21,7 +24,7 @@ public class Car extends StackPane {
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
-               int len,Paint color){
+               int len) throws MalformedURLException{
         // set the information of this car
         this.dir = dir;
         this.carId = carId;
@@ -46,29 +49,45 @@ public class Car extends StackPane {
         }
 
         // set the appearance of this car
+        Pane img = new Pane();
         Rectangle carRectangle = new Rectangle();
-        getChildren().add(carRectangle);
+        
+        getChildren().addAll(carRectangle, img);
 
         // set the style of this car
         if (dir == MoveDir.HORIZONTAL) {
             // height ==1
             carRectangle.setWidth(getLen() * GameController.GRID_SIZE);
             carRectangle.setHeight(GameController.GRID_SIZE);
+            if(getLen()==2) { //a horizontal car
+            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTarget.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            	else img.setStyle("-fx-background-image: url(\"/img/car.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+            else { //a horizontal truck
+                img.setStyle("-fx-background-image: url(\"/img/truck.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
         }
         else if (dir == MoveDir.VERTICAL){
             // width ==1
             carRectangle.setWidth(GameController.GRID_SIZE);
             carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
+            if(getLen()==2) {
+            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTargetV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            	else img.setStyle("-fx-background-image: url(\"/img/carV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
+            else {
+                img.setStyle("-fx-background-image: url(\"/img/truckV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            }
         }
         // TODO: Style and center the car
         // don't know how to center the color block
 
 
         // set the color by given.
-        carRectangle.setFill(color);
+        carRectangle.setFill(Color.TRANSPARENT);
         
     }
-
+    
     public void refresh() {
         // show in screen by it's grid coordinate
         relocate(

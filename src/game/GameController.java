@@ -1,6 +1,7 @@
 package game;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 
 import javax.management.loading.MLet;
@@ -89,7 +90,7 @@ public class GameController {
 
 
     @FXML
-    private void initialize() {
+    private void initialize() throws MalformedURLException {
 		//bind the timeCount label with the running timer
 	    timeCount.textProperty().bind(time.asString("%.1f"));
 
@@ -106,18 +107,20 @@ public class GameController {
             }
         }
 
+        // set the car 0
+        makeCar(MoveDir.HORIZONTAL,
+                0, 4, 2, 2);
+        makeCar(MoveDir.VERTICAL,
+                1, 2, 2, 2);
+        makeCar(MoveDir.VERTICAL,
+        		2, 0, 0, 3);
+        //this car is for testing invalidity
+        makeCar(MoveDir.VERTICAL,
+                3, 2, 2, 2);
+        
         // add the group to the pane and group of car
         // to show in the scene
         rootPane.getChildren().addAll(gridGroup, carGroup);
-
-        // set the car 0
-        makeCar(MoveDir.HORIZONTAL,
-                0, 4, 2, 2, Color.RED);
-        makeCar(MoveDir.VERTICAL,
-                1, 2, 2, 2, Color.BLUE);
-        //this car is for testing invalidity
-        makeCar(MoveDir.VERTICAL,
-                2, 2, 2, 2, Color.YELLOW);
         
         timer.start();
     }
@@ -139,11 +142,11 @@ public class GameController {
     
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
-                         int gridY, int len, Paint color){
+                         int gridY, int len) throws MalformedURLException{
     	//if the car cannot be made, ignore this car
     	if(!validPosition(gridX, gridY, len, dir)) return;
         // pass through the argument
-        Car thisCar = new Car(dir, carId, gridX,gridY,len,color);
+        Car thisCar = new Car(dir, carId, gridX,gridY,len);
         // add to the group to show
         carGroup.getChildren().add(thisCar);
 
