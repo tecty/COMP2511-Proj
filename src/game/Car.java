@@ -8,7 +8,6 @@ public class Car extends StackPane {
 
 
     // the actual car move in each grid
-	boolean targetCar;
     final private MoveDir dir;
     final private int carId;
     private int gridX;
@@ -20,18 +19,21 @@ public class Car extends StackPane {
 //    private double oldX, oldY;
 
 
-    public Car(boolean targetCar, MoveDir dir, int carId, int gridX, int gridY, int len,Paint color){
+    public Car( MoveDir dir,
+               int carId, int gridX, int gridY,
+               int len,Paint color){
         // set the information of this car
-    	this.targetCar = targetCar;
         this.dir = dir;
         this.carId = carId;
         this.len = len;
-//        setGridX(gridX);
-//        setGridY(gridY);
+        this.gridX = gridX;
+        this.gridY = gridY;
+
 
         // set this car's position as given.
-        this.setPos(gridX * GameController.GRID_SIZE, gridY * GameController.GRID_SIZE);
-        // set the size of this Pane
+        this.refresh();
+
+        // set the size of this car in the gird
         if (dir == MoveDir.HORIZONTAL) {
             // height ==1
             setWidth(getLen() * GameController.GRID_SIZE);
@@ -47,7 +49,6 @@ public class Car extends StackPane {
         Rectangle carRectangle = new Rectangle();
         getChildren().add(carRectangle);
 
-//        TODO: need to refactor to the GameController place
         // set the style of this car
         if (dir == MoveDir.HORIZONTAL) {
             // height ==1
@@ -59,6 +60,7 @@ public class Car extends StackPane {
             carRectangle.setWidth(GameController.GRID_SIZE);
             carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
         }
+        // TODO: Style and center the car
         // don't know how to center the color block
 
 
@@ -67,39 +69,77 @@ public class Car extends StackPane {
         
     }
 
+    public void refresh() {
+        // show in screen by it's grid coordinate
+        relocate(
+                gridX * GameController.GRID_SIZE,
+                gridY * GameController.GRID_SIZE);
+    }
 
 
     public boolean isTarget() {
-    	return this.targetCar;
+    	// target car has root id (0)
+        return getCarId() == 0;
     }
     
     public int getCarId() {
         return carId;
     }
 
+    /**
+     * Refresh the position of this car by provide two coordinate
+     * but only one coordinate would be use by the direction it is
+     * set.
+     * @param screenX X coordinate the function want to set to.
+     * @param screenY Y coordinate the function want to set to.
+     */
+    @Override
+    public  void relocate(double screenX, double screenY){
+        // one direction should not be able to move
+        if (dir == MoveDir.HORIZONTAL){
+            // y is not change able;
+            screenY = getGridY()* GameController.GRID_SIZE;
+        }
+        else {
+            // vertical == x is not changeable
+            screenX = getGridX()* GameController.GRID_SIZE;
+        }
+        // set the screen location
+        super.relocate(screenX, screenY);
+    }
+
+    public void relocateByOffset(double offsetX, double offsetY){
+        // relocate this block by the mouse offset
+        // assume the collision is protected by higher levels function
+        relocate(getGridX()*GameController.GRID_SIZE + offsetX,
+                 getGridY()*GameController.GRID_SIZE + offsetY);
+    }
+
+
+
+    public void setGrid(int gridX, int gridY){
+        // set the grid and keep the Invariant:
+        // in Horizontal car y = y_0
+        // in Vertical car   x = x_0
+        if (dir == MoveDir.HORIZONTAL){
+            // only change x
+            this.gridX = gridX;
+        }
+        else {
+            // else: VERTICAL
+            // only change y
+            this.gridY = gridY;
+        }
+    }
+
     public int getGridX() {
         return gridX;
-    }
-
-    public  void setPos(double newX, double newY){
-        // refresh the location by the given position.
-        setGridX((int)newX/GameController.GRID_SIZE);
-        setGridY((int)newY/GameController.GRID_SIZE);
-        relocate(newX, newY);
-
-    }
-
-    public void setGridX(int gridX) {
-        this.gridX = gridX;
     }
 
     public int getGridY() {
         return gridY;
     }
 
-    public void setGridY(int gridY) {
-        this.gridY = gridY;
-    }
     public MoveDir getDir() {
         return dir;
     }

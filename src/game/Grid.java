@@ -27,7 +27,7 @@ public class Grid extends Rectangle {
 
         // set up this's grid's location
         relocate(
-                x* GameController.GRID_SIZE,
+                x*GameController.GRID_SIZE,
                 y*GameController.GRID_SIZE
         );
 
@@ -44,7 +44,8 @@ public class Grid extends Rectangle {
 
     public void setCar(Car car) {
         // only can set car with no car in there
-        if (!hasCar(car)){
+        // or clear this gird when moving out
+        if (!hasCar(car) || car == null){
             this.car = car;
         }
     }
