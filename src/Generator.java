@@ -63,9 +63,9 @@ class Generator {
 				Board winner = board;
 				int steps = pathLength;
 				// for each board that can be made from this board
-				for (Board b : board.getBoardPermutation()) {
+				for (Board b : algorithm.addPossibleBoardsToQueue()) {
 					// solve the board
-					List<Board> solved = solver.solve(b, desiredLength + 1);
+					List<Board> solved = algorithm.solve(b, desiredLength + 1);
 					// if solvable, find the one with greatest length
 					if (solved != null && !solved.isEmpty()) {
 						int solveLength = solved.size();
