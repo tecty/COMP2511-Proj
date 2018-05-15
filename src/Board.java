@@ -21,7 +21,8 @@ class Board {
 		this.Car = c;
 		//this.carID = new ArrayList<Integer>();
 		this.carID = carID;
-
+		
+			
 		updateBoard();
 	}
 	

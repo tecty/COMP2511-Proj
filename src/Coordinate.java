@@ -11,4 +11,10 @@ class Coordinate {
     	 this.x2 = x2;
     	 this.y2 = y2;
      }
+     
+    
+     
+     public Coordinate getCopy() {
+    	 	return new Coordinate(this.x1, this.y1, this.x2, this.y2);
+     }
 }

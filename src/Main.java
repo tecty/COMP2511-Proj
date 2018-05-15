@@ -12,7 +12,8 @@ public class Main {
 	      Car x = new Car(0,Czero);
 	      Cs.add(x);	
 	      
-	      Coordinate C1 = new Coordinate(0,3,2,3);
+	     // Coordinate C1 = new Coordinate(0,3,2,3);
+	      Coordinate C1 = new Coordinate(1,3,3,3);
 	    //  System.out.println(Czero.x1 + " "+ Czero.x2 + " " + Czero.y1 + " " + Czero.y2);
 	      Car x1 = new Car(1,C1);
 	      Cs.add(x1);	

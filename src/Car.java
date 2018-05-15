@@ -8,5 +8,12 @@ class Car {
 		this.num = num;
 		this.Paths.add(Paths);
 	}
-
+	
+//	public Car getCopy() {
+//		ArrayList<Coordinate> p = new ArrayList<Coordinate>();
+//		for(int i = 0; i < this.Paths.size(); i ++) {
+//			p.add( this.Paths.get(i).getCopy() );
+//		}
+//		return new Car(this.num, );
+//	}
 }
