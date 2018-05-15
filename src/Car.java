@@ -14,6 +14,11 @@ class Car {
 //		for(int i = 0; i < this.Paths.size(); i ++) {
 //			p.add( this.Paths.get(i).getCopy() );
 //		}
-//		return new Car(this.num, );
+//		Car c = new Car(this.num, p);
+//		return c;
 //	}
+	@Override
+	protected Car clone() throws CloneNotSupportedException {
+		return (Car) super.clone();
+	}
 }

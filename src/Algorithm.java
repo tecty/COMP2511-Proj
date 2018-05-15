@@ -62,15 +62,25 @@ public class Algorithm {
 			b.printB(b);
 			System.out.println();
 			
-			ArrayList<Car> car = new ArrayList<Car>(b.Car);
-			ArrayList<Integer> carID = new ArrayList<Integer>(b.carID);
-			ArrayList<Car> car1 = new ArrayList<Car>(b.Car);
-			ArrayList<Integer> carID1 = new ArrayList<Integer>(b.carID);
+//			ArrayList<Car> car = new ArrayList(b.Car);
+//			ArrayList<Integer> carID = new ArrayList(b.carID);
+//			ArrayList<Car> car1 = new ArrayList(b.Car);
+//			ArrayList<Integer> carID1 = new ArrayList(b.carID);
+//			
+//			ArrayList<Car> car = new ArrayList<Car>(b.Car);
+//			ArrayList<Integer> carID = new ArrayList<Integer>(b.carID);
+//			ArrayList<Car> car1 = new ArrayList<Car>(b.Car);
+//			ArrayList<Integer> carID1 = new ArrayList<Integer>(b.carID);
 			
 //			ArrayList<Car> car = (ArrayList<Car>)b.Car.clone();
 //			ArrayList<Integer> carID = (ArrayList<Integer>)b.carID.clone();
 //			ArrayList<Car> car1 = (ArrayList<Car>)b.Car.clone();
 //			ArrayList<Integer> carID1 = (ArrayList<Integer>)b.carID.clone();
+			
+			ArrayList<Car> car = b.copyCarList();
+			ArrayList<Integer> carID = (ArrayList<Integer>)b.carID.clone();
+			ArrayList<Car> car1 =  b.copyCarList();
+			ArrayList<Integer> carID1 = (ArrayList<Integer>)b.carID.clone();
 			
 			//move by row
 			if(co.x1 == co.x2) {

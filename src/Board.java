@@ -16,8 +16,6 @@ class Board {
 			}
 		}
 		
-	
-		
 		this.Car = c;
 		//this.carID = new ArrayList<Integer>();
 		this.carID = carID;
@@ -47,6 +45,22 @@ class Board {
 		}	
 	}
 	
+	public ArrayList<Car> copyCarList(){
+		ArrayList<Car> car = new ArrayList<Car>();
+		for(Car c : this.Car ) {
+			car.add( c );
+		}
+		return car;
+	}
+	
+//	@Override
+//	protected ArrayList<Car> clone() throws CloneNotSupportedException {
+//		return (ArrayList<Car>) super.clone();
+//	}
+	@Override
+	protected Board clone() throws CloneNotSupportedException {
+		return (Board) super.clone();
+	}
 	
 	
 	//for debug
@@ -71,6 +85,11 @@ class Board {
 						in.Car.get(i).Paths.get( j ).y2 + ") + " );
 			}
 					
+		}
+		
+		System.out.print("\nCarID list : ");
+		for(int i = 0; i < in.carID.size(); i ++) {
+			System.out.print(" " + in.carID.get(i));
 		}
 	}
 	
