@@ -7,23 +7,55 @@ class Board {
 	
 	
 	
-	public Board(ArrayList<Car> c) {
+	public Board(ArrayList<Car> c, ArrayList<Integer> carID) {
+		//initialize board
 		this.Board = new int [6][6];
 		for(int i = 0; i < 6; i ++) {
 			for(int j = 0; j < 6; j ++) {
 				this.Board[i][j] = -1;
 			}
 		}
+		
+	
+		
 		this.Car = c;
-		this.carID = new ArrayList<Integer>();
+		//this.carID = new ArrayList<Integer>();
+		this.carID = carID;
+
+		updateBoard();
 	}
+	
+	private void updateBoard() {
+		for(int j = 0; j < this.Car.size(); j ++) {
+			Car c = this.Car.get(j);
+			Coordinate co = c.Paths.get( c.Paths.size()-1 );
+			
+			//move by row
+			if(co.x1 == co.x2) {
+				//update new
+				for(int i = co.y1 ; i <= co.y2; i ++) {
+					this.Board[co.x1][i] = c.num;	
+				}
+				
+			}else if(co.y1 == co.y2) {
+				//update new
+				for(int i = co.x1; i <= co.x2; i ++) {
+					this.Board[i][co.y1] = c.num;
+				}
+			}
+		}	
+	}
+	
 	
 	
 	//for debug
 	public static void printB(Board in) {
 		for(int i = 0;i < 6;i ++) {
 			for(int j = 0;j < 6; j ++) {
-				System.out.print(" " + in.Board[i][j]);
+				if(in.Board[i][j] == -1)
+					System.out.print(" " + in.Board[i][j]);
+				else
+					System.out.print("  " + in.Board[i][j]);
 			}
 			System.out.println();
 		}
