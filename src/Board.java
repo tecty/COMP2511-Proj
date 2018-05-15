@@ -54,6 +54,41 @@ class Board {
 	}
 	
 	
+	@Override
+	public int hashCode() {
+		//System.out.println("CALLING HashBoard");
+		int result = ((this.Car == null) ? 0 : this.Car.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		System.out.println("CALLING EqualsBoard");
+		if (this == o) return true;
+			
+		if (o == null || !(o instanceof Board)) return false;
+			
+		Board b = (Board) o;
+		if((this.Car == null && b.Car != null) ) {
+			return false;
+		}else if (!this.Car.equals(b.Car)) {
+			return false;
+		}
+		
+		return true;
+		
+	}
+	
+	
+	
+	
+//	@Override
+//	public boolean equals(Object obj) {
+//		
+//		return true;
+//	}
+	
+	
 //	@Override
 //	protected ArrayList<Car> clone() throws CloneNotSupportedException {
 //		return (ArrayList<Car>) super.clone();

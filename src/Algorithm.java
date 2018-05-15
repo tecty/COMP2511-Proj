@@ -18,11 +18,13 @@ public class Algorithm {
 		while(!queue.isEmpty()) {
 			Board b = queue.poll();
 			
+			
 			//System.out.println("SIZE " + b.carID.size());
 			if(b.carID.size() > 17) {
 				System.out.println("SIZE " + b.carID.size());
 				return null;
 			}
+			
 			
 			if(visited.contains(b)) {
 				continue;
