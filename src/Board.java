@@ -44,10 +44,8 @@ class Board {
 	
 	
 	
-	
+	/* MAIN TO TEST BOARD, CAR AND COORDINATE
 	public static void main(String[] args){
-	      
-		  
 		  
 	      ArrayList<Car> Cs = new ArrayList<Car>();
 	      
@@ -114,6 +112,7 @@ class Board {
 	      initial.undo();
 	      printB(initial);
 	}
+	*/
 	
 	public boolean undo() {
 		//cannot undo at the stat of game
@@ -128,23 +127,23 @@ class Board {
 		
 		//move by row
 		if(co.x1 == co.x2) {
-			//reset previous
+			//reset current
 			for(int i = co.y1 ; i <= co.y2; i ++) {
 				this.Board[co.x1][i] = -1;	
 			}
 			
-			//add new
+			//reset previous
 			for(int i = preCo.y1 ; i <= preCo.y2; i ++) {
 				this.Board[preCo.x1][i] = cID;
 			}
 			
 		}else if(co.y1 == co.y2) {
-			//reset previous
+			//reset current
 			for(int i = co.x1; i <= co.x2; i ++) {
 				this.Board[i][co.y1] = -1;
 			}
 			
-			//add new
+			//add previous
 			for(int i = preCo.x1; i <= preCo.x2; i ++) {
 				this.Board[i][preCo.y1] = cID;
 			}
@@ -220,6 +219,7 @@ class Board {
 				}
 			}
 		}else if(co.y1 == co.y2) {
+		//move by column
 			for(int i = co.x1; i <= co.x2; i ++) {
 				if(b[i][co.y1] != -1 && b[i][co.y1] != c.num) {
 					c.Paths.remove(  c.Paths.size()-1 );
