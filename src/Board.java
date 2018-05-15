@@ -48,19 +48,20 @@ class Board {
 	public ArrayList<Car> copyCarList(){
 		ArrayList<Car> car = new ArrayList<Car>();
 		for(Car c : this.Car ) {
-			car.add( c );
+			car.add( c.getCopy() );
 		}
 		return car;
 	}
+	
 	
 //	@Override
 //	protected ArrayList<Car> clone() throws CloneNotSupportedException {
 //		return (ArrayList<Car>) super.clone();
 //	}
-	@Override
-	protected Board clone() throws CloneNotSupportedException {
-		return (Board) super.clone();
-	}
+//	@Override
+//	protected Board clone() throws CloneNotSupportedException {
+//		return (Board) super.clone();
+//	}
 	
 	
 	//for debug

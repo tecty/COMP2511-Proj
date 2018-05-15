@@ -14,8 +14,15 @@ public class Algorithm {
 		printQueue(queue);
 		
 		System.out.println("\n\tLOOP\n");
+		int cccc =  0;
 		while(!queue.isEmpty()) {
 			Board b = queue.poll();
+			
+			//System.out.println("SIZE " + b.carID.size());
+			if(b.carID.size() > 17) {
+				System.out.println("SIZE " + b.carID.size());
+				return null;
+			}
 			
 			if(visited.contains(b)) {
 				continue;
@@ -25,15 +32,23 @@ public class Algorithm {
 			
 			//check final state
 			if(unlockCar(b)) {
+				System.out.println("GAME SOLVED");
 				return b;
 			}
 			
 			addPossibleBoardsToQueue(queue, b);
 			
-			System.out.println("PRINTING QUEUE");
-			printQueue(queue);
+			cccc ++;
+			if(cccc == 2) {
+				System.out.println("PRINTING QUEUE");
+				printQueue(queue);
+				
+				break;
+			}
+//			System.out.println("PRINTING QUEUE");
+//			printQueue(queue);
 			
-			break;
+			//break;
 		}
 		
 		
@@ -58,9 +73,9 @@ public class Algorithm {
 			Car c = b.Car.get(i);
 			Coordinate co = c.Paths.get( c.Paths.size()-1 );
 			
-			System.out.println("PRINTING B");
-			b.printB(b);
-			System.out.println();
+//			System.out.println("PRINTING B");
+//			b.printB(b);
+//			System.out.println();
 			
 //			ArrayList<Car> car = new ArrayList(b.Car);
 //			ArrayList<Integer> carID = new ArrayList(b.carID);
@@ -73,14 +88,14 @@ public class Algorithm {
 //			ArrayList<Integer> carID1 = new ArrayList<Integer>(b.carID);
 			
 //			ArrayList<Car> car = (ArrayList<Car>)b.Car.clone();
-//			ArrayList<Integer> carID = (ArrayList<Integer>)b.carID.clone();
 //			ArrayList<Car> car1 = (ArrayList<Car>)b.Car.clone();
+//			ArrayList<Integer> carID = (ArrayList<Integer>)b.carID.clone();
 //			ArrayList<Integer> carID1 = (ArrayList<Integer>)b.carID.clone();
-			
+//			
 			ArrayList<Car> car = b.copyCarList();
-			ArrayList<Integer> carID = (ArrayList<Integer>)b.carID.clone();
-			ArrayList<Car> car1 =  b.copyCarList();
-			ArrayList<Integer> carID1 = (ArrayList<Integer>)b.carID.clone();
+			ArrayList<Integer> carID = new ArrayList<Integer>(b.carID);
+			ArrayList<Car> car1 = b.copyCarList();
+			ArrayList<Integer> carID1 = new ArrayList<Integer>(b.carID);
 			
 			//move by row
 			if(co.x1 == co.x2) {
@@ -92,12 +107,15 @@ public class Algorithm {
 					//move car to furtherest distance
 					int count = co.y1;
 					int length = co.y2 - co.y1;
+					//System.out.println(length);
 					
 					while(count > 0 && b.Board[co.x1][count -1] == -1) {
 						count --;
 					}
+					//System.out.println(count);
 					//get new position
 					Coordinate left = new Coordinate(co.x1, count ,co.x2, count + length);
+			//System.out.println(co.x1 +" "+ count +" - "+  co.x2 +" "+ (count + length));
 					//update position
 				//	ArrayList<Car> car = (ArrayList<Car>)b.Car.clone();
 					car.get(c.num).Paths.add(left);
@@ -108,19 +126,25 @@ public class Algorithm {
 					queue.add(new Board(car, carID));					
 					
 				}
+				//System.out.println(co.y2);
 				
 				//move right
-				if(co.y2 < 6 && b.Board[co.x1][co.y2+1] == -1) {
+				if(co.y2 < 6-1 && b.Board[co.x1][co.y2+1] == -1) {
 					System.out.println("RIGHT");
 					
 					//move car to furtherest distance
-					int count = co.y1;
+					int count = co.y2;
 					int length = co.y2 - co.y1;
-					while(count < 6 -length  && b.Board[co.x1][count + length] == -1) {
+					
+					System.out.println("count = "+count);
+		
+					while(count < 6-1 && b.Board[co.x1][count +1] == -1) {
 						count ++;
+	
 					}
+					
 					//get new position
-					Coordinate right = new Coordinate(co.x1, count ,co.x2, count + length);
+					Coordinate right = new Coordinate(co.x1, count - length ,co.x2, count);
 					//update position
 					//ArrayList<Car> car1 = (ArrayList<Car>)b.Car.clone();
 					car1.get(c.num).Paths.add(right);
@@ -129,6 +153,8 @@ public class Algorithm {
 					
 					//add new board to queue
 					queue.add(new Board(car1, carID1));	
+					
+					//break;
 
 				}
 				
@@ -159,17 +185,21 @@ public class Algorithm {
 				}
 				
 				//move down
-				if(co.x1 > 0 && b.Board[co.x2 +1][co.y1] == -1) {
+				if(co.x2 < 6-1  && b.Board[co.x2 +1][co.y1] == -1) {
 					System.out.println("DOWN");
 					
 					//move car to furtherest distance
-					int count = co.x1;
+					int count = co.x2;
 					int length = co.x2 - co.x1;
-					while(count < 6 - length && b.Board[count + length][co.y1] == -1) {
+					//System.out.println(length);
+					int j = co.x2;
+					while(count < 6-1 && b.Board[count + 1][co.y1] == -1) {
 						count ++;
 					}
+					//System.out.println(count);
+					
 					//get new position
-					Coordinate down = new Coordinate(count, co.y1 , count + length, co.y2);
+					Coordinate down = new Coordinate(count -length, co.y1 , count, co.y2);
 					//update position
 			//		ArrayList<Car> car1 = (ArrayList<Car>)b.Car.clone();
 					car1.get(c.num).Paths.add(down);
