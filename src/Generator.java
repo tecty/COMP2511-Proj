@@ -37,7 +37,7 @@ class Generator {
 
 						//need to find the solution of the new board if it doesn't have solution
 						//should regenerate a new board
-						List<Board> solved = solver.solve(board, desiredLength + 1);
+						List<Board> solved = Algorithm.solve(board, desiredLength + 1);
 						// this new 'arisen' board can still be solved.
 						if (solved != null && !solved.isEmpty() && solved.size() > pathLength) {
 							// increment the index counters
@@ -58,6 +58,41 @@ class Generator {
 
 					}					
 				}
+				
+				// set the winning board this round
+				Board winner = board;
+				int steps = pathLength;
+				// for each board that can be made from this board
+				for (Board b : board.getBoardPermutation()) {
+					// solve the board
+					List<Board> solved = solver.solve(b, desiredLength + 1);
+					// if solvable, find the one with greatest length
+					if (solved != null && !solved.isEmpty()) {
+						int solveLength = solved.size();
+						// System.out.println("Generating... [length: " +
+						// solveLength + "]");
+						// b.printBoard();
+						// if we found the board of our desired length, return
+						// it.
+						if (solveLength >= desiredLength) {
+							return b;
+						}
+						else if (solveLength >= steps) {
+							steps = solveLength;
+							winner = b;
+						}
+					}
+					else {
+						// System.out.println("Unable to solve this board");
+						// b.printBoard();
+					}
+				}
+
+				// update the winning board
+				board = winner;
+				// board.printBoard();
+				pathLength = steps;
+				
 			}
 		}
 		return board;
@@ -69,7 +104,7 @@ class Generator {
 			// iterate over each piece of the block
 			for (int i = b.Paths.get(0).x1; i < b.Paths.get(0).x2; i++) {
 				// if the board is not empty at spot, not free
-				if (i >= gameboard.length || gameboard[b.Paths.get(0).y1][i] != 0)
+				if (i >= gameboard.length || gameboard[b.Paths.get(0).y1][i] != -1)
 					return false;
 			}
 		}
@@ -77,7 +112,7 @@ class Generator {
 			// iterate over each piece of the block
 			for (int i = b.Paths.get(0).y1; i < b.Paths.get(0).y2; i++) {
 				// if the board is not empty at spot, not free
-				if (i >= gameboard.length || gameboard[i][b.Paths.get(0).y1] != 0)
+				if (i >= gameboard.length || gameboard[i][b.Paths.get(0).y1] != -1)
 					return false;
 			}
 		}
