@@ -328,132 +328,18 @@ class Board {
 	}
 	
 	public List<Board> getPossible() {
+		System.out.println("\n GETTING POSSIBLE BOARD");
 		List<Board> possibleBoards = new ArrayList<Board>();
-
-		/** Construct all boards that arise from this one */
-		for (int i = 0; i < this.Car.size(); i++) {
+		for(int i = 0; i < this.Car.size();i ++) {
 			Car car = this.Car.get(i);
-
-			// try to move each block once is horizontal block
-			if (car.Paths.get(0).x1 == car.Paths.get(0).x2) {
-				// Can the block move to the left?
-				if ((car.Paths.get(0).y1 > 0) && (this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1 - 1] == -1)) {
-
-					// All moves go to as far left as they can
-					int counter = car.Paths.get(0).y1;
-					while (counter > 0 && this.Board[car.Paths.get(0).x1][counter - 1] == -1) {
-						counter--;
-						// added to make it only move one space
-						break;
-					}
-
-					// Construct a new list of blocks to make new gameboard
-					ArrayList<Car> cars = new ArrayList<Car>();
-					for (int j = 0; j < this.Car.size(); j++) {
-						if (j == i) {
-							Coordinate l = new Coordinate(car.Paths.get(0).x1,counter,car.Paths.get(0).x2,counter+(car.Paths.get(0).y2-car.Paths.get(0).y1+1));
-							ArrayList <Coordinate> ls = new ArrayList <Coordinate> ();
-						//	blocks.add(j, new Block(block.id, block.y, counter, block.isHorizontal, block.kind, block.length));
-							ls.add(l);
-							cars.add(j, new Car(car.num, ls));
-						}
-						else
-							cars.add(j, this.Car.get(j).getCopy());
-					}
-					possibleBoards.add(new Board(cars, new ArrayList<Integer>()));
-
-				}
-
-				// Can the block move to the right?
-				if ((car.Paths.get(0).y2 < 6) && (this.Board[car.Paths.get(0).x1][car.Paths.get(0).y2] == -1)) {
-
-					// All moves go to as far right as they can
-					int counter = car.Paths.get(0).y1;
-					while (counter < 6 - (car.Paths.get(0).y2 -  car.Paths.get(0).y1) && this.Board[car.Paths.get(0).x1][counter +(car.Paths.get(0).y2 -  car.Paths.get(0).y1)] == -1) {
-						counter++;
-						// added to make it only move one space
-						break;
-					}
-
-					// Construct a new list of blocks to make new gameboard
-					ArrayList<Car> cars = new ArrayList<Car>();
-					for (int j = 0; j < this.Car.size(); j++) {
-						if (j == i) {
-					//		blocks.add(j, new Block(block.id, block.y, counter, block.isHorizontal, block.kind, block.length));
-							Coordinate l = new Coordinate(car.Paths.get(0).x1,counter,car.Paths.get(0).x2,counter+(car.Paths.get(0).y2-car.Paths.get(0).y1+1));
-							ArrayList <Coordinate> ls = new ArrayList <Coordinate> ();
-							ls.add(l);
-							cars.add(j, new Car(car.num,ls));
-						}
-						else
-							cars.add(j, this.Car.get(j).getCopy());
-					}
-					possibleBoards.add(new Board(cars, new ArrayList<Integer>()));
-
-				}
-			}
-			else {
-
-				// Can the block move up?
-				if ((car.Paths.get(0).x1 > 0) && (this.Board[car.Paths.get(0).x1- 1][car.Paths.get(0).y1] == -1)) {
-
-					// All moves go to as far up as they can
-					int counter = car.Paths.get(0).x1;
-					while (counter > 0 && this.Board[counter - 1][car.Paths.get(0).y1] == -1) {
-						counter--;
-						// added to make it only move one space
-						break;
-					}
-
-					// Construct a new list of blocks to make new gameboard
-					ArrayList<Car> cars = new ArrayList<Car>();
-					for (int j = 0; j < this.Car.size(); j++) {
-						if (j == i) {
-							Coordinate l = new Coordinate(counter,car.Paths.get(0).y1,counter+(car.Paths.get(0).x2-car.Paths.get(0).x1+1),car.Paths.get(0).y2);
-							ArrayList <Coordinate> ls = new ArrayList<Coordinate>();
-							ls.add(l);
-							cars.add(j, new Car(car.num,ls));
-							//blocks.add(j, new Block(block.id, counter, block.x, block.isHorizontal, block.kind, block.length));
-						}
-						else
-							cars.add(j, this.Car.get(j).getCopy());
-					}
-					possibleBoards.add(new Board(cars, new ArrayList<Integer>()));
-				}
-
-				// Can the block move down?
-				if ((car.Paths.get(0).x2 < 6) && (this.Board[car.Paths.get(0).x2][car.Paths.get(0).y1] == -1)) {
-
-					// All moves go to as far down as they can
-					int counter = car.Paths.get(0).x1;
-					while (counter < 6 - ((car.Paths.get(0).x2 - car.Paths.get(0).x1)+1) && this.Board[counter +  ((car.Paths.get(0).x2 - car.Paths.get(0).x1)+1)][car.Paths.get(0).y1] == -1) {
-						counter++;
-						// added to make it only move one space
-						break;
-					}
-
-					// Construct a new list of blocks to make new gameboard
-					ArrayList<Car> cars = new ArrayList<Car>();
-					for (int j = 0; j < this.Car.size(); j++) {
-						if (j == i) {
-							Coordinate l = new Coordinate (counter,car.Paths.get(0).y1,counter+ ((car.Paths.get(0).x2 - car.Paths.get(0).x1)+1),car.Paths.get(0).y2);
-							ArrayList <Coordinate> ls = new ArrayList<Coordinate>();
-							ls.add(l);
-							cars.add(j,new Car(car.num,ls));
-							//blocks.add(j, new Block(block.id, counter, block.x, block.isHorizontal, block.kind, block.length));
-						}
-						else {
-							cars.add(j,this.Car.get(j).getCopy());
-							//blocks.add(j, this.blocks.get(j).getCopy());
-						}
-					}
-					possibleBoards.add(new Board(cars, new ArrayList<Integer>()));
-				}
-
-			}
-
+			System.out.println(car.num + "	" + "(" + car.Paths.get(0).x1 + "," + car.Paths.get(0).y1 + ")" +  "(" + car.Paths.get(0).x2 + "," + car.Paths.get(0).y2 + ")");
+		    if(car.Paths.get(0).x1 == car.Paths.get(0).x2) {
+		    	if((car.Paths.get(0).x1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1-1] == -1) {
+		    		Coordinate = new Coordinate((car.Paths.get(0).x1-1));
+		    	}
+		    }
 		}
-
+		
 		return possibleBoards;
 	}
 

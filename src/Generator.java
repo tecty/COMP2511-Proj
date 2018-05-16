@@ -6,7 +6,7 @@ class Generator {
 	private static final Random RANDOM = new Random();
 	public Board generateRandomBoard(Algorithm solver, int desiredLength) {
 	    ArrayList<Car> someCars = new ArrayList<Car>();
-	    List<Board> path = new ArrayList<Board>();
+	  //  List<Board> path = new ArrayList<Board>();
 	    //first red car input ID = 0 Coordinate x1 = random,y1 = 2,x2 =random +2 ,y2=2
 	    int x =  RANDOM.nextInt(2);
 	    Coordinate ori = new Coordinate(2,x,2,(x+1));
@@ -16,10 +16,12 @@ class Generator {
 	    
 	    
 	    Board board = new Board(someCars,new ArrayList<Integer>());
-	    board.printB(board);
+	    Board.printB(board);
 	    
 	    int pathLength = 0;
-		while (pathLength < desiredLength) {
+	    Algorithm algo = new Algorithm();
+		Board solvedo = algo.Algorithm(board);
+		while (pathLength < desiredLength && solvedo.carID.size()+1 >= pathLength) {
 			System.out.println("path length =  " + pathLength + "desiredLength =  " + desiredLength);
 			if (board.Car.size() < 14) {
 				int tries = 50;
@@ -31,17 +33,15 @@ class Generator {
 				    	board.Car.add(rand);
 				    	board.updateBoard();
 				    	System.out.println("after update :");
-						board.printB(board);
+						Board.printB(board);
 						
 						Algorithm alg = new Algorithm();
 						Board solved = alg.Algorithm(board);
-						if (solved != null && solved.carID.size() >= desiredLength) {
+						
+						if (solved != null && solved.carID.size()+1 >= pathLength) {
 							//pathLength = solved.carID.size()+1;
 							System.out.println("board solution length = " + (solved.carID.size()+1));
-							return board;	
-						}
-						else if(solved != null) {
-							continue;
+							break;	
 						}
 						else {
 							if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
@@ -60,51 +60,36 @@ class Generator {
 						}
 				    }
 				}
-	/*			Board winner = board;
-				winner.printB(winner);
+				
+				Board winner = board;
 				int steps = pathLength;
-				// for each board that can be made from this board
-				for (Board b : board.getPossible()) {
-				    System.out.println("PRint possible board :"); 
-					b.printB(b);
-					// solve the board
+				
+				for(Board b : board.getPossible()) {
 					Algorithm alg = new Algorithm();
 					Board solved = alg.Algorithm(b);
-					// if solvable, find the one with greatest length
-					if (solved != null) {
-						int solveLength = solved.carID.size()+1;
-						// System.out.println("Generating... [length: " +
-						// solveLength + "]");
-						// b.printBoard();
-						// if we found the board of our desired length, return
-						// it.
-						System.out.println("winner board solution length = " + (solved.carID.size()+1));
-						if (solveLength >= desiredLength) {
+					if(solved != null) {
+						System.out.println("the solution of this board " + (solved.carID.size()+1));
+						int solvedLength = solved.carID.size()+1;
+						if(solvedLength >= desiredLength) {
 							return b;
 						}
-						else if (solveLength >= steps) {
-							steps = solveLength;
+						else if(solvedLength >= steps) {
+							steps = solvedLength;
 							winner = b;
+						}
+						else {
+							continue;
 						}
 					}
 					else {
-						// System.out.println("Unable to solve this board");
-						// b.printBoard();
+						continue;
 					}
 				}
-				Algorithm alg = new Algorithm();
-				Board solved = alg.Algorithm(winner);
-				System.out.println("Winner");
-	/*			if((solved.carID.size()+1) >= desiredLength) {
-					
-					return winner;
-				}
-				*/
-				//winner.printB(winner);
-				// update the winning board
-			//	board = winner;
-				// board.printBoard();
-			//	pathLength = steps;			
+				board = winner;
+				pathLength = steps;
+				System.out.println("winner board: ");
+				Board.printB(board);
+				
 			}
 		}
 		Algorithm alg = new Algorithm();
@@ -129,6 +114,7 @@ class Generator {
 			}
 		}
 		return true;
+	}
 	/*  
 		//if is horizontal
 		if (b.Paths.get(0).x1 == b.Paths.get(0).x2) {
@@ -147,10 +133,8 @@ class Generator {
 					return false;
 			}
 		}
-
 		return true;
 		*/
-	}
 	
 	/*
 	 * for actual version should be like:
@@ -194,7 +178,7 @@ class Generator {
 		ArrayList <Coordinate> nextP = new ArrayList <Coordinate>();
         nextP.add(next);
         return new Car(id,nextP);
-		
+	}
 		//getRandomSize is for setting the size of car 2/3
 		//if is horizontal end column should plus the size of car
    /*     if(isHorz) {
@@ -211,7 +195,6 @@ class Generator {
         nextP.add(next);
 		return new Car(id,nextP);
 		*/
-	}
 	
 	private int getRandomSize() {
 		if (RANDOM.nextInt(4) == 0)
