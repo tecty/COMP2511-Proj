@@ -10,8 +10,10 @@ import javax.print.DocFlavor.URL;
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -42,6 +44,9 @@ public class GameController {
     Group carGroup = new Group();
     Group gridGroup = new Group();
 
+    //step counter
+    //variables prepared for stepCounter
+    IntegerProperty steps = new SimpleIntegerProperty();
     
     //timer
 	//variables prepared for timer
@@ -85,17 +90,17 @@ public class GameController {
     // for clicked particular car
     private double offsetMax, offsetMin;
 
-    // the move counter of this game
-    private int moveCounter;
-
-
     @FXML
     private void initialize() throws MalformedURLException {
+    	//bind the value of moveCounter to the stepCounter showing in fxml
+    	stepCount.textProperty().bind(steps.asString("%d"));
+        
+        //try to use IntegerProperty to count steps
+        steps.set(0);
+        
 		//bind the timeCount label with the running timer
 	    timeCount.textProperty().bind(time.asString("%.1f"));
-
-        // move counter of each game should be set to 0
-        moveCounter = 0;
+        
         // set up all the grid
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
@@ -269,7 +274,7 @@ public class GameController {
             // set the car's new position
             car.setGrid(gridX,gridY);
             // change the car's stage would add up move counter
-            addMoveCounter();
+            steps.set(steps.get()+1);
         }
     }
     
@@ -405,28 +410,14 @@ public class GameController {
         }
 //        dumpState(car);
     }
-
-
-    public int getMoveCounter() {
-        return moveCounter;
-    }
-
-    public void addMoveCounter() {
-        this.moveCounter ++;
-        outputStepCount();
-    }
-    
-    @FXML 
-    protected void outputStepCount(){
-        stepCount.setText(""+this.moveCounter);
-    }
     
     private void dumpState(Car car){
         // dump the current state of this board
         System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
         System.out.println("OffsetRange "+ offsetMin/this.GRID_SIZE + " ," + offsetMax/this.GRID_SIZE);
-        System.out.println();
+        System.out.println(steps.get());
         printBoard();
+        System.out.println();
     }
 
     private void  printBoard(){
@@ -440,7 +431,6 @@ public class GameController {
             }
             System.out.print("\n");
         }
-        System.out.println("MoveCounter "+ getMoveCounter());
     }
 
 

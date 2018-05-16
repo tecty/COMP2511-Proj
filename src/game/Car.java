@@ -48,6 +48,7 @@ public class Car extends StackPane {
             setHeight(getLen() * GameController.GRID_SIZE);
         }
 
+        
         // set the appearance of this car
         Pane img = new Pane();
         Rectangle carRectangle = new Rectangle();
