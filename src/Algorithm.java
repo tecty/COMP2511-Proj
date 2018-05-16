@@ -5,15 +5,18 @@ public class Algorithm {
 
 	public Board Algorithm(Board board) {
 		
-		ArrayList<Board> visited = new ArrayList<Board>();
+//		ArrayList<Board> visited = new ArrayList<Board>();
+//		ArrayList<Board> queue = new ArrayList<Board>();
 		
+		Set<Board> visited = new HashSet<Board>();
 		ArrayList<Board> queue = new ArrayList<Board>();
+		
 		queue.add( board);
 		
-		System.out.println("\n\nQueue before while");
-		printQueue(queue);
+//		System.out.println("\n\nQueue before while");
+//		printQueue(queue);	
+//		System.out.println("\n\tLOOP\n");
 		
-		System.out.println("\n\tLOOP\n");
 		int cccc =  0;
 		while(!queue.isEmpty()) {
 			//Board b = queue.poll();
@@ -25,15 +28,15 @@ public class Algorithm {
 				return null;
 			}
 			
-			if(listContainBoard(visited, b)) {
-				//System.out.println("VISITED EXIST");
-				continue;
-			}
-			
-			
-//			if(visited.contains(b)) {
+//			if(listContainBoard(visited, b)) {
+//				//System.out.println("VISITED EXIST");
 //				continue;
 //			}
+			
+			
+			if(visited.contains(b)) {
+				continue;
+			}
 			
 			visited.add( b );
 			
@@ -102,12 +105,7 @@ public class Algorithm {
 		return false;
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	
 	private void printQueue(ArrayList<Board> queue) {
 		System.out.println();

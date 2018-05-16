@@ -23,7 +23,7 @@ class Car {
 	
 	@Override
 	public int hashCode() {
-		System.out.println("CALLING HashCar");
+		//System.out.println("CALLING HashCar");
 		int hash = 1;
 		Coordinate co = this.Paths.get( this.Paths.size()-1);
 		hash = hash * 2 + this.num;
@@ -42,7 +42,7 @@ class Car {
 	
 	@Override
 	public boolean equals(Object o) {
-		System.out.println("CALLING EqualsCar");
+		//System.out.println("CALLING EqualsCar");
 
         if (o == this) return true;
  
@@ -53,6 +53,14 @@ class Car {
 			
         Coordinate co = this.Paths.get( this.Paths.size()-1);
 		Coordinate oco = c.Paths.get( c.Paths.size()-1);
+		
+		//this is same as code below
+//		if(co.x1 == oco.x1 && co.x2 == oco.x2  && co.y1 == oco.y1 && co.y2 == oco.y2 ) {
+//			return true;
+//		}
+//		return false;
+		
+		
 		//horizontal or vertical equal
 		if((co.x1 == co.x2) != (oco.x1 == oco.x2))  return false;
 			

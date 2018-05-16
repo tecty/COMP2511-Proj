@@ -2,9 +2,11 @@
 import java.util.*;
 
 public class Main {
-
+	
+	// VERSION HASHSET, CAR COMPARE LENGTH
 	public static void main(String[] args){
-		System.out.println("TESTING EASY GAME");
+		/*
+		  System.out.println("TESTING EASY GAME");
 	      ArrayList<Car> Cs = new ArrayList<Car>();
 	      
 	      ArrayList<Coordinate> Czero = new ArrayList<Coordinate>();
@@ -32,7 +34,7 @@ public class Main {
 	      else 
 	    	  	System.out.println("\n\n\tGAME returnned null");
 	    	  
-	      
+	      */
 	      System.out.println("\n\nTESTING HARD GAME\n");
 	      ArrayList<Car> C = new ArrayList<Car>();
 	      ArrayList<Coordinate> Co;
@@ -80,12 +82,13 @@ public class Main {
 	      Board b = new Board(C, new ArrayList<Integer>());
 	      b.printB(b);
 	      
-	      alg = new Algorithm();
-	      game = alg.Algorithm( b );
+	      Algorithm alg = new Algorithm();
+	      Board game = alg.Algorithm( b );
 	      
 	      if(game != null)
 	    	  	game.printB(game);
 	      else 
 	    	  	System.out.println("\n\n\tGAME returnned null");
+
 	}
 }

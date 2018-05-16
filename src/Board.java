@@ -45,6 +45,11 @@ class Board {
 		}	
 	}
 	
+	public int getPathSize() {
+		return this.carID.size()+1;
+	}
+	
+	
 	public ArrayList<Car> copyCarList(){
 		ArrayList<Car> car = new ArrayList<Car>();
 		for(Car c : this.Car ) {
@@ -63,7 +68,7 @@ class Board {
 	
 	@Override
 	public boolean equals(Object o) {
-		System.out.println("CALLING EqualsBoard");
+		//System.out.println("CALLING EqualsBoard");
 		if (this == o) return true;
 			
 		if (o == null || !(o instanceof Board)) return false;
@@ -75,12 +80,6 @@ class Board {
 		else if (!this.Car.equals(b.Car)) {
 			return false;
 		}
-		//一样
-//		for(int i = 0; i< this.Car.size(); i ++) {
-//			 if (!this.Car.get(i).equals(b.Car.get(i))) return false;
-//		}
-		
-		
 		return true;
 		
 	}
