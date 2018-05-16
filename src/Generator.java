@@ -25,7 +25,7 @@ class Generator {
 				int tries = 50;
 				while(tries-- >0) {
 				    Car rand = getRandomCar(board.Car.size());
-				   // System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
+				    System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
 				    int [][] gameboard = board.Board;
 				    if(isFree(gameboard,rand)) {
 				    	board.Car.add(rand);
@@ -35,10 +35,13 @@ class Generator {
 						
 						Algorithm alg = new Algorithm();
 						Board solved = alg.Algorithm(board);
-						if (solved != null && solved.carID.size() >= pathLength) {
+						if (solved != null && solved.carID.size() >= desiredLength) {
 							//pathLength = solved.carID.size()+1;
 							System.out.println("board solution length = " + (solved.carID.size()+1));
-							break;	
+							return board;	
+						}
+						else if(solved != null) {
+							continue;
 						}
 						else {
 							if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
@@ -57,7 +60,7 @@ class Generator {
 						}
 				    }
 				}
-				Board winner = board;
+	/*			Board winner = board;
 				winner.printB(winner);
 				int steps = pathLength;
 				// for each board that can be made from this board
@@ -97,14 +100,16 @@ class Generator {
 					return winner;
 				}
 				*/
-				winner.printB(winner);
+				//winner.printB(winner);
 				// update the winning board
-				board = winner;
+			//	board = winner;
 				// board.printBoard();
-				pathLength = steps;
-				
+			//	pathLength = steps;			
 			}
 		}
+		Algorithm alg = new Algorithm();
+		Board solved = alg.Algorithm(board);
+		System.out.println("the solution of this board " + (solved.carID.size()+1));
 		return board;
 	}
 	
