@@ -71,22 +71,19 @@ class Board {
 		Board b = (Board) o;
 		if((this.Car == null && b.Car != null) ) {
 			return false;
-		}else if (!this.Car.equals(b.Car)) {
+		}
+		else if (!this.Car.equals(b.Car)) {
 			return false;
 		}
+		//一样
+//		for(int i = 0; i< this.Car.size(); i ++) {
+//			 if (!this.Car.get(i).equals(b.Car.get(i))) return false;
+//		}
+		
 		
 		return true;
 		
 	}
-	
-	
-	
-	
-//	@Override
-//	public boolean equals(Object obj) {
-//		
-//		return true;
-//	}
 	
 	
 //	@Override

@@ -5,9 +5,9 @@ public class Algorithm {
 
 	public Board Algorithm(Board board) {
 		
-		Set<Board> visited = new HashSet<Board>();
+		ArrayList<Board> visited = new ArrayList<Board>();
 		
-		Queue<Board> queue = new LinkedList<Board>();
+		ArrayList<Board> queue = new ArrayList<Board>();
 		queue.add( board);
 		
 		System.out.println("\n\nQueue before while");
@@ -16,8 +16,8 @@ public class Algorithm {
 		System.out.println("\n\tLOOP\n");
 		int cccc =  0;
 		while(!queue.isEmpty()) {
-			Board b = queue.poll();
-			
+			//Board b = queue.poll();
+			Board b = queue.remove(0);
 			
 			//System.out.println("SIZE " + b.carID.size());
 			if(b.carID.size() > 17) {
@@ -25,10 +25,15 @@ public class Algorithm {
 				return null;
 			}
 			
-			
-			if(visited.contains(b)) {
+			if(listContainBoard(visited, b)) {
+				//System.out.println("VISITED EXIST");
 				continue;
 			}
+			
+			
+//			if(visited.contains(b)) {
+//				continue;
+//			}
 			
 			visited.add( b );
 			
@@ -40,13 +45,16 @@ public class Algorithm {
 			
 			addPossibleBoardsToQueue(queue, b);
 			
-			cccc ++;
-			if(cccc == 2) {
-				System.out.println("PRINTING QUEUE");
-				printQueue(queue);
-				
-				break;
-			}
+			
+//			cccc ++;
+//			System.out.println("cccc = "+ cccc);
+//			if(cccc == 2) {
+//				System.out.println("PRINTING QUEUE");
+//				printQueue(queue);
+//				
+//				//break;
+//			}
+			
 //			System.out.println("PRINTING QUEUE");
 //			printQueue(queue);
 			
@@ -58,7 +66,50 @@ public class Algorithm {
 		return null;
 	}
 	
-	private void printQueue(Queue<Board> queue) {
+	
+	
+	private boolean listContainBoard(ArrayList<Board> list, Board b) {
+		if(list.size() == 0) return false;
+		
+		boolean t = false;
+		//for each board
+		for(int j = 0; j < list.size(); j ++) {
+			//get cur board
+			Board curr = list.get(j);
+			
+			//for each car in cur board
+			int k = 0;
+			for(; k < curr.Car.size(); k ++) {
+				//get cur car, and b.Car
+				Car car = curr.Car.get(k);
+				Car c = b.Car.get(k);
+				//get last coordinate of corresponding car
+				Coordinate co = car.Paths.get( car.Paths.size()-1);
+				Coordinate oco = c.Paths.get( c.Paths.size()-1);
+				
+				if(co.x1 == oco.x1 && co.x2 == oco.x2  && co.y1 == oco.y1 && co.y2 == oco.y2 ) {
+					continue;
+				}
+				
+				break;
+				
+				
+			}
+			if(k == curr.Car.size() ) return true;
+			
+		}
+		
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	private void printQueue(ArrayList<Board> queue) {
 		System.out.println();
 		for(Board b: queue) {
 			b.printB(b);
@@ -68,10 +119,10 @@ public class Algorithm {
 	}
 	
 	
-	private void addPossibleBoardsToQueue(Queue<Board> queue, Board b) {
+	private void addPossibleBoardsToQueue(ArrayList<Board> queue, Board b) {
 		//add all next possible boards to queue
 		for(int i = 0; i < b.Car.size(); i ++) {
-				System.out.println("\n i = " + i);
+				//System.out.println("\n i = " + i);
 			Car c = b.Car.get(i);
 			Coordinate co = c.Paths.get( c.Paths.size()-1 );
 			
@@ -104,7 +155,7 @@ public class Algorithm {
 				
 				//move left
 				if(co.y1 > 0 && b.Board[co.x1][co.y1-1] == -1) {
-					System.out.println("LEFT");
+					//System.out.println("LEFT");
 
 					//move car to furtherest distance
 					int count = co.y1;
@@ -132,13 +183,13 @@ public class Algorithm {
 				
 				//move right
 				if(co.y2 < 6-1 && b.Board[co.x1][co.y2+1] == -1) {
-					System.out.println("RIGHT");
+					//System.out.println("RIGHT");
 					
 					//move car to furtherest distance
 					int count = co.y2;
 					int length = co.y2 - co.y1;
 					
-					System.out.println("count = "+count);
+					//System.out.println("count = "+count);
 		
 					while(count < 6-1 && b.Board[co.x1][count +1] == -1) {
 						count ++;
@@ -165,7 +216,7 @@ public class Algorithm {
 				
 				//move up
 				if(co.x1 > 0 && b.Board[co.x1-1][co.y1] == -1) {
-					System.out.println("UP");
+					//System.out.println("UP");
 					
 					//move car to furtherest distance
 					int count = co.x1;
@@ -188,7 +239,7 @@ public class Algorithm {
 				
 				//move down
 				if(co.x2 < 6-1  && b.Board[co.x2 +1][co.y1] == -1) {
-					System.out.println("DOWN");
+					//System.out.println("DOWN");
 					
 					//move car to furtherest distance
 					int count = co.x2;
