@@ -30,6 +30,8 @@ import javafx.stage.Stage;
 
 public class GameController {
     // create game in this controller
+	@FXML
+	Pane levelClear;
     @FXML
     Pane rootPane;
     @FXML
@@ -92,6 +94,8 @@ public class GameController {
 
     @FXML
     private void initialize() throws MalformedURLException {
+    	//hide the result interface
+    	levelClear.setVisible(false);
     	//bind the value of moveCounter to the stepCounter showing in fxml
     	stepCount.textProperty().bind(steps.asString("%d"));
         
@@ -290,18 +294,19 @@ public class GameController {
     	timer.stop();
     	System.out.println(time.doubleValue()+" seconds");
     	
-    	//check if fxml file exists
-    	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
-    	if (u == null) {
-    	        System.out.println("File loading failed");
-    	        System.exit(1);
-    	}
+//    	//check if fxml file exists
+//    	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
+//    	if (u == null) {
+//    	        System.out.println("File loading failed");
+//    	        System.exit(1);
+//    	}
     	
-    	//if exists, continue printing the info of clearing the level
-    	Parent pane = FXMLLoader.load(getClass().getResource("/levelClear/LevelClear.fxml"));
-    	pane.setStyle("-fx-background-color: #fff; -fx-border-color: #000");
-    	this.rootPane.getChildren().add(pane);
-    	 
+//    	//if exists, continue printing the info of clearing the level
+//    	Parent pane = FXMLLoader.load(getClass().getResource("/levelClear/LevelClear.fxml"));
+//    	pane.setStyle("-fx-background-color: #fff; -fx-border-color: #000");
+//    	this.rootPane.getChildren().add(pane);
+    	//result interface now visible
+    	levelClear.setVisible(true);
     }
 
     /**
