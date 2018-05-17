@@ -333,11 +333,77 @@ class Board {
 		for(int i = 0; i < this.Car.size();i ++) {
 			Car car = this.Car.get(i);
 			System.out.println(car.num + "	" + "(" + car.Paths.get(0).x1 + "," + car.Paths.get(0).y1 + ")" +  "(" + car.Paths.get(0).x2 + "," + car.Paths.get(0).y2 + ")");
-		    if(car.Paths.get(0).x1 == car.Paths.get(0).x2) {
-		    	if((car.Paths.get(0).x1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1-1] == -1) {
-		    		Coordinate = new Coordinate((car.Paths.get(0).x1-1));
+		   // horizontal block move left
+			if(car.Paths.get(0).x1 == car.Paths.get(0).x2) {
+		    	if((car.Paths.get(0).y1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1-1] == -1) {
+		    		Coordinate get = new Coordinate(car.Paths.get(0).x1,(car.Paths.get(0).y1-1),car.Paths.get(0).x2,(car.Paths.get(0).y2 -1));
+		    	    ArrayList<Car>cars = new ArrayList<Car>();
+		    	    for(int j = 0;j < this.Car.size();j ++) {
+		    	    	if(j == i) {
+		    	    		ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
+		    	    		paths.add(get);
+		    	    		cars.add(new Car(j,paths));
+		    	    	}
+		    	    	else {
+		    	    		 cars.add(j,this.Car.get(j).getCopy());
+		    	    	}
+		    	    }
+		    	    Board g = new Board (cars,(new ArrayList <Integer>()));
+		    	    possibleBoards.add(g);
+		    	}
+		    	if((car.Paths.get(0).y2 < 5) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y2 + 1] == -1) {
+		    		Coordinate get = new Coordinate(car.Paths.get(0).x1,(car.Paths.get(0).y1+1),car.Paths.get(0).x2,(car.Paths.get(0).y2 +1));
+		    	    ArrayList<Car>cars = new ArrayList<Car>();
+		    	    for(int j = 0;j < this.Car.size();j ++) {
+		    	    	if(j == i) {
+		    	    		ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
+		    	    		paths.add(get);
+		    	    		cars.add(new Car(j,paths));
+		    	    	}
+		    	    	else {
+		    	    		 cars.add(j,this.Car.get(j).getCopy());
+		    	    	}
+		    	    }
+		    	    Board g = new Board (cars,(new ArrayList <Integer>()));
+		    	    possibleBoards.add(g);
 		    	}
 		    }
+			else {
+				//vertical block move up
+		    	if((car.Paths.get(0).x1 > 0) && this.Board[car.Paths.get(0).x1 - 1][car.Paths.get(0).y1] == -1) {
+		    		Coordinate get = new Coordinate((car.Paths.get(0).x1-1),car.Paths.get(0).y1,(car.Paths.get(0).x2-1),car.Paths.get(0).y2);
+		    	    ArrayList<Car>cars = new ArrayList<Car>();
+		    	    for(int j = 0;j < this.Car.size();j ++) {
+		    	    	if(j == i) {
+		    	    		ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
+		    	    		paths.add(get);
+		    	    		cars.add(new Car(j,paths));
+		    	    	}
+		    	    	else {
+		    	    		 cars.add(j,this.Car.get(j).getCopy());
+		    	    	}
+		    	    }
+		    	    Board g = new Board (cars,(new ArrayList <Integer>()));
+		    	    possibleBoards.add(g);
+		    	}
+		    	//move down
+		    	if((car.Paths.get(0).x2 < 5) && this.Board[car.Paths.get(0).x2+1][car.Paths.get(0).y2 ] == -1) {
+		    		Coordinate get = new Coordinate((car.Paths.get(0).x1+1),car.Paths.get(0).y1,(car.Paths.get(0).x2+1),car.Paths.get(0).y2);
+		    	    ArrayList<Car>cars = new ArrayList<Car>();
+		    	    for(int j = 0;j < this.Car.size();j ++) {
+		    	    	if(j == i) {
+		    	    		ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
+		    	    		paths.add(get);
+		    	    		cars.add(new Car(j,paths));
+		    	    	}
+		    	    	else {
+		    	    		 cars.add(j,this.Car.get(j).getCopy());
+		    	    	}
+		    	    }
+		    	    Board g = new Board (cars,(new ArrayList <Integer>()));
+		    	    possibleBoards.add(g);
+		    	}
+			}
 		}
 		
 		return possibleBoards;
