@@ -4,7 +4,7 @@ import java.util.Random;
 
 class Generator {
 	private static final Random RANDOM = new Random();
-	public Board generateRandomBoard(int desiredLength) {
+	public Board generateRandomBoard(int desiredLength,long startTime) {
 	    ArrayList<Car> someCars = new ArrayList<Car>();
 
 	    //first red car input ID = 0 Coordinate x1 = random,y1 = 2,x2 =random +2 ,y2=2
@@ -19,8 +19,75 @@ class Generator {
 	   // Board.printB(board);
 	    
 	    int pathLength = 0;
-	    long startTime = System.currentTimeMillis();
-		while (pathLength < desiredLength || (System.currentTimeMillis() - startTime) > 1000 ) {
+	    while(pathLength < desiredLength) {
+	    	if(System.currentTimeMillis() - startTime > 20000) {
+	    		System.out.println();
+	    		System.out.println();
+	    		System.out.println();
+	    		System.out.println();
+	    		System.out.println("End of time");
+	    		return generateRandomBoard(desiredLength,System.currentTimeMillis()); 
+	    	}
+	    	System.out.println("Car num " + board.Car.size());
+	    	System.out.println("initial algorithm start");
+	    	Algorithm alg = new Algorithm();
+			Board solved = alg.Algorithm(board);
+			System.out.println("initial algorithm end");
+	        if(solved == null && pathLength < desiredLength) {
+	        	return generateRandomBoard(desiredLength,startTime);
+
+	        }
+	        pathLength = solved.carID.size()+1;
+	        System.out.println("solution length = " + pathLength);
+	    	if(board.Car.size() >= 13) {
+	    		return generateRandomBoard(desiredLength,startTime);
+	    	}
+	    	if(board.Car.size() >= 10 && (desiredLength - pathLength) >= 5) {
+	    		return generateRandomBoard(desiredLength,startTime);
+	    	}
+	    	
+	    	if(board.Car.size() < 13 ) {
+	    		Car rand = getRandomCar(board.Car.size());
+	    		int [][] gameboard = board.Board;				   
+	    		if(isFree(gameboard,rand)) {
+	    			board.Car.add(rand);
+					board.updateBoard();
+					//System.out.println("after update :");
+					//Board.printB(board);
+					
+					System.out.println("Begin algorithm");
+					Algorithm alg1 = new Algorithm();
+					Board solved1 = alg1.Algorithm(board);
+					System.out.println("after algorithm");
+					if(solved1 == null || (solved1 != null && (solved1.Car.size() + 1) <= pathLength)) {
+						if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
+							int k = rand.Paths.get(0).y1;
+							    while(k <= rand.Paths.get(0).y2) {
+								   board.Board[rand.Paths.get(0).x1][k] = -1;
+								   k ++;
+							   }
+						}
+						else {
+							 int k = rand.Paths.get(0).x1;
+							 while(k <= rand.Paths.get(0).x2) {
+									board.Board[k][rand.Paths.get(0).y1] = -1;
+									k ++;
+							 }
+						}
+						board.Car.remove(board.Car.size()-1);
+						//Board.printB(board);
+					}
+
+	    		}
+	    	}
+	    	else {
+	    		return generateRandomBoard(desiredLength,startTime);
+	    	}
+	    }
+		return board;
+	}
+	  /*  long startTime = System.currentTimeMillis();
+		while (pathLength < desiredLength) {
 			System.out.println("num of car : "+ board.Car.size());
 			if(board.Car.size() >= 12) {
 				return generateRandomBoard(desiredLength);
@@ -32,9 +99,9 @@ class Generator {
 			//	    System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
 				    int [][] gameboard = board.Board;
 				    if(isFree(gameboard,rand)) {
-/*						if(board.Car.size() > 12) {
+						if(board.Car.size() > 12) {
 							return generateRandomBoard(desiredLength);
-						}*/
+						}
 				    	board.Car.add(rand);
 				    	board.updateBoard();
 				    	//System.out.println("after update :");
@@ -76,8 +143,15 @@ class Generator {
 				
 				Board winner = board;
 				int steps = pathLength;
-				
+				long startTimeo = System.currentTimeMillis();
 				for(Board b : board.getPossible()) {
+					if((System.currentTimeMillis() - startTimeo) > 6000) {
+						System.out.println("Time end in possible : " + (System.currentTimeMillis() - startTime));
+						System.out.println();
+						System.out.println();
+						System.out.println();
+						return generateRandomBoard(desiredLength);
+					}
 					Algorithm alg = new Algorithm();
 					Board solved = alg.Algorithm(b);
 					if(solved != null) {
@@ -106,8 +180,10 @@ class Generator {
 				
 			}
 		}
-		return board;
-	}
+		if((System.currentTimeMillis() - startTime) > 5000) {
+			System.out.println("Time end : " + (System.currentTimeMillis() - startTime));
+			return generateRandomBoard(desiredLength);
+		}*/
 	
 	private boolean isFree(int[][] gameboard, Car b) {
 		if(b.Paths.get(0).x1 == b.Paths.get(0).x2) {

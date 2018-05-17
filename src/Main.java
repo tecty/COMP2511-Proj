@@ -93,7 +93,7 @@ public class Main {
 		Generator g = new Generator();
 		long startTime = System.currentTimeMillis();
 		//setting desired path as argument of generator
-		Board b = g.generateRandomBoard(15);
+		Board b = g.generateRandomBoard(12,startTime);
 		Algorithm alg = new Algorithm();
 		Board solved = alg.Algorithm(b);
 		System.out.println("Solution of output board = " + (solved.carID.size()+1));
