@@ -21,18 +21,18 @@ class Generator {
 	    int pathLength = 0;
 	    while(pathLength < desiredLength) {
 	    	if(System.currentTimeMillis() - startTime > 20000) {
-	    		System.out.println();
-	    		System.out.println();
-	    		System.out.println();
-	    		System.out.println();
-	    		System.out.println("End of time");
+	    	//	System.out.println();
+	    	//	System.out.println();
+	    	//	System.out.println();
+	    	//	System.out.println();
+	    	//	System.out.println("End of time");
 	    		return generateRandomBoard(desiredLength,System.currentTimeMillis()); 
 	    	}
-	    	System.out.println("Car num " + board.Car.size());
-	    	System.out.println("initial algorithm start");
+	    //	System.out.println("Car num " + board.Car.size());
+	    //	System.out.println("initial algorithm start");
 	    	Algorithm alg = new Algorithm();
 			Board solved = alg.Algorithm(board);
-			System.out.println("initial algorithm end");
+		//	System.out.println("initial algorithm end");
 	        if(solved == null && pathLength < desiredLength) {
 	        	return generateRandomBoard(desiredLength,startTime);
 
@@ -55,10 +55,10 @@ class Generator {
 					//System.out.println("after update :");
 					//Board.printB(board);
 					
-					System.out.println("Begin algorithm");
+					//System.out.println("Begin algorithm");
 					Algorithm alg1 = new Algorithm();
 					Board solved1 = alg1.Algorithm(board);
-					System.out.println("after algorithm");
+					//System.out.println("after algorithm");
 					if(solved1 == null || (solved1 != null && (solved1.Car.size() + 1) <= pathLength)) {
 						if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
 							int k = rand.Paths.get(0).y1;
