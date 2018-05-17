@@ -5,41 +5,44 @@ public class Algorithm {
 
 	public Board Algorithm(Board board) {
 		
-		ArrayList<Board> visited = new ArrayList<Board>();
+//		ArrayList<Board> visited = new ArrayList<Board>();
+//		ArrayList<Board> queue = new ArrayList<Board>();
 		
+		Set<Board> visited = new HashSet<Board>();
 		ArrayList<Board> queue = new ArrayList<Board>();
+		
 		queue.add( board);
 		
 //		System.out.println("\n\nQueue before while");
-//		printQueue(queue);
-//		
+//		printQueue(queue);	
 //		System.out.println("\n\tLOOP\n");
+		
 		int cccc =  0;
 		while(!queue.isEmpty()) {
 			//Board b = queue.poll();
 			Board b = queue.remove(0);
 			
 			//System.out.println("SIZE " + b.carID.size());
-//			if(b.carID.size() > 17) {
-//				System.out.println("SIZE " + b.carID.size());
-//				return null;
-//			}
-			
-			if(listContainBoard(visited, b)) {
-				//System.out.println("VISITED EXIST");
-				continue;
+			if(b.carID.size() > 17) {
+				System.out.println("SIZE " + b.carID.size());
+				return null;
 			}
 			
-			
-//			if(visited.contains(b)) {
+//			if(listContainBoard(visited, b)) {
+//				//System.out.println("VISITED EXIST");
 //				continue;
 //			}
+			
+			
+			if(visited.contains(b)) {
+				continue;
+			}
 			
 			visited.add( b );
 			
 			//check final state
 			if(unlockCar(b)) {
-				//System.out.println("GAME SOLVED");
+				System.out.println("GAME SOLVED");
 				return b;
 			}
 			
@@ -102,12 +105,7 @@ public class Algorithm {
 		return false;
 	}
 	
-	
-	
-	
-	
-	
-	
+
 	
 	private void printQueue(ArrayList<Board> queue) {
 		System.out.println();
@@ -287,4 +285,3 @@ public class Algorithm {
 	}
 	
 }
-
