@@ -90,13 +90,15 @@ public class Main {
 	    	  	System.out.println("\n\n\tGAME returnned null");
 	
 	      */
-		Algorithm solver = new Algorithm();
 		Generator g = new Generator();
-		Board b = g.generateRandomBoard(solver, 12);
+		long startTime = System.currentTimeMillis();
+		//setting desired path as argument of generator
+		Board b = g.generateRandomBoard(15);
 		Algorithm alg = new Algorithm();
 		Board solved = alg.Algorithm(b);
 		System.out.println("Solution of output board = " + (solved.carID.size()+1));
-		b.printB(b);
+		System.out.println("Time: " + (System.currentTimeMillis() - startTime));
+		Board.printB(b);
 		
 	}
 }

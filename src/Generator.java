@@ -4,9 +4,9 @@ import java.util.Random;
 
 class Generator {
 	private static final Random RANDOM = new Random();
-	public Board generateRandomBoard(Algorithm solver, int desiredLength) {
+	public Board generateRandomBoard(int desiredLength) {
 	    ArrayList<Car> someCars = new ArrayList<Car>();
-	  //  List<Board> path = new ArrayList<Board>();
+
 	    //first red car input ID = 0 Coordinate x1 = random,y1 = 2,x2 =random +2 ,y2=2
 	    int x =  RANDOM.nextInt(2);
 	    Coordinate ori = new Coordinate(2,x,2,(x+1));
@@ -14,49 +14,62 @@ class Generator {
 	    oro.add(ori);
 	    someCars.add(new Car(0,oro));
 	    
-	    
+	    //create a new board
 	    Board board = new Board(someCars,new ArrayList<Integer>());
-	    Board.printB(board);
+	   // Board.printB(board);
 	    
 	    int pathLength = 0;
-	    Algorithm algo = new Algorithm();
-		Board solvedo = algo.Algorithm(board);
-		while (pathLength < desiredLength && solvedo.carID.size()+1 >= pathLength) {
-			System.out.println("path length =  " + pathLength + "desiredLength =  " + desiredLength);
+	    long startTime = System.currentTimeMillis();
+		while (pathLength < desiredLength || (System.currentTimeMillis() - startTime) > 1000 ) {
+			System.out.println("num of car : "+ board.Car.size());
+			if(board.Car.size() >= 12) {
+				return generateRandomBoard(desiredLength);
+			}
 			if (board.Car.size() < 14) {
 				int tries = 50;
 				while(tries-- >0) {
 				    Car rand = getRandomCar(board.Car.size());
-				    System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
+			//	    System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
 				    int [][] gameboard = board.Board;
 				    if(isFree(gameboard,rand)) {
+/*						if(board.Car.size() > 12) {
+							return generateRandomBoard(desiredLength);
+						}*/
 				    	board.Car.add(rand);
 				    	board.updateBoard();
-				    	System.out.println("after update :");
-						Board.printB(board);
+				    	//System.out.println("after update :");
+		//				Board.printB(board);
 						
 						Algorithm alg = new Algorithm();
 						Board solved = alg.Algorithm(board);
 						
 						if (solved != null && solved.carID.size()+1 >= pathLength) {
 							//pathLength = solved.carID.size()+1;
-							System.out.println("board solution length = " + (solved.carID.size()+1));
+						//	System.out.println("board solution length = " + (solved.carID.size()+1));
 							break;	
 						}
 						else {
+						//	System.out.println("No solution for this board");
+							if(board.Car.size() > 12) {
+							   return generateRandomBoard(desiredLength);
+							}
+						
 							if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
 							   int k = rand.Paths.get(0).y1;
 							   while(k <= rand.Paths.get(0).y2) {
 								   board.Board[rand.Paths.get(0).x1][k] = -1;
+								   k++;
 							   }
 							}
 							else {
 								int k = rand.Paths.get(0).x1;
 								   while(k <= rand.Paths.get(0).x2) {
 									   board.Board[k][rand.Paths.get(0).y1] = -1;
+									   k ++;
 								   }
 							}
 							board.Car.remove(board.Car.size()-1);
+							//Board.printB(board);
 						}
 				    }
 				}
@@ -73,7 +86,8 @@ class Generator {
 						if(solvedLength >= desiredLength) {
 							return b;
 						}
-						else if(solvedLength >= steps) {
+						else if(solvedLength > steps) {
+							System.out.println("steps = " + solvedLength);
 							steps = solvedLength;
 							winner = b;
 						}
@@ -87,14 +101,11 @@ class Generator {
 				}
 				board = winner;
 				pathLength = steps;
-				System.out.println("winner board: ");
-				Board.printB(board);
+			//	System.out.println("winner board: ");
+			//	Board.printB(board);
 				
 			}
 		}
-		Algorithm alg = new Algorithm();
-		Board solved = alg.Algorithm(board);
-		System.out.println("the solution of this board " + (solved.carID.size()+1));
 		return board;
 	}
 	

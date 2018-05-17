@@ -332,7 +332,7 @@ class Board {
 		List<Board> possibleBoards = new ArrayList<Board>();
 		for(int i = 0; i < this.Car.size();i ++) {
 			Car car = this.Car.get(i);
-			System.out.println(car.num + "	" + "(" + car.Paths.get(0).x1 + "," + car.Paths.get(0).y1 + ")" +  "(" + car.Paths.get(0).x2 + "," + car.Paths.get(0).y2 + ")");
+		//	System.out.println(car.num + "	" + "(" + car.Paths.get(0).x1 + "," + car.Paths.get(0).y1 + ")" +  "(" + car.Paths.get(0).x2 + "," + car.Paths.get(0).y2 + ")");
 		   // horizontal block move left
 			if(car.Paths.get(0).x1 == car.Paths.get(0).x2) {
 		    	if((car.Paths.get(0).y1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1-1] == -1) {
@@ -405,7 +405,7 @@ class Board {
 		    	}
 			}
 		}
-		
+		System.out.println("Finish possible board ");
 		return possibleBoards;
 	}
 
