@@ -11,12 +11,18 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import levelSelect.Level;
+import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
 
@@ -143,12 +149,9 @@ public class GameController {
     	timer.stop();
     	steps.set(0);
     	//reset board and cars
-    	System.out.println("here");
     	gridGroup.getChildren().clear();
     	carGroup.getChildren().clear();
-    	System.out.println("here");
     	setBoard();
-    	System.out.println("here");
     	try {
     		addCars();
     	}
@@ -158,6 +161,23 @@ public class GameController {
     	}
     	//restart timer
     	timer.start();
+    }
+    
+    @FXML
+    private void backAction(ActionEvent actionEvent) throws IOException {
+        // checkout to main menu
+        Stage primaryStage = (Stage)back.getScene().getWindow();
+        
+        //go to the level select menu under the same save slot
+		FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+    	Parent root = loader.load();
+        LevelSelect levelSelect = loader.getController();
+        levelSelect.loadBoards(saveslot);
+        
+        System.out.println("User get to level select ");
+        // checkout to level select scene
+        primaryStage.setScene(new Scene(root));
     }
     
     private void setBoard() {

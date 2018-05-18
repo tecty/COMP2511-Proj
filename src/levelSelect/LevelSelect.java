@@ -39,6 +39,7 @@ public class LevelSelect {
     GameSave saveslot;
     
     public void loadBoards(GameSave saveslot) {
+    	System.out.println("ha");
     	this.saveslot = saveslot;
     	System.out.println("level saveslot");
     }
