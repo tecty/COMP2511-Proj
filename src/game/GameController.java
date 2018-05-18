@@ -2,10 +2,7 @@ package game;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.text.DecimalFormat;
-
-import javax.management.loading.MLet;
-import javax.print.DocFlavor.URL;
+import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -14,19 +11,12 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.stage.Stage;
+import levelSelect.Level;
+import save.GameSave;
 
 public class GameController {
     // create game in this controller
@@ -42,9 +32,17 @@ public class GameController {
     // reference to the board
     private Grid[][] board = new Grid[6][6];
 
+    // the loaded saveslot
+    GameSave saveslot;
+    Level chosenLevel;
+    
     // store all the car in this game
     Group carGroup = new Group();
     Group gridGroup = new Group();
+    
+    // store the moved car id of each step 
+    ArrayList<Integer> history = new ArrayList<Integer>();
+    
 
     //step counter
     //variables prepared for stepCounter
@@ -92,8 +90,18 @@ public class GameController {
     // for clicked particular car
     private double offsetMax, offsetMin;
 
+    
+    //load car settings from the save slot 
+    public void loadSaveSlot(GameSave saveslot, int chosenLevel) throws MalformedURLException {
+    	System.out.println("load saveslot");
+    	this.saveslot = saveslot;
+    	this.chosenLevel = saveslot.getLevel(chosenLevel);
+    	addCars();
+    }
+    
     @FXML
-    private void initialize() throws MalformedURLException {
+    private void initialize(){
+    	System.out.println("initialize");
     	//hide the result interface
     	levelClear.setVisible(false);
     	//bind the value of moveCounter to the stepCounter showing in fxml
@@ -116,22 +124,29 @@ public class GameController {
             }
         }
 
-        // set the car 0
-        makeCar(MoveDir.HORIZONTAL,
-                0, 4, 2, 2);
-        makeCar(MoveDir.VERTICAL,
-                1, 2, 2, 2);
-        makeCar(MoveDir.VERTICAL,
-        		2, 0, 0, 3);
-        //this car is for testing invalidity
-        makeCar(MoveDir.VERTICAL,
-                3, 2, 2, 2);
-        
-        // add the group to the pane and group of car
+        // add the group to the pane
         // to show in the scene
-        rootPane.getChildren().addAll(gridGroup, carGroup);
+        rootPane.getChildren().addAll(gridGroup);
         
         timer.start();
+    }
+    
+    private void addCars() throws MalformedURLException {
+        if(saveslot==null) System.out.println("slot empty");
+        if(chosenLevel==null) {
+        	System.out.println("empty");
+        	System.exit(1);
+        }
+        for(Car each : chosenLevel.getCars()) {
+        	makeCar(
+        			each.getDir(),
+        			each.getCarId(),
+        			each.getGridX(),
+        			each.getGridY(),
+        			each.getLen()
+        	);
+        }
+        rootPane.getChildren().addAll(carGroup);
     }
     
     //check if the car making is valid
@@ -293,18 +308,6 @@ public class GameController {
     	//first stop the timer
     	timer.stop();
     	System.out.println(time.doubleValue()+" seconds");
-    	
-//    	//check if fxml file exists
-//    	java.net.URL u = MLet.class.getResource("/levelClear/LevelClear.fxml");
-//    	if (u == null) {
-//    	        System.out.println("File loading failed");
-//    	        System.exit(1);
-//    	}
-    	
-//    	//if exists, continue printing the info of clearing the level
-//    	Parent pane = FXMLLoader.load(getClass().getResource("/levelClear/LevelClear.fxml"));
-//    	pane.setStyle("-fx-background-color: #fff; -fx-border-color: #000");
-//    	this.rootPane.getChildren().add(pane);
     	//result interface now visible
     	levelClear.setVisible(true);
     }
@@ -438,9 +441,58 @@ public class GameController {
         }
     }
 
-
-//    TODO: Pass in a valid game
-//    private void  showGame(Game game){
-//
-//    }
+    
+    //the undo function
+    private boolean undo() {
+    	//cannot undo at the stat of game
+//		if ( this.carID.size() == 0) {
+    	if(history.size()==0) {
+//			return false;
+    		return false;
+//		}
+    	}
+//		int cID = this.carID.get( this.carID.size() -1 );
+    	int currId = history.remove(history.size()-1);
+    	Car currCar = (Car) carGroup.getChildren().get(currId);
+    	
+//		
+//		Car c = this.Car.get(cID);
+//		Coordinate co = c.Paths.get( c.Paths.size() -1 );
+//		Coordinate preCo = c.Paths.get( c.Paths.size() -2 );
+//		
+//		//move by row
+//		if(co.x1 == co.x2) {
+//			//reset current
+//			for(int i = co.y1 ; i <= co.y2; i ++) {
+//				this.Board[co.x1][i] = -1;	
+//			}
+//			
+//			//reset previous
+//			for(int i = preCo.y1 ; i <= preCo.y2; i ++) {
+//				this.Board[preCo.x1][i] = cID;
+//			}
+//			
+//		}else if(co.y1 == co.y2) {
+//			//reset current
+//			for(int i = co.x1; i <= co.x2; i ++) {
+//				this.Board[i][co.y1] = -1;
+//			}
+//			
+//			//add previous
+//			for(int i = preCo.x1; i <= preCo.x2; i ++) {
+//				this.Board[i][preCo.y1] = cID;
+//			}
+//			
+//		}
+//		
+//		//remove form paths
+//		c.Paths.remove(c.Paths.size() -1 );
+//		//remove from carID
+//		this.carID.remove(this.carID.size() -1 );
+//		
+//		return true;
+    	
+    	return true;
+    }
 }
+

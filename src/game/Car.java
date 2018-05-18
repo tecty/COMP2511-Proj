@@ -1,16 +1,18 @@
 package game;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
-public class Car extends StackPane {
-
-
-    // the actual car move in each grid
+public class Car extends StackPane implements Serializable{
+	private static final long serialVersionUID = 1L;
+	
+	// the actual car move in each grid
     final private MoveDir dir;
     final private int carId;
     private int gridX;
@@ -18,9 +20,8 @@ public class Car extends StackPane {
     // the length of this car
     final private int len;
     
-    //real location for the car
-//    private double oldX, oldY;
-
+    // history moving path
+    private ArrayList<Integer[]> path;
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
@@ -136,6 +137,10 @@ public class Car extends StackPane {
     }
 
 
+    //pop up one history movement for the undo function
+    public Integer[] popStep() {
+    	return path.get(path.size()-1);
+    }
 
     public void setGrid(int gridX, int gridY){
         // set the grid and keep the Invariant:

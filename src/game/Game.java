@@ -1,8 +1,7 @@
 package game;
+import javafx.scene.Scene;
 
 public class Game {
-    // the basic information of the game.
-
-
-
+	Scene gameScene;
+	
 }

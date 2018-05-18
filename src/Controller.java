@@ -1,4 +1,3 @@
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +19,15 @@ public class Controller {
     @FXML
     private Button quitButton;
 
+    @FXML
+    private void modeSelectAction(ActionEvent actionEvent) throws IOException {
+    	// try to load mode select scene
+    	Parent root = FXMLLoader.load(getClass().getResource("modeSelect/ModeSelect.fxml"));
+    	// get the current Stage
+    	Stage primaryStage = (Stage) newGameButton.getScene().getWindow();
+    	
+    	primaryStage.setScene(new Scene(root));
+    }
 
     @FXML
     private void levelSelectAction(ActionEvent actionEvent) throws IOException {
@@ -27,14 +35,6 @@ public class Controller {
         Parent root = FXMLLoader.load(getClass().getResource("levelSelect/LevelSelect.fxml"));
         // get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
-
-        if (actionEvent.getSource() == newGameButton){
-            System.out.println("User try to start a new game");
-        }
-        else if(actionEvent.getSource() == continueButton){
-            System.out.println("User try to read his save file");
-        }
-
         System.out.println("User get to select level");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
