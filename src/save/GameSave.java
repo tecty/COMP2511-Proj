@@ -37,6 +37,10 @@ public class GameSave implements Serializable{
 		saveSlot++;
 	}
 	
+	public boolean expertMode() {
+		return isExpertMode;
+	}
+	
 	public int getSlotNum() {
 		return saveSlot;
 	}

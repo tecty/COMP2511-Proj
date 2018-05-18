@@ -11,7 +11,6 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -127,6 +126,12 @@ public class GameController {
     	
     	//modify the title
     	title.setText("Gridlock Level "+(chosenLevel+1));
+    	
+    	//check if it is expert mode
+    	if(saveslot.expertMode()) {
+    		undo.setDisable(true);
+    		undo.setVisible(false);
+    	}
     	
     	//check if there is next level
     	if(chosenLevel >= 8) next.setDisable(true);
