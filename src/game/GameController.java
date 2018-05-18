@@ -28,24 +28,33 @@ import save.SaveManager;
 
 public class GameController {
     // create game in this controller
-	@FXML
+	@FXML //finish
 	Pane levelClear;
-    @FXML
+    @FXML //finish
     Pane rootPane;
     //labels
     @FXML
+    private Label title = new Label();
+    @FXML //finish
     private Label timeCount = new Label();
-    @FXML 
+    @FXML //finish
     private Label stepCount = new Label();
-    //buttons
+    //buttons on the board
     @FXML
     private Button hint = new Button();
-    @FXML
+    @FXML //finish
     private Button reset = new Button();
     @FXML
     private Button undo = new Button();
-    @FXML
+    @FXML //finish
     private Button back = new Button();
+    //buttons on the game clear interface
+    @FXML //finish
+    private Button returnTo = new Button();
+    @FXML
+    private Button replay = new Button();
+    @FXML
+    private Button next = new Button();
     
     
     // reference to the board
@@ -53,7 +62,7 @@ public class GameController {
 
     // the loaded saveslot
     GameSave saveslot;
-    Level chosenLevel;
+    int chosenLevel;
     
     // store all the car in this game
     Group carGroup = new Group();
@@ -114,7 +123,14 @@ public class GameController {
     public void loadSaveSlot(GameSave saveslot, int chosenLevel) throws MalformedURLException {
     	System.out.println("load saveslot");
     	this.saveslot = saveslot;
-    	this.chosenLevel = saveslot.getLevel(chosenLevel);
+    	this.chosenLevel = chosenLevel;
+    	
+    	//modify the title
+    	title.setText("Gridlock Level "+(chosenLevel+1));
+    	
+    	//check if there is next level
+    	if(chosenLevel >= 8) next.setDisable(true);
+    	
     	addCars();
     	rootPane.getChildren().addAll(carGroup);
     }
@@ -142,44 +158,6 @@ public class GameController {
         timer.start();
     }
     
-    //reset all cars
-    @FXML
-    private void reset() {
-    	//reset counter
-    	timer.stop();
-    	steps.set(0);
-    	//reset board and cars
-    	gridGroup.getChildren().clear();
-    	carGroup.getChildren().clear();
-    	setBoard();
-    	try {
-    		addCars();
-    	}
-    	catch(Exception e){
-    		System.out.println("load Game.fxml fail");
-			e.printStackTrace();
-    	}
-    	//restart timer
-    	timer.start();
-    }
-    
-    @FXML
-    private void backAction(ActionEvent actionEvent) throws IOException {
-        // checkout to main menu
-        Stage primaryStage = (Stage)back.getScene().getWindow();
-        
-        //go to the level select menu under the same save slot
-		FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
-    	Parent root = loader.load();
-        LevelSelect levelSelect = loader.getController();
-        levelSelect.loadBoards(saveslot);
-        
-        System.out.println("User get to level select ");
-        // checkout to level select scene
-        primaryStage.setScene(new Scene(root));
-    }
-    
     private void setBoard() {
     	// set up all the grid
         for (int x = 0; x < 6; x++) {
@@ -195,11 +173,12 @@ public class GameController {
     
     private void addCars() throws MalformedURLException {
         if(saveslot==null) System.out.println("slot empty");
-        if(chosenLevel==null) {
+        Level currLevel = saveslot.getLevel(chosenLevel);
+        if(currLevel==null) {
         	System.out.println("empty");
         	System.exit(1);
         }
-        for(Car each : chosenLevel.getCars()) {
+        for(Car each : currLevel.getCars()) {
         	makeCar(
         			each.getDir(),
         			each.getCarId(),
@@ -368,7 +347,7 @@ public class GameController {
     private void handleLevelClear()throws IOException  {
     	//first stop the timer
     	timer.stop();
-    	chosenLevel.update(steps.get(), time.doubleValue());
+    	saveslot.getLevel(chosenLevel).update(steps.get(), time.doubleValue());
     	//save the new record
     	SaveManager.save(saveslot, "saving/test.sav");
     	//result interface now visible
@@ -504,6 +483,64 @@ public class GameController {
         }
     }
 
+    //The followings are button-linked functions
+    //reset all cars
+    @FXML
+    private void reset() {
+    	//hide the result interface
+    	levelClear.setVisible(false);
+    	
+    	//reset counter
+    	timer.stop();
+    	steps.set(0);
+    	//reset board and cars
+    	gridGroup.getChildren().clear();
+    	carGroup.getChildren().clear();
+    	setBoard();
+    	try {
+    		addCars();
+    	}
+    	catch(Exception e){
+    		System.out.println("load Game.fxml fail");
+			e.printStackTrace();
+    	}
+    	//restart timer
+    	timer.start();
+    }
+    
+    @FXML
+    private void backAction() throws IOException {
+        // checkout to main menu
+        Stage primaryStage = (Stage)back.getScene().getWindow();
+        
+        //go to the level select menu under the same save slot
+		FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+    	Parent root = loader.load();
+        LevelSelect levelSelect = loader.getController();
+        levelSelect.loadBoards(saveslot);
+        
+        System.out.println("User get to level select ");
+        // checkout to level select scene
+        primaryStage.setScene(new Scene(root));
+    }    
+    
+    @FXML
+    private void nextLevel() throws IOException {
+    	// checkout to main menu
+        Stage primaryStage = (Stage)back.getScene().getWindow();
+        
+        //go to the level select menu under the same save slot
+		FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("Game.fxml"));
+    	Parent root = loader.load();
+        GameController newGame = loader.getController();
+        newGame.loadSaveSlot(saveslot, chosenLevel+1);
+        
+        System.out.println("User get to level select ");
+        // checkout to level select scene
+        primaryStage.setScene(new Scene(root));
+    }
     
     //the undo function
     private boolean undo() {

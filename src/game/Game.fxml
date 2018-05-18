@@ -106,7 +106,7 @@
                   </Pane>
                </right>
                <top>
-                  <Label text="Gridlock Level 1" BorderPane.alignment="CENTER">
+                  <Label fx:id="title" text="Gridlock Level 1" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="43.0" />
                      </font>
@@ -156,9 +156,9 @@
             </Pane>
             <GridPane layoutX="157.0" layoutY="242.0" prefHeight="56.0" prefWidth="289.0">
                <children>
-                  <Button mnemonicParsing="false" text="Next" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button mnemonicParsing="false" text="Return" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button mnemonicParsing="false" text="Replay" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button fx:id="next" mnemonicParsing="false" onAction="#nextLevel" text="Next" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button fx:id="returnTo" mnemonicParsing="false" onAction="#backAction" text="Return" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+                  <Button fx:id="replay" mnemonicParsing="false" onAction="#reset" text="Replay" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
                </children>
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
