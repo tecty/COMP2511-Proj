@@ -34,22 +34,22 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="314.0" prefWidth="150.0">
                            <children>
-                              <Button defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="Hint">
+                              <Button fx:id="hint" defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="Hint">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" prefWidth="100.0" text="Reset">
+                              <Button fx:id="reset" mnemonicParsing="false" onAction="#reset" prefWidth="100.0" text="Reset">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Skip">
+                              <Button fx:id="undo" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Undo">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Back">
+                              <Button fx:id="back" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Back">
                                  <VBox.margin>
                                     <Insets />
                                  </VBox.margin>

@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import levelSelect.Level;
@@ -25,10 +26,21 @@ public class GameController {
 	Pane levelClear;
     @FXML
     Pane rootPane;
+    //labels
     @FXML
     private Label timeCount = new Label();
     @FXML 
     private Label stepCount = new Label();
+    //buttons
+    @FXML
+    private Button hint = new Button();
+    @FXML
+    private Button reset = new Button();
+    @FXML
+    private Button undo = new Button();
+    @FXML
+    private Button back = new Button();
+    
     
     // reference to the board
     private Grid[][] board = new Grid[6][6];
@@ -98,23 +110,58 @@ public class GameController {
     	this.saveslot = saveslot;
     	this.chosenLevel = saveslot.getLevel(chosenLevel);
     	addCars();
+    	rootPane.getChildren().addAll(carGroup);
     }
     
     @FXML
     private void initialize(){
     	System.out.println("initialize");
+    	
     	//hide the result interface
     	levelClear.setVisible(false);
+    	
+    	//set a clean board
+    	setBoard();
+        // add the group to the pane
+        // to show in the scene
+        rootPane.getChildren().addAll(gridGroup);
+    	
     	//bind the value of moveCounter to the stepCounter showing in fxml
     	stepCount.textProperty().bind(steps.asString("%d"));
-        
         //try to use IntegerProperty to count steps
         steps.set(0);
         
 		//bind the timeCount label with the running timer
-	    timeCount.textProperty().bind(time.asString("%.1f"));
-        
-        // set up all the grid
+	    timeCount.textProperty().bind(time.asString("%.1f"));     
+        timer.start();
+    }
+    
+    //reset all cars
+    @FXML
+    private void reset() {
+    	//reset counter
+    	timer.stop();
+    	steps.set(0);
+    	//reset board and cars
+    	System.out.println("here");
+    	gridGroup.getChildren().clear();
+    	carGroup.getChildren().clear();
+    	System.out.println("here");
+    	setBoard();
+    	System.out.println("here");
+    	try {
+    		addCars();
+    	}
+    	catch(Exception e){
+    		System.out.println("load Game.fxml fail");
+			e.printStackTrace();
+    	}
+    	//restart timer
+    	timer.start();
+    }
+    
+    private void setBoard() {
+    	// set up all the grid
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
                 Grid grid = new Grid(x, y);
@@ -124,12 +171,6 @@ public class GameController {
                 gridGroup.getChildren().add(grid);
             }
         }
-
-        // add the group to the pane
-        // to show in the scene
-        rootPane.getChildren().addAll(gridGroup);
-        
-        timer.start();
     }
     
     private void addCars() throws MalformedURLException {
@@ -147,7 +188,6 @@ public class GameController {
         			each.getLen()
         	);
         }
-        rootPane.getChildren().addAll(carGroup);
     }
     
     //check if the car making is valid
