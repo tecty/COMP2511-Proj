@@ -115,7 +115,7 @@
             </BorderPane>
          </children>
       </StackPane>
-      <Pane fx:id="levelClear" layoutX="10.0" layoutY="10.0" prefHeight="420.0" prefWidth="620.0" style="-fx-background-color: rgb(255,255,255,0.9);">
+      <Pane fx:id="levelClear" prefHeight="430.0" prefWidth="630.0" style="-fx-background-color: rgb(255,255,255,0.9);">
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="226.0" layoutX="122.0" layoutY="87.0" stroke="#797979" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="3.0" width="359.0" />
             <GridPane layoutX="150.0" layoutY="118.0" prefHeight="43.0" prefWidth="301.0">

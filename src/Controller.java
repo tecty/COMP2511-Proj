@@ -5,6 +5,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import levelSelect.LevelSelect;
+import save.GameSave;
+import save.SaveManager;
 
 import java.io.IOException;
 
@@ -30,9 +33,16 @@ public class Controller {
     }
 
     @FXML
-    private void levelSelectAction(ActionEvent actionEvent) throws IOException {
+    private void levelSelectAction(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
         // try to load level select scene
-        Parent root = FXMLLoader.load(getClass().getResource("levelSelect/LevelSelect.fxml"));
+    	FXMLLoader loader = new FXMLLoader();
+    	loader.setLocation(getClass().getResource("levelSelect/LevelSelect.fxml"));
+        Parent root = loader.load();
+        //load a save-slot from default save file location
+        GameSave saveslot = SaveManager.load("saving/test.sav");
+        LevelSelect levelSelect = loader.getController();
+        levelSelect.loadBoards(saveslot);
+        
         // get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
         System.out.println("User get to select level");

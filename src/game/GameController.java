@@ -17,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import levelSelect.Level;
 import save.GameSave;
+import save.SaveManager;
 
 public class GameController {
     // create game in this controller
@@ -307,7 +308,9 @@ public class GameController {
     private void handleLevelClear()throws IOException  {
     	//first stop the timer
     	timer.stop();
-    	System.out.println(time.doubleValue()+" seconds");
+    	chosenLevel.update(steps.get(), time.doubleValue());
+    	//save the new record
+    	SaveManager.save(saveslot, "saving/test.sav");
     	//result interface now visible
     	levelClear.setVisible(true);
     }

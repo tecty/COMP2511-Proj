@@ -28,9 +28,21 @@ public class Level implements Serializable{
 	}
 	
 	public void update(int userStep, double userTime) {
-		this.userStep = userStep;
-		this.userTime = userTime;
+		//should keep the best record in the saveslot
+		if(this.userStep==-1 || this.userStep > userStep) {
+			System.out.println("new "+userStep);
+			this.userStep = userStep;
+		}
+		if(this.userTime==Double.POSITIVE_INFINITY || this.userTime > userTime) {
+			System.out.println("new "+userTime);
+			this.userTime = userTime;
+		}
 	}	
+	
+	
+	public void detail() {
+		System.out.println("User step: "+userStep);
+	}
 	
 	private int userStar() {
 		int total = 0;

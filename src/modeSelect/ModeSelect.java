@@ -33,7 +33,7 @@ public class ModeSelect {
     	}
     	else newSave = new GameSave(1);	
     	//try to save the new save slot
-    	SaveManager.save(newSave, "saving/"+newSave.getSlotNum()+".sav");
+    	SaveManager.save(newSave, "saving/test.sav");
     	    	
     	
     	//now try to jump to the level select scene with the specified saving slot
