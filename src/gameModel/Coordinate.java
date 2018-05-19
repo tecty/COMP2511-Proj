@@ -1,3 +1,4 @@
+package gameModel;
 
 class Coordinate {
 	 public int x1;
