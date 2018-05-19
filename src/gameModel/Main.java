@@ -18,6 +18,8 @@ public class Main {
 		System.out.println("Solution of output board = " + (solved.carID.size()+1));
 		System.out.println("Time: " + (System.currentTimeMillis() - startTime));
 		Board.printB(b);
-		
+		Board.printB(solved);
+		b.deleteCarByList(solved.getUnmovedCar());
+		Board.printB(b);
 	}
 }

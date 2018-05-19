@@ -34,13 +34,13 @@ class Board {
 			if(co.x1 == co.x2) {
 				//update new
 				for(int i = co.y1 ; i <= co.y2; i ++) {
-					this.Board[co.x1][i] = c.num;	
+					this.Board[co.x1][i] = c.getCarID();	
 				}
 				
 			}else if(co.y1 == co.y2) {
 				//update new
 				for(int i = co.x1; i <= co.x2; i ++) {
-					this.Board[i][co.y1] = c.num;
+					this.Board[i][co.y1] = c.getCarID();
 				}
 			}
 		}	
@@ -99,7 +99,7 @@ class Board {
 		}
 		
 		for(int i = 0; i < in.Car.size();i ++) {
-			System.out.print("\nCar " + in.Car.get(i).num +" : ");
+			System.out.print("\nCar " + in.Car.get(i).getCarID() +" : ");
 			
 			for(int j = 0; j < in.Car.get(i).Paths.size(); j ++) {
 				System.out.print(" (" + in.Car.get(i).Paths.get( j ).x1 + ","+
@@ -114,6 +114,7 @@ class Board {
 		for(int i = 0; i < in.carID.size(); i ++) {
 			System.out.print(" " + in.carID.get(i));
 		}
+		System.out.println();
 	}
 	
 	
@@ -234,24 +235,15 @@ class Board {
 		}
 		
 		
-		/* debug
-		for(int i = 0; i < b.length; i ++) {
-			for(int j = 0; j < b.length; j ++) {
-				System.out.print(" " + b[i][j]);
-			}
-			System.out.println();
-		}
-		*/
 		
 		return true;
 	}
 	
 	public List<Board> getPossible() {
-		System.out.println("\n GETTING POSSIBLE BOARD");
+//		System.out.println("\n GETTING POSSIBLE BOARD");
 		List<Board> possibleBoards = new ArrayList<Board>();
 		for(int i = 0; i < this.Car.size();i ++) {
 			Car car = this.Car.get(i);
-		//	System.out.println(car.num + "	" + "(" + car.Paths.get(0).x1 + "," + car.Paths.get(0).y1 + ")" +  "(" + car.Paths.get(0).x2 + "," + car.Paths.get(0).y2 + ")");
 		   // horizontal block move left
 			if(car.Paths.get(0).x1 == car.Paths.get(0).x2) {
 		    	if((car.Paths.get(0).y1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1-1] == -1) {
@@ -324,9 +316,33 @@ class Board {
 		    	}
 			}
 		}
-		System.out.println("Finish possible board ");
+//		System.out.println("Finish possible board ");
 		return possibleBoards;
 	}
 
-	
+	public ArrayList<Car> getUnmovedCar() {
+		// return the unmoved car of the solved map 
+		ArrayList<Car> return_list= new ArrayList<>();
+		for (int i = 0; i < Car.size(); i++) {
+			if (Car.get(i).getPathSize() == 1) {
+				// only have unused car
+				return_list.add(Car.get(i));
+			}
+		}
+		return return_list;
+	}
+	public void deleteCarByList(ArrayList<Car> carList) {
+		for (int i = carList.size()-1; i >0; i--) {
+			Car.remove(carList.get(i).getCarID());
+		}
+		for(int i = 0; i < 6; i ++) {
+			for(int j = 0; j < 6; j ++) {
+				this.Board[i][j] = -1;
+			}
+		}
+		// re-render the board.
+		updateBoard();
+
+	}
+
 }

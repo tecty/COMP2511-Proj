@@ -22,24 +22,16 @@ class Generator {
 	    int pathLength = 0;
 	    while(pathLength < desiredLength) {
 	    	if(System.currentTimeMillis() - startTime > 20000) {
-	    	//	System.out.println();
-	    	//	System.out.println();
-	    	//	System.out.println();
-	    	//	System.out.println();
-	    	//	System.out.println("End of time");
 	    		return generateRandomBoard(desiredLength,System.currentTimeMillis()); 
 	    	}
-	    //	System.out.println("Car num " + board.Car.size());
-	    //	System.out.println("initial algorithm start");
 	    	Algorithm alg = new Algorithm();
 			Board solved = alg.Algorithm(board);
-		//	System.out.println("initial algorithm end");
 	        if(solved == null && pathLength < desiredLength) {
 	        	return generateRandomBoard(desiredLength,startTime);
 
 	        }
 	        pathLength = solved.carID.size()+1;
-	        System.out.println("solution length = " + pathLength);
+//	        System.out.println("solution length = " + pathLength);
 	    	if(board.Car.size() >= 13) {
 	    		return generateRandomBoard(desiredLength,startTime);
 	    	}
@@ -53,13 +45,9 @@ class Generator {
 	    		if(isFree(gameboard,rand)) {
 	    			board.Car.add(rand);
 					board.updateBoard();
-					//System.out.println("after update :");
-					//Board.printB(board);
 					
-					//System.out.println("Begin algorithm");
 					Algorithm alg1 = new Algorithm();
 					Board solved1 = alg1.Algorithm(board);
-					//System.out.println("after algorithm");
 					if(solved1 == null || (solved1 != null && (solved1.Car.size() + 1) <= pathLength)) {
 						if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
 							int k = rand.Paths.get(0).y1;
@@ -76,7 +64,6 @@ class Generator {
 							 }
 						}
 						board.Car.remove(board.Car.size()-1);
-						//Board.printB(board);
 					}
 
 	    		}
@@ -87,104 +74,6 @@ class Generator {
 	    }
 		return board;
 	}
-	  /*  long startTime = System.currentTimeMillis();
-		while (pathLength < desiredLength) {
-			System.out.println("num of car : "+ board.Car.size());
-			if(board.Car.size() >= 12) {
-				return generateRandomBoard(desiredLength);
-			}
-			if (board.Car.size() < 14) {
-				int tries = 50;
-				while(tries-- >0) {
-				    Car rand = getRandomCar(board.Car.size());
-			//	    System.out.println("car id = " + rand.num + "	x1 = " + rand.Paths.get(0).x1 + "	y1 = " + rand.Paths.get(0).y1 +"	x2 = " +rand.Paths.get(0).x2 +	"	y2 = "+rand.Paths.get(0).y2);
-				    int [][] gameboard = board.Board;
-				    if(isFree(gameboard,rand)) {
-						if(board.Car.size() > 12) {
-							return generateRandomBoard(desiredLength);
-						}
-				    	board.Car.add(rand);
-				    	board.updateBoard();
-				    	//System.out.println("after update :");
-		//				Board.printB(board);
-						
-						Algorithm alg = new Algorithm();
-						Board solved = alg.Algorithm(board);
-						
-						if (solved != null && solved.carID.size()+1 >= pathLength) {
-							//pathLength = solved.carID.size()+1;
-						//	System.out.println("board solution length = " + (solved.carID.size()+1));
-							break;	
-						}
-						else {
-						//	System.out.println("No solution for this board");
-							if(board.Car.size() > 12) {
-							   return generateRandomBoard(desiredLength);
-							}
-						
-							if(rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
-							   int k = rand.Paths.get(0).y1;
-							   while(k <= rand.Paths.get(0).y2) {
-								   board.Board[rand.Paths.get(0).x1][k] = -1;
-								   k++;
-							   }
-							}
-							else {
-								int k = rand.Paths.get(0).x1;
-								   while(k <= rand.Paths.get(0).x2) {
-									   board.Board[k][rand.Paths.get(0).y1] = -1;
-									   k ++;
-								   }
-							}
-							board.Car.remove(board.Car.size()-1);
-							//Board.printB(board);
-						}
-				    }
-				}
-				
-				Board winner = board;
-				int steps = pathLength;
-				long startTimeo = System.currentTimeMillis();
-				for(Board b : board.getPossible()) {
-					if((System.currentTimeMillis() - startTimeo) > 6000) {
-						System.out.println("Time end in possible : " + (System.currentTimeMillis() - startTime));
-						System.out.println();
-						System.out.println();
-						System.out.println();
-						return generateRandomBoard(desiredLength);
-					}
-					Algorithm alg = new Algorithm();
-					Board solved = alg.Algorithm(b);
-					if(solved != null) {
-						System.out.println("the solution of this board " + (solved.carID.size()+1));
-						int solvedLength = solved.carID.size()+1;
-						if(solvedLength >= desiredLength) {
-							return b;
-						}
-						else if(solvedLength > steps) {
-							System.out.println("steps = " + solvedLength);
-							steps = solvedLength;
-							winner = b;
-						}
-						else {
-							continue;
-						}
-					}
-					else {
-						continue;
-					}
-				}
-				board = winner;
-				pathLength = steps;
-			//	System.out.println("winner board: ");
-			//	Board.printB(board);
-				
-			}
-		}
-		if((System.currentTimeMillis() - startTime) > 5000) {
-			System.out.println("Time end : " + (System.currentTimeMillis() - startTime));
-			return generateRandomBoard(desiredLength);
-		}*/
 	
 	private boolean isFree(int[][] gameboard, Car b) {
 		if(b.Paths.get(0).x1 == b.Paths.get(0).x2) {
@@ -203,41 +92,6 @@ class Generator {
 		}
 		return true;
 	}
-	/*  
-		//if is horizontal
-		if (b.Paths.get(0).x1 == b.Paths.get(0).x2) {
-			// iterate over each piece of the block
-			for (int i = b.Paths.get(0).y1; i <= b.Paths.get(0).y2; i++) {
-				// if the board is not empty at spot, not free
-				if (i >= gameboard.length || gameboard[b.Paths.get(0).y1][i] != -1)
-					return false;
-			}
-		}
-		else {
-			// iterate over each piece of the block
-			for (int i = b.Paths.get(0).y2; i <= b.Paths.get(0).y2; i++) {
-				// if the board is not empty at spot, not free
-				if (i >= gameboard.length || gameboard[i][b.Paths.get(0).y1] != -1)
-					return false;
-			}
-		}
-		return true;
-		*/
-	
-	/*
-	 * for actual version should be like:
-	 * private Car getRandomCr(int odd, int even) {
-		boolean isHorz = RANDOM.nextBoolean();
-		int id = isHorz ? odd : even;
-		int col = RANDOM.nextInt(6);
-		int row = RANDOM.nextInt(6);
-		// if horizontal, we can't have it on the prisoner row
-		if (isHorz && row == 2) {
-			row++;
-		}
-		return new Car(id, row, col, isHorz,getRandomSize());
-	}
-	 */
 	
 	private Car getRandomCar(int Cid) {
 		boolean isHorz = RANDOM.nextBoolean();
@@ -267,22 +121,6 @@ class Generator {
         nextP.add(next);
         return new Car(id,nextP);
 	}
-		//getRandomSize is for setting the size of car 2/3
-		//if is horizontal end column should plus the size of car
-   /*     if(isHorz) {
-        	int x2 = col + getRandomSize();
-            Coordinate next = new Coordinate (row,col,row,x2);
-            ArrayList <Coordinate> nextP = new ArrayList <Coordinate>();
-            nextP.add(next);
-        	return new Car(id,nextP);
-        }
-        //if is not horizontal end row should plus the size of car
-        int y2 = row + getRandomSize();
-        Coordinate next = new Coordinate (row,col,y2,col);
-        ArrayList <Coordinate> nextP = new ArrayList <Coordinate>();
-        nextP.add(next);
-		return new Car(id,nextP);
-		*/
 	
 	private int getRandomSize() {
 		if (RANDOM.nextInt(4) == 0)
