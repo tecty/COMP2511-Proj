@@ -9,6 +9,7 @@ import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -39,24 +40,10 @@ public class Controller {
 
 
         // try to load level select scene
-        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveslotSelect.fxml"));
-        System.out.println("User get to choose a savelot ");
+        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveSlotSelect.fxml"));
+        System.out.println("User get to settings ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
-        
-//    	FXMLLoader loader = new FXMLLoader();
-//    	loader.setLocation(getClass().getResource("levelSelect/LevelSelect.fxml"));
-//        Parent root = loader.load();
-//        //load a save-slot from default save file location
-//        GameSave saveslot = SaveManager.load("saving/test.sav");
-//        LevelSelect levelSelect = loader.getController();
-//        levelSelect.loadBoards(saveslot);
-//        
-//        // get the current Stage
-//        Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
-//        System.out.println("User get to select level");
-//        // checkout to level select scene
-//        primaryStage.setScene(new Scene(root));
     }
 
     @FXML

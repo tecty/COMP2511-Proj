@@ -83,7 +83,7 @@ public class ModeSelect {
     	    	
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
     	Parent root = loader.load();
     	
     	LevelSelect levelSelect = loader.getController();
