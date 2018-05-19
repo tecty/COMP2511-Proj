@@ -32,6 +32,7 @@ public class Car extends StackPane implements Serializable{
         this.len = len;
         this.gridX = gridX;
         this.gridY = gridY;
+        this.path = new ArrayList<>();
 
 
         // set this car's position as given.
@@ -66,7 +67,7 @@ public class Car extends StackPane implements Serializable{
             	else img.setStyle("-fx-background-image: url(\"/img/car.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
             }
             else { //a horizontal truck
-                img.setStyle("-fx-background-image: url(\"/img/truck.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+                img.setStyle("-fx-background-image: url(\"/img/truck2.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
             }
         }
         else if (dir == MoveDir.VERTICAL){
@@ -78,7 +79,7 @@ public class Car extends StackPane implements Serializable{
             	else img.setStyle("-fx-background-image: url(\"/img/carV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
             }
             else {
-                img.setStyle("-fx-background-image: url(\"/img/truckV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+                img.setStyle("-fx-background-image: url(\"/img/truck2V.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
             }
         }
         // TODO: Style and center the car
@@ -133,14 +134,9 @@ public class Car extends StackPane implements Serializable{
         // relocate this block by the mouse offset
         // assume the collision is protected by higher levels function
         relocate(getGridX()*GameController.GRID_SIZE + offsetX,
-                 getGridY()*GameController.GRID_SIZE + offsetY);
+                 getGridY()*GameController.GRID_SIZE + offsetY);       
     }
-
-
-    //pop up one history movement for the undo function
-    public Integer[] popStep() {
-    	return path.get(path.size()-1);
-    }
+    
 
     public void setGrid(int gridX, int gridY){
         // set the grid and keep the Invariant:

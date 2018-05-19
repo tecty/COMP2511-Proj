@@ -44,7 +44,7 @@
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
                               </Button>
-                              <Button fx:id="undo" cancelButton="true" mnemonicParsing="false" prefWidth="100.0" text="Undo">
+                              <Button fx:id="undo" cancelButton="true" mnemonicParsing="false" onAction="#undo" prefWidth="100.0" text="Undo">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>
@@ -127,12 +127,27 @@
                   </ImageView>
                   <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.halignment="RIGHT">
                      <image>
-                        <Image url="@../img/star.png" />
+                        <Image url="@../img/starNull.png" />
                      </image>
                   </ImageView>
                   <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="2">
                      <image>
                         <Image url="@../img/star.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.halignment="RIGHT">
+                     <image>
+                        <Image url="@../img/star.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="2">
+                     <image>
+                        <Image url="@../img/starNull.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                     <image>
+                        <Image url="@../img/starNull.png" />
                      </image>
                   </ImageView>
                </children>

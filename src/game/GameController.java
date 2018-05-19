@@ -3,6 +3,7 @@ package game;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -68,9 +69,8 @@ public class GameController {
     Group gridGroup = new Group();
     
     // store the moved car id of each step 
-    ArrayList<Integer> history = new ArrayList<Integer>();
+    Stack<Movement> history = new Stack<>(); 
     
-
     //step counter
     //variables prepared for stepCounter
     IntegerProperty steps = new SimpleIntegerProperty();
@@ -266,10 +266,10 @@ public class GameController {
              */
             // refresh the board reference of the car in board.
             // add up move counter if the car position is changed
-            refreshCarInBoard(thisCar,
+            moveCar(thisCar,
                     thisCar.getGridX()+ gridOffsetX,
                     thisCar.getGridY()+ gridOffsetY);
-            // refresh the position of the car in GUI
+            // force to refresh the position of the car in GUI
             thisCar.refresh();
 
             // check whether the game is finished
@@ -282,7 +282,58 @@ public class GameController {
             }
         });
     }
-
+    /**
+     * Function use to move a car in the board. Handle user interaction
+     * @param car
+     * @param gridX
+     * @param gridY
+     */
+    private void moveCar(Car car, int gridX, int gridY) {
+    	/*
+    	 * simply pass the argument, cause the low level function 
+    	 * has done the protect job.
+    	 */
+    	
+    	/*
+    	 * protect by not moving car then:
+    	 * Record the movement in the stack by the car's moving restriction
+    	 * Since the car could only move in one direction, we not need to record
+    	 * the coordinate but simply record the relative movement.
+    	 */
+    	if (car.getDir() == MoveDir.HORIZONTAL) {
+			// only can change x 
+    		gridY = car.getGridY();
+    		if (car.getGridX() == gridX) {
+				return;
+			}
+    		history.push(new Movement(car, gridX - car.getGridX()));
+		}
+    	else if (car.getDir() == MoveDir.VERTICAL) {
+			// only can change y 
+    		gridX = car.getGridX();
+    		if (car.getGridY() == gridY) {
+				return;
+    		}
+    		history.push(new Movement(car, gridY - car.getGridY()));
+    	}
+    	
+    	
+        if(car.getDir() == MoveDir.HORIZONTAL) {
+        	
+        }
+        else if (car.getDir() == MoveDir.VERTICAL) {
+			
+		}
+    	// refresh the coordinate in the board
+    	refreshCarInBoard(car, gridX, gridY);
+    	
+        
+        // change the car's stage would add up move counter
+        steps.set(steps.get()+1);
+    	
+    }
+    
+    
     private void refreshCarInBoard(Car car,
                                    int gridX,
                                    int gridY) {
@@ -335,10 +386,9 @@ public class GameController {
         }
 
         if (gridX != car.getGridX()|| gridY!= car.getGridY()){
-            // set the car's new position
+        	// set the car's new position
             car.setGrid(gridX,gridY);
-            // change the car's stage would add up move counter
-            steps.set(steps.get()+1);
+
         }
     }
     
@@ -548,56 +598,29 @@ public class GameController {
     }
     
     //the undo function
-    private boolean undo() {
+    @FXML
+    private void undo() {
     	//cannot undo at the stat of game
-//		if ( this.carID.size() == 0) {
-    	if(history.size()==0) {
-//			return false;
-    		return false;
-//		}
-    	}
-//		int cID = this.carID.get( this.carID.size() -1 );
-    	int currId = history.remove(history.size()-1);
-    	Car currCar = (Car) carGroup.getChildren().get(currId);
+    	if(history.isEmpty()) return;
     	
-//		
-//		Car c = this.Car.get(cID);
-//		Coordinate co = c.Paths.get( c.Paths.size() -1 );
-//		Coordinate preCo = c.Paths.get( c.Paths.size() -2 );
-//		
-//		//move by row
-//		if(co.x1 == co.x2) {
-//			//reset current
-//			for(int i = co.y1 ; i <= co.y2; i ++) {
-//				this.Board[co.x1][i] = -1;	
-//			}
-//			
-//			//reset previous
-//			for(int i = preCo.y1 ; i <= preCo.y2; i ++) {
-//				this.Board[preCo.x1][i] = cID;
-//			}
-//			
-//		}else if(co.y1 == co.y2) {
-//			//reset current
-//			for(int i = co.x1; i <= co.x2; i ++) {
-//				this.Board[i][co.y1] = -1;
-//			}
-//			
-//			//add previous
-//			for(int i = preCo.x1; i <= preCo.x2; i ++) {
-//				this.Board[i][preCo.y1] = cID;
-//			}
-//			
-//		}
-//		
-//		//remove form paths
-//		c.Paths.remove(c.Paths.size() -1 );
-//		//remove from carID
-//		this.carID.remove(this.carID.size() -1 );
-//		
-//		return true;
+    	// pop a movement in the stack 
+    	Movement move = history.pop();
+    	System.out.println("the car is "+move.getCar().getCarId());
+    	System.out.println("the movement is "+ move.getMovement());
+    	if (move.getCar().getDir() == MoveDir.HORIZONTAL) {
+    		// only change x
+    		refreshCarInBoard(move.getCar(), 
+    				move.getCar().getGridX() - move.getMovement(),
+    				move.getCar().getGridY());
+		}
+    	else if (move.getCar().getDir() == MoveDir.VERTICAL) {
+			// only change y 
+    		refreshCarInBoard(move.getCar(), 
+    				move.getCar().getGridX(), 
+    				move.getCar().getGridY()-move.getMovement());
+		}
     	
-    	return true;
+    	move.getCar().refresh();
     }
 }
 

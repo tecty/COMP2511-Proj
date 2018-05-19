@@ -21,19 +21,21 @@ public class GameSave implements Serializable{
 	ArrayList<Level> allLevels;
 	boolean isExpertMode;
 	
+	//variables for hint and star system
+	private int hintNum;	
+	
 	//this should be initialized when a New Game starts
 	//so the initializations of all boards should be carried out here
 	public GameSave(int isExpertMode) {
 		//first record the gaming mode (only novice or expert)
 		allLevels = new ArrayList<>();
+		hintNum = 3; //give this save-slot three stars  
 		this.isExpertMode = (isExpertMode==1); 
 		//generate and record enough level boards
 		for(int i = 0; i < NUM_OF_LEVEL; i++) {
 			allLevels.add(gameGenerate());
 			System.out.println("now the "+i+" loop");
 		}
-		System.out.println("loop fine");
-		System.out.println("final fine");
 		saveSlot++;
 	}
 	

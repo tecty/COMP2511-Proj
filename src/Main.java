@@ -8,6 +8,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import setting.Bgm;
 
 
 public class Main extends Application {
@@ -25,7 +26,7 @@ public class Main extends Application {
 		window = primaryStage;
 		//Music file is not included in the file right now
 		//But the function works
-		// Bgm.play("music/Havana.mp3");
+		Bgm.play();
 
 		// load the layout by fxml
 		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
