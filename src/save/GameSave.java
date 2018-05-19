@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import puzzleAlgorithm.NullAlgorithm;
 import puzzleAlgorithm.PuzzleAlgorithm;
 
-import levelSelect.Level;
-
 public class GameSave implements Serializable{
 	//version id
 	private static final long serialVersionUID = 1L;

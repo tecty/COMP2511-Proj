@@ -2,7 +2,7 @@ package game;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
+import java.util.Set;
 import java.util.Stack;
 
 import javafx.animation.AnimationTimer;
@@ -21,10 +21,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import levelSelect.Level;
+import save.Level;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import setting.Setting;
 
 public class GameController {
     // create game in this controller
@@ -61,7 +62,6 @@ public class GameController {
     private Grid[][] board = new Grid[6][6];
 
     // the loaded saveslot
-    GameSave saveslot;
     int chosenLevel;
     
     // store all the car in this game
@@ -117,24 +117,26 @@ public class GameController {
     // for clicked particular car
     private double offsetMax, offsetMin;
 
-    
+
+
+
     //load car settings from the save slot 
-    public void loadSaveSlot(GameSave saveslot, int chosenLevel) throws MalformedURLException {
+    public void loadSaveSlot(int level) throws MalformedURLException {
     	System.out.println("load saveslot");
-    	this.saveslot = saveslot;
-    	this.chosenLevel = chosenLevel;
+
+    	this.chosenLevel = level;
     	
     	//modify the title
-    	title.setText("Gridlock Level "+(chosenLevel+1));
+    	title.setText("Gridlock Level "+(level+1));
     	
     	//check if it is expert mode
-    	if(saveslot.expertMode()) {
+    	if(Setting.save.expertMode()) {
     		undo.setDisable(true);
     		undo.setVisible(false);
     	}
     	
     	//check if there is next level
-    	if(chosenLevel >= 8) next.setDisable(true);
+    	if(level >= 8) next.setDisable(true);
     	
     	addCars();
     	rootPane.getChildren().addAll(carGroup);
@@ -177,8 +179,8 @@ public class GameController {
     }
     
     private void addCars() throws MalformedURLException {
-        if(saveslot==null) System.out.println("slot empty");
-        Level currLevel = saveslot.getLevel(chosenLevel);
+        if(Setting.save ==null) System.out.println("slot empty");
+        Level currLevel = Setting.save.getLevel(chosenLevel);
         if(currLevel==null) {
         	System.out.println("empty");
         	System.exit(1);
@@ -230,12 +232,6 @@ public class GameController {
 
             // calculate the offset range of current car
             getOffsetRange(thisCar);
-
-            // TODO: need to delete
-            System.out.println("Dump the System while " +
-                    "click, a demo of this function");
-            dumpState(thisCar);
-
         });
 
         //set the function for mouse dragging
@@ -402,16 +398,12 @@ public class GameController {
     private void handleLevelClear()throws IOException  {
     	//first stop the timer
     	timer.stop();
-    	System.out.println("here");
-    	saveslot.getLevel(chosenLevel).update(steps.get(), time.doubleValue());
-    	System.out.println("here");
+    	Setting.save.getLevel(chosenLevel).update(steps.get(), time.doubleValue());
     	//update the up-till-now cleared level number
-    	if(chosenLevel > saveslot.getLevelCleared()) saveslot.setLevelCleared(chosenLevel);
+    	if(chosenLevel > Setting.save.getLevelCleared()) Setting.save.setLevelCleared(chosenLevel);
     	//save the new record
-    	System.out.println("here");
-    	SaveManager.save(saveslot, saveslot.getName());
+    	SaveManager.save(Setting.save, Setting.save.getName());
     	//result interface now visible
-    	System.out.println("here");
     	levelClear.setVisible(true);
     }
 
@@ -519,7 +511,6 @@ public class GameController {
                 }
             }
         }
-//        dumpState(car);
     }
     
     private void dumpState(Car car){
@@ -579,7 +570,7 @@ public class GameController {
     	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
     	Parent root = loader.load();
         LevelSelect levelSelect = loader.getController();
-        levelSelect.loadBoards(saveslot);
+        levelSelect.loadBoards(Setting.save);
         
         System.out.println("User get to level select ");
         // checkout to level select scene
@@ -596,7 +587,7 @@ public class GameController {
     	loader.setLocation(getClass().getResource("Game.fxml"));
     	Parent root = loader.load();
         GameController newGame = loader.getController();
-        newGame.loadSaveSlot(saveslot, chosenLevel+1);
+        newGame.loadSaveSlot( chosenLevel+1);
         
         System.out.println("User get to level select ");
         // checkout to level select scene
@@ -611,8 +602,6 @@ public class GameController {
     	
     	// pop a movement in the stack 
     	Movement move = history.pop();
-    	System.out.println("the car is "+move.getCar().getCarId());
-    	System.out.println("the movement is "+ move.getMovement());
     	if (move.getCar().getDir() == MoveDir.HORIZONTAL) {
     		// only change x
     		refreshCarInBoard(move.getCar(), 

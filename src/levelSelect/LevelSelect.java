@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import game.GameController;
 import save.GameSave;
+import setting.Setting;
 
 public class LevelSelect {
     @FXML
@@ -36,14 +37,11 @@ public class LevelSelect {
     Button backButton;
     
     //this is the model used for generating the nine boards
-    GameSave saveslot;
-    
+
     public void loadBoards(GameSave saveslot) {
-    	System.out.println("ha");
-    	this.saveslot = saveslot;
-    	System.out.println("level saveslot");
+    	Setting.save = saveslot;
     }
-    
+
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {
         // get the current Stage
@@ -66,23 +64,35 @@ public class LevelSelect {
         	e.printStackTrace();
         	System.exit(0);
         }
-        
-        GameController game = loader.getController();
+
+        // get the controller of the game, and set the save slot it would use
+        GameController gameController = loader.getController();
+
         //now choose which level will be loaded
-        if(actionEvent.getSource() == one) game.loadSaveSlot(saveslot, 0);
-        else if(actionEvent.getSource() == two) game.loadSaveSlot(saveslot, 1);
-        else if(actionEvent.getSource() == three) game.loadSaveSlot(saveslot, 2);
-        else if(actionEvent.getSource() == four) game.loadSaveSlot(saveslot, 3);
-        else if(actionEvent.getSource() == five) game.loadSaveSlot(saveslot, 4);
-        else if(actionEvent.getSource() == six) game.loadSaveSlot(saveslot, 5);
-        else if(actionEvent.getSource() == seven) game.loadSaveSlot(saveslot, 6);
-        else if(actionEvent.getSource() == eight) game.loadSaveSlot(saveslot, 7);
-        else if(actionEvent.getSource() == nine) game.loadSaveSlot(saveslot, 8);
+        if(actionEvent.getSource() == one)
+            gameController.loadSaveSlot(0);
+        else if(actionEvent.getSource() == two)
+            gameController.loadSaveSlot( 1);
+        else if(actionEvent.getSource() == three)
+            gameController.loadSaveSlot( 2);
+        else if(actionEvent.getSource() == four)
+            gameController.loadSaveSlot( 3);
+        else if(actionEvent.getSource() == five)
+            gameController.loadSaveSlot( 4);
+        else if(actionEvent.getSource() == six)
+            gameController.loadSaveSlot(5);
+        else if(actionEvent.getSource() == seven)
+            gameController.loadSaveSlot( 6);
+        else if(actionEvent.getSource() == eight)
+            gameController.loadSaveSlot( 7);
+        else if(actionEvent.getSource() == nine)
+            gameController.loadSaveSlot( 8);
         
         System.out.println("go to play a game of level "+ ((Button)actionEvent.getSource()).getText());
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
     }
+
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
         // checkout to main menu
