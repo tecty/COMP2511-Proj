@@ -1,12 +1,13 @@
+package gameModel;
 import java.util.ArrayList;
 
 class Car {
 	//public ArrayList<Coordinate> Paths = new ArrayList<Coordinate>();
-	public int num;
+	public int carID;
 	public ArrayList<Coordinate> Paths;
 	
 	public Car(int num, ArrayList<Coordinate> Paths) {
-		this.num = num;
+		this.carID = num;
 		this.Paths = Paths;
 	}
 	
@@ -15,7 +16,7 @@ class Car {
 		for(int i = 0; i < this.Paths.size(); i ++) {
 			p.add( this.Paths.get(i).getCopy() );
 		}
-		Car c = new Car(this.num, p);
+		Car c = new Car(this.carID, p);
 		return c;
 	}
 	
@@ -26,7 +27,7 @@ class Car {
 		//System.out.println("CALLING HashCar");
 		int hash = 1;
 		Coordinate co = this.Paths.get( this.Paths.size()-1);
-		hash = hash * 2 + this.num;
+		hash = hash * 2 + this.carID;
 		//hash horizontal or vertical
 		hash = hash * 3 + ((co.x1 == co.x2) ? 0 : 1);
 		//hash length
@@ -49,19 +50,12 @@ class Car {
         if (o == null || !(o instanceof Car)) return false;
         
         Car c = (Car) o;
-        if (this.num != c.num) return false;
+        if (this.carID != c.carID) return false;
 			
         Coordinate co = this.Paths.get( this.Paths.size()-1);
 		Coordinate oco = c.Paths.get( c.Paths.size()-1);
-		
-		//this is same as code below
-//		if(co.x1 == oco.x1 && co.x2 == oco.x2  && co.y1 == oco.y1 && co.y2 == oco.y2 ) {
-//			return true;
-//		}
-//		return false;
-		
-		
-		//horizontal or vertical equal
+
+    //horizontal or vertical equal
 		if((co.x1 == co.x2) != (oco.x1 == oco.x2))  return false;
 			
 		//length equal
@@ -77,9 +71,13 @@ class Car {
 
 		return true;
 	}
+	public int getCarID() {
+		return carID;
+	}
 	
-//	@Override
-//	protected Car clone() throws CloneNotSupportedException {
-//		return (Car) super.clone();
-//	}
+	public int getPathSize() {
+//		return the path size to check whether it has been used
+		return Paths.size();
+	}
+	
 }
