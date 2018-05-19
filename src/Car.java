@@ -53,7 +53,8 @@ class Car {
 			
         Coordinate co = this.Paths.get( this.Paths.size()-1);
 		Coordinate oco = c.Paths.get( c.Paths.size()-1);
-		//horizontal or vertical equal
+
+    //horizontal or vertical equal
 		if((co.x1 == co.x2) != (oco.x1 == oco.x2))  return false;
 			
 		//length equal
@@ -70,8 +71,4 @@ class Car {
 		return true;
 	}
 	
-//	@Override
-//	protected Car clone() throws CloneNotSupportedException {
-//		return (Car) super.clone();
-//	}
 }

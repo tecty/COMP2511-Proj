@@ -1,9 +1,8 @@
 import java.util.ArrayList;
-import java.util.List;
 class Board {
 	public int [][] Board;
 	public ArrayList<Car> Car;
-	//绉诲姩杞﹀瓙鐨勯『搴忥紝瀛樿溅瀛愮殑id
+	//record the order of moving car
 	public ArrayList<Integer> carID;
 	
 	
@@ -25,7 +24,7 @@ class Board {
 		updateBoard();
 	}
 	
-	public void updateBoard() {
+	private void updateBoard() {
 		for(int j = 0; j < this.Car.size(); j ++) {
 			Car c = this.Car.get(j);
 			Coordinate co = c.Paths.get( c.Paths.size()-1 );
@@ -45,6 +44,11 @@ class Board {
 			}
 		}	
 	}
+	
+	public int getPathSize() {
+		return this.carID.size()+1;
+	}
+	
 	
 	public ArrayList<Car> copyCarList(){
 		ArrayList<Car> car = new ArrayList<Car>();
@@ -76,25 +80,9 @@ class Board {
 		else if (!this.Car.equals(b.Car)) {
 			return false;
 		}
-		//涓�鏍�
-//		for(int i = 0; i< this.Car.size(); i ++) {
-//			 if (!this.Car.get(i).equals(b.Car.get(i))) return false;
-//		}
-		
-		
 		return true;
 		
 	}
-	
-	
-//	@Override
-//	protected ArrayList<Car> clone() throws CloneNotSupportedException {
-//		return (ArrayList<Car>) super.clone();
-//	}
-//	@Override
-//	protected Board clone() throws CloneNotSupportedException {
-//		return (Board) super.clone();
-//	}
 	
 	
 	//for debug
@@ -167,7 +155,7 @@ class Board {
 	      System.out.println(initial.isValidMove(initial.Board, initial.Car.get(1)));
 	      
 	      //sample for adding  Car1 
-	      //濡傛灉鍙槸绉诲姩浜哻ar 1 鑰屼笖 car 1 鐨刴ove 鏄厑璁哥殑鎯呭喌涓嬶紝鍔犲叆carNum
+	      //如果只是移动了car 1 而且 car 1 的move 是允许的情况下，加入carNum
 	      if(initial.isValidMove(initial.Board, initial.Car.get(1))) {
 	    	  	  initial.moveCar(1);
 	      }
