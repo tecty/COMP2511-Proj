@@ -39,12 +39,7 @@ public class Level implements Serializable{
 		}
 	}	
 	
-	
-	public void detail() {
-		System.out.println("User step: "+userStep);
-	}
-	
-	private int userStar() {
+	public int userStar() {
 		int total = 0;
 		//once passed the game
 		if(userStep!=-1) total++;

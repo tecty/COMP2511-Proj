@@ -33,21 +33,30 @@ public class Controller {
     }
 
     @FXML
-    private void levelSelectAction(ActionEvent actionEvent) throws IOException, ClassNotFoundException {
-        // try to load level select scene
-    	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("levelSelect/LevelSelect.fxml"));
-        Parent root = loader.load();
-        //load a save-slot from default save file location
-        GameSave saveslot = SaveManager.load("saving/test.sav");
-        LevelSelect levelSelect = loader.getController();
-        levelSelect.loadBoards(saveslot);
-        
-        // get the current Stage
+    private void levelSelectAction(ActionEvent actionEvent) throws IOException, ClassNotFoundException {  	
+    	// get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
-        System.out.println("User get to select level");
+
+
+        // try to load level select scene
+        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveslotSelect.fxml"));
+        System.out.println("User get to choose a savelot ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
+        
+//    	FXMLLoader loader = new FXMLLoader();
+//    	loader.setLocation(getClass().getResource("levelSelect/LevelSelect.fxml"));
+//        Parent root = loader.load();
+//        //load a save-slot from default save file location
+//        GameSave saveslot = SaveManager.load("saving/test.sav");
+//        LevelSelect levelSelect = loader.getController();
+//        levelSelect.loadBoards(saveslot);
+//        
+//        // get the current Stage
+//        Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
+//        System.out.println("User get to select level");
+//        // checkout to level select scene
+//        primaryStage.setScene(new Scene(root));
     }
 
     @FXML

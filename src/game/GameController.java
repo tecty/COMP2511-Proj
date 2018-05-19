@@ -402,10 +402,16 @@ public class GameController {
     private void handleLevelClear()throws IOException  {
     	//first stop the timer
     	timer.stop();
+    	System.out.println("here");
     	saveslot.getLevel(chosenLevel).update(steps.get(), time.doubleValue());
+    	System.out.println("here");
+    	//update the up-till-now cleared level number
+    	if(chosenLevel > saveslot.getLevelCleared()) saveslot.setLevelCleared(chosenLevel);
     	//save the new record
-    	SaveManager.save(saveslot, "saving/test.sav");
+    	System.out.println("here");
+    	SaveManager.save(saveslot, saveslot.getName());
     	//result interface now visible
+    	System.out.println("here");
     	levelClear.setVisible(true);
     }
 

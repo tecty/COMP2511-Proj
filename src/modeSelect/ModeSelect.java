@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import levelSelect.LevelSelect;
 
@@ -16,6 +18,20 @@ import save.GameSave;
 import save.SaveManager;
 
 public class ModeSelect {
+	//components on the interface
+	//input textField
+	@FXML
+	TextField saveslotName = new TextField();
+	
+	//warning labels
+	@FXML
+	Label duplicateWarning;
+	@FXML
+	Label emptyWarning;
+	@FXML
+	Label overFillWarning;
+	
+	//buttons
 	@FXML
     Button novice;
     @FXML
@@ -24,18 +40,47 @@ public class ModeSelect {
     Button backButton;    
 
     @FXML
+    private void initialize() {
+    	duplicateWarning.setVisible(false);
+    	emptyWarning.setVisible(false);
+    	overFillWarning.setVisible(false);
+    }
+    
+    @FXML
     private void modeAction(ActionEvent actionEvent) throws IOException  {
+    	initialize();
+    	//check the name of the new save-slot
+    	String name = saveslotName.getText();
+    	//validity checks
+    	if(name==null || name.isEmpty() || name.trim().isEmpty()) {
+    		emptyWarning.setVisible(true);
+    		saveslotName.setText(null);
+    		return;
+    	}
+    	if(SaveManager.checkDuplicate(name)) {
+    		duplicateWarning.setVisible(true);
+    		saveslotName.setText(null);
+    		return;
+    	}
+    	if(name.length()>255) {
+    		overFillWarning.setVisible(true);
+    		saveslotName.setText(null);
+    	}
     	//generate a new Save file
+    	//add format suffix
+    	name = name + ".sav";
+    	System.out.println("New saveslot "+name+" is created");
+    	
     	GameSave newSave;
     	//first check which gaming mode the player chooses
     	if(actionEvent.getSource() == novice) {
-    		newSave = new GameSave(0);
+    		newSave = new GameSave(name, false);
     	}
-    	else newSave = new GameSave(1);	
-    	//try to save the new save slot
-    	SaveManager.save(newSave, "saving/test.sav");
-    	    	
+    	else newSave = new GameSave(name, true);	
     	
+    	//try to save the new save slot
+    	SaveManager.save(newSave, name);
+    	    	
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));

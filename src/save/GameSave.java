@@ -9,47 +9,83 @@ import puzzleAlgorithm.PuzzleAlgorithm;
 import levelSelect.Level;
 
 public class GameSave implements Serializable{
+	//version id
 	private static final long serialVersionUID = 1L;
 
+	//save-slot name
+	String name;
+	
 	//the total number of puzzles in one save
 	private final static int NUM_OF_LEVEL = 9;
-	
-	//game saving file no
-	private static int saveSlot = 0;
-	
+
 	//currently totally generate 9 boards in the save
 	ArrayList<Level> allLevels;
 	boolean isExpertMode;
 	
-	//variables for hint and star system
+	//variables recording the progress of this save-slot
+	//number of levels cleared
+	private int levelCleared;
+	//number of remaining hint chances
 	private int hintNum;	
 	
 	//this should be initialized when a New Game starts
 	//so the initializations of all boards should be carried out here
-	public GameSave(int isExpertMode) {
-		//first record the gaming mode (only novice or expert)
-		allLevels = new ArrayList<>();
+	public GameSave(String name, boolean isExpertMode) {
+		//record the name of the slot
+		this.name = name;
+		//record the gaming mode (only novice or expert)
+		this.isExpertMode = isExpertMode; 
+		
+		//initialize the variables recording game progress
+		levelCleared = 0; //no level is cleared initially
 		hintNum = 3; //give this save-slot three stars  
-		this.isExpertMode = (isExpertMode==1); 
+		
 		//generate and record enough level boards
+		allLevels = new ArrayList<>();
 		for(int i = 0; i < NUM_OF_LEVEL; i++) {
 			allLevels.add(gameGenerate());
 			System.out.println("now the "+i+" loop");
 		}
-		saveSlot++;
+	}
+	
+	//following functions return useful information saved in the save slot
+	public String getName() {
+		return name;
+	}
+	
+	public String printExpertMode() {
+		if(isExpertMode) return "Expert Mode";
+		return "Novice Mode";
 	}
 	
 	public boolean expertMode() {
 		return isExpertMode;
 	}
 	
-	public int getSlotNum() {
-		return saveSlot;
+	public int getLevelCleared() {
+		return levelCleared;
+	}
+	
+	public int getHintRemain() {
+		return hintNum;
+	}
+	
+	public int getTotalStar() {
+		int sum = 0;
+		for(Level each : allLevels) {
+			sum += each.userStar();
+		}
+		return sum;
 	}
 	
 	public Level getLevel(int num) {
 		if(allLevels.get(num)==null) System.out.println("empty");
 		return allLevels.get(num);
+	}
+	
+	//following functions change some information stored in the save slot
+	public void setLevelCleared(int levelCleared) {
+		this.levelCleared =  levelCleared;
 	}
 	
 	public Level gameGenerate() {
