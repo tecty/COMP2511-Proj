@@ -100,6 +100,7 @@ public class ModeSelect {
     }
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
         Stage primaryStage = (Stage)  backButton.getScene().getWindow();
 

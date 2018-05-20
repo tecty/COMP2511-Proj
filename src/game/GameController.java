@@ -25,6 +25,7 @@ import levelSelect.Level;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import selector.RandomSelector;
 import setting.SoundEffect;
 
 public class GameController {
@@ -225,6 +226,7 @@ public class GameController {
 
         //set the function for mouse clicking on
         thisCar.setOnMousePressed(mouseEvent -> {
+        	SoundEffect.play("soundEffect/click.mp3");
             // only record the original mouse position
             mouseOriginX = mouseEvent.getSceneX();
             mouseOriginY = mouseEvent.getSceneY();
@@ -252,6 +254,8 @@ public class GameController {
             thisCar.relocateByOffset(mouseOffsetX,mouseOffsetY);
         });
         thisCar.setOnMouseReleased(mouseEvent -> {
+        	SoundEffect.play("soundEffect/click.mp3");
+        	
             mouseOffsetX = mouseEvent.getSceneX() - mouseOriginX;
             mouseOffsetY = mouseEvent.getSceneY() - mouseOriginY;
 
@@ -413,6 +417,8 @@ public class GameController {
     	SaveManager.save(saveslot, saveslot.getName());
     	//result interface now visible
     	System.out.println("here");
+    	
+    	SoundEffect.play("soundEffect/levelPass.mp3");
     	levelClear.setVisible(true);
     }
 

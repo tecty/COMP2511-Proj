@@ -21,8 +21,7 @@ public class Car extends StackPane implements Serializable{
     // the length of this car
     final private int len;
     
-    // history moving path
-    private ArrayList<Integer[]> path;
+    private String sound;
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
@@ -33,8 +32,8 @@ public class Car extends StackPane implements Serializable{
         this.len = len;
         this.gridX = gridX;
         this.gridY = gridY;
-        this.path = new ArrayList<>();
-
+        
+        this.sound = RandomSelector.selectSound(len);
 
         // set this car's position as given.
         this.refresh();
@@ -157,6 +156,10 @@ public class Car extends StackPane implements Serializable{
 
     public int getLen() {
         return len;
+    }
+    
+    public String getSound() {
+    	return sound;
     }
 
 }
