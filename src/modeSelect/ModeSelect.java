@@ -16,6 +16,7 @@ import java.io.IOException;
 import save.GameSave;
 
 import save.SaveManager;
+import setting.SoundEffect;
 
 public class ModeSelect {
 	//components on the interface
@@ -48,6 +49,7 @@ public class ModeSelect {
     
     @FXML
     private void modeAction(ActionEvent actionEvent) throws IOException  {
+    	SoundEffect.play("soundEffect/click.mp3");
     	initialize();
     	//check the name of the new save-slot
     	String name = saveslotName.getText();

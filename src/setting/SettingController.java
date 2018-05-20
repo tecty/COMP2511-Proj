@@ -16,6 +16,7 @@ public class SettingController {
 
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
         // get the current Stage
         Stage primaryStage = (Stage)  backButton.getScene().getWindow();
 

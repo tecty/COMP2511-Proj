@@ -12,6 +12,7 @@ import java.io.IOException;
 
 import game.GameController;
 import save.GameSave;
+import setting.SoundEffect;
 
 public class LevelSelect {
     @FXML
@@ -46,6 +47,7 @@ public class LevelSelect {
     
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {
+    	SoundEffect.play("soundEffect/click.mp3");
         // get the current Stage
         Stage primaryStage = (Stage)  one.getScene().getWindow();
 
@@ -85,6 +87,7 @@ public class LevelSelect {
     }
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
         Stage primaryStage = (Stage)  backButton.getScene().getWindow();
 

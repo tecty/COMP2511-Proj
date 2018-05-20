@@ -25,6 +25,7 @@ import levelSelect.Level;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import setting.SoundEffect;
 
 public class GameController {
     // create game in this controller
@@ -548,6 +549,7 @@ public class GameController {
     //reset all cars
     @FXML
     private void reset() {
+    	SoundEffect.play("soundEffect/click.mp3");
     	//hide the result interface
     	levelClear.setVisible(false);
     	
@@ -571,6 +573,7 @@ public class GameController {
     
     @FXML
     private void backAction() throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
         Stage primaryStage = (Stage)back.getScene().getWindow();
         
@@ -588,6 +591,7 @@ public class GameController {
     
     @FXML
     private void nextLevel() throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
     	// checkout to main menu
         Stage primaryStage = (Stage)back.getScene().getWindow();
         
@@ -606,6 +610,7 @@ public class GameController {
     //the undo function
     @FXML
     private void undo() {
+    	SoundEffect.play("soundEffect/click.mp3");
     	//cannot undo at the stat of game
     	if(history.isEmpty()) return;
     	

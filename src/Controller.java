@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import setting.SoundEffect;
 
 import java.io.File;
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class Controller {
 
     @FXML
     private void modeSelectAction(ActionEvent actionEvent) throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
     	// try to load mode select scene
     	Parent root = FXMLLoader.load(getClass().getResource("modeSelect/ModeSelect.fxml"));
     	// get the current Stage
@@ -35,6 +37,7 @@ public class Controller {
 
     @FXML
     private void levelSelectAction(ActionEvent actionEvent) throws IOException, ClassNotFoundException {  	
+    	SoundEffect.play("soundEffect/click.mp3");
     	// get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
 
@@ -48,7 +51,8 @@ public class Controller {
 
     @FXML
     private void settingAction(ActionEvent actionEvent) throws IOException {
-        // get the current Stage
+    	SoundEffect.play("soundEffect/click.mp3");
+    	// get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
 
 
@@ -61,7 +65,8 @@ public class Controller {
 
     @FXML
     private void quitAction(ActionEvent actionEvent) {
-        // try to exit this.
+    	SoundEffect.play("soundEffect/click.mp3");
+    	// try to exit this.
         // get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
         // call the function set in main, close the programme gracefully
