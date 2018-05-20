@@ -39,7 +39,7 @@ public class Controller {
 
 
         // try to load level select scene
-        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveslotSelect.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveSlotSelect.fxml"));
         System.out.println("User get to choose a savelot ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
