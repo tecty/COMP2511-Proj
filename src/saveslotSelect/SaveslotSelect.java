@@ -52,7 +52,7 @@ public class SaveslotSelect {
 			
 			slot.setOnMouseClicked(e -> {
 				FXMLLoader loader = new FXMLLoader();
-		    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+		    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
 		    	Parent root = null;
 		    	try {
 					root = loader.load();

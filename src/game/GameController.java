@@ -576,7 +576,7 @@ public class GameController {
         
         //go to the level select menu under the same save slot
 		FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
     	Parent root = loader.load();
         LevelSelect levelSelect = loader.getController();
         levelSelect.loadBoards(saveslot);
