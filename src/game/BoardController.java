@@ -6,9 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import save.Level;
-import setting.Setting;
 
-import java.net.MalformedURLException;
 import java.util.Stack;
 
 public class BoardController {
@@ -34,9 +32,6 @@ public class BoardController {
     // store the moved car id of each step
     Stack<Movement> history = new Stack<>();
 
-    //step counter
-    //variables prepared for stepCounter
-    IntegerProperty steps = new SimpleIntegerProperty();
 
     // current level the board is responsible for
     Level currentLevel;
@@ -49,7 +44,6 @@ public class BoardController {
         setBoard();
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
-
     }
 
 
@@ -57,11 +51,32 @@ public class BoardController {
     public void reset(Level level){
         // reset to a given level
         currentLevel = level;
-        addCars();
+        // remove all the cars in previous level in GUI
+        carGroup.getChildren().removeAll(carGroup.getChildren());
+        // remove all the car record in grid
+        for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 6; y++) {
+                gridBoard[x][y].setCar(null);
+            }
+        }
+        // remove all the record moving history
+        history.removeAllElements();
+
+        // add back all the car that belong to this level
+        for(Car each : currentLevel.getCars()) {
+            makeCar(
+                    each.getDir(),
+                    each.getCarId(),
+                    each.getGridX(),
+                    each.getGridY(),
+                    each.getLen()
+            );
+        }
+        // reset the step count
+        mainController.resetSteps();
     }
-    public void reset(){
-        // reset to current level
-    }
+
+
 
     private void setBoard() {
         // set up all the grid
@@ -75,18 +90,7 @@ public class BoardController {
             }
         }
     }
-    private void addCars() {
-        System.out.println("try to add come car");
-        for(Car each : currentLevel.getCars()) {
-            makeCar(
-                    each.getDir(),
-                    each.getCarId(),
-                    each.getGridX(),
-                    each.getGridY(),
-                    each.getLen()
-            );
-        }
-    }
+
 
     //check if the car making is valid
     private boolean validPosition(int gridX, int gridY, int len, MoveDir dir) {
@@ -160,15 +164,10 @@ public class BoardController {
             // force to refresh the position of the car in GUI
             thisCar.refresh();
 
-            dumpState(thisCar);
-//            // check whether the game is finished
-//            if(checkLevelClear(thisCar)) {
-//                try {
-//                    handleLevelClear();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
+            // check whether the game is finished
+            if(checkLevelClear(thisCar)) {
+                mainController.checkoutFinishPrompt();
+            }
         });
     }
     /**
@@ -206,20 +205,12 @@ public class BoardController {
             history.push(new Movement(car, gridY - car.getGridY()));
         }
 
-
-        if(car.getDir() == MoveDir.HORIZONTAL) {
-
-        }
-        else if (car.getDir() == MoveDir.VERTICAL) {
-
-        }
         // refresh the coordinate in the board
         refreshCarInBoard(car, gridX, gridY);
 
 
         // change the car's stage would add up move counter
-        steps.set(steps.get()+1);
-
+        mainController.addSteps();
     }
 
 
@@ -277,13 +268,12 @@ public class BoardController {
         if (gridX != car.getGridX()|| gridY!= car.getGridY()){
             // set the car's new position
             car.setGrid(gridX,gridY);
-
         }
     }
 
     //these functions are for checking if the level is cleared
     private boolean checkLevelClear(Car car){
-        if(car.isTarget() && car.getGridX()==0) return true;
+        if(car.isTarget() && car.getGridX()==4) return true;
         return false;
     }
 
@@ -396,7 +386,7 @@ public class BoardController {
         // dump the current state of this board
         System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
         System.out.println("OffsetRange "+ offsetMin/GameController.GRID_SIZE + " ," + offsetMax/GameController.GRID_SIZE);
-        System.out.println(steps.get());
+        System.out.println(mainController.getSteps());
         printBoard();
         System.out.println();
     }

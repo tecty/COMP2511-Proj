@@ -2,8 +2,6 @@ package game;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Set;
-import java.util.Stack;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -14,16 +12,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import save.Level;
 import levelSelect.LevelSelect;
-import save.GameSave;
 import save.SaveManager;
 import setting.Setting;
 
@@ -57,14 +52,8 @@ public class GameController {
 
     @FXML private BoardController boardController;
 
-
-
-
-
-
-
-    // the loaded saveslot
-    int chosenLevel;
+    // the loaded saveSlot
+    int currentLevel;
 
     // the integerProperty is from board now
     IntegerProperty steps = new SimpleIntegerProperty();
@@ -101,114 +90,70 @@ public class GameController {
     // the size of each grid
     public final static int GRID_SIZE = 50;
 
-
-
-    //load car settings from the save slot
-    public void loadSaveSlot(int level) throws MalformedURLException {
-//    	System.out.println("load saveslot");
-//
-//    	this.chosenLevel = level;
-//
-//    	//modify the title
-//    	title.setText("Gridlock Level "+(level+1));
-//
-//    	//check if it is expert mode
-//    	if(Setting.save.expertMode()) {
-//    		undo.setDisable(true);
-//    		undo.setVisible(false);
-//    	}
-//
-//    	//check if there is next level
-//    	if(level >= 8) next.setDisable(true);
-//
-//    	addCars();
-//    	rootPane.getChildren().addAll(carGroup);
-
-        boardController.reset(Setting.save.getLevel(level));
-    }
-    
     @FXML
     private void initialize(){
+    	//bind the value of moveCounter to the stepCounter showing in fxml
+    	stepCount.textProperty().bind(steps.asString("%d"));
 
-//    	System.out.println("initialize");
-//
-//    	//hide the result interface
-//    	levelClear.setVisible(false);
-//
-//    	//set a clean board
-//    	setBoard();
-//        // add the group to the pane
-//        // to show in the scene
-//        rootPane.getChildren().addAll(gridGroup);
-//
-//    	//bind the value of moveCounter to the stepCounter showing in fxml
-//    	stepCount.textProperty().bind(steps.asString("%d"));
-//        //try to use IntegerProperty to count steps
-//        steps.set(0);
-//
-//		//bind the timeCount label with the running timer
-//	    timeCount.textProperty().bind(time.asString("%.1f"));
-//        timer.start();
+		//bind the timeCount label with the running timer
+	    timeCount.textProperty().bind(time.asString("%.1f"));
 
         // inject this controller to the board
         // so it can increment the steps
         boardController.injectMainController(this);
     }
 
-    
-
-    
-    @FXML
-    private void handleLevelClear()throws IOException  {
+    public void checkoutFinishPrompt()  {
     	//first stop the timer
     	timer.stop();
-    	Setting.save.getLevel(chosenLevel).update(steps.get(), time.doubleValue());
+    	Setting.save.getLevel(currentLevel).update(steps.get(), time.doubleValue());
     	//update the up-till-now cleared level number
-    	if(chosenLevel > Setting.save.getLevelCleared()) Setting.save.setLevelCleared(chosenLevel);
+    	if(currentLevel > Setting.save.getLevelCleared()) Setting.save.setLevelCleared(currentLevel);
     	//save the new record
     	SaveManager.save(Setting.save, Setting.save.getName());
     	//result interface now visible
     	levelClear.setVisible(true);
     }
 
+    public void resetLevel(int level){
+        // set up new current level
+        currentLevel = level;
 
+        //hide the result interface
+        levelClear.setVisible(false);
+
+        // reset the board by loading a save
+        // step counter would reset there
+        boardController.reset(Setting.save.getLevel(currentLevel));
+
+        // reset the time
+        timer.start();
+
+        // reset the title
+    	title.setText("Puzzle "+(level+1));
+    }
 
     //The followings are button-linked functions
     //reset all cars
     @FXML
     private void reset() {
-    	//hide the result interface
-    	levelClear.setVisible(false);
-//
-//    	//reset counter
-//    	timer.stop();
-//    	steps.set(0);
-//    	//reset board and cars
-//    	gridGroup.getChildren().clear();
-//    	carGroup.getChildren().clear();
-//    	setBoard();
-//    	try {
-//    		addCars();
-//    	}
-//    	catch(Exception e){
-//    		System.out.println("load Game.fxml fail");
-//			e.printStackTrace();
-//    	}
-        boardController.reset();
-
-    	//restart timer
-    	timer.start();
+        resetLevel(currentLevel);
     }
     
     @FXML
-    private void backAction() throws IOException {
+    private void backAction(){
         // checkout to main menu
         Stage primaryStage = (Stage)back.getScene().getWindow();
         
         //go to the level select menu under the same save slot
 		FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
-    	Parent root = loader.load();
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         LevelSelect levelSelect = loader.getController();
 
         System.out.println("User get to level select ");
@@ -217,20 +162,8 @@ public class GameController {
     }    
     
     @FXML
-    private void nextLevel() throws IOException {
-    	// checkout to main menu
-        Stage primaryStage = (Stage)back.getScene().getWindow();
-        
-        //go to the level select menu under the same save slot
-		FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("Game.fxml"));
-    	Parent root = loader.load();
-        GameController newGame = loader.getController();
-        newGame.loadSaveSlot( chosenLevel+1);
-        
-        System.out.println("User get to level select ");
-        // checkout to level select scene
-        primaryStage.setScene(new Scene(root));
+    private void nextLevel() {
+        resetLevel(currentLevel+1);
     }
     
     //the undo function
@@ -247,7 +180,7 @@ public class GameController {
         return steps.get();
     }
 
-    private void restSteps(){
+    protected void resetSteps(){
         steps.set(0);
     }
 }

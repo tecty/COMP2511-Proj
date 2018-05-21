@@ -35,7 +35,7 @@ public class SaveManager {
 		return sdf.format(file.lastModified());
 	}
 	
-	public static void save(GameSave newSave, String fileName) throws IOException {
+	public static void save(GameSave newSave, String fileName)  {
 		File file = new File(fileName);
 		//always refresh the file(whether it is existing or not)
 		file.delete();
