@@ -570,8 +570,7 @@ public class GameController {
     	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
     	Parent root = loader.load();
         LevelSelect levelSelect = loader.getController();
-        levelSelect.loadBoards(Setting.save);
-        
+
         System.out.println("User get to level select ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));

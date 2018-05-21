@@ -38,9 +38,7 @@ public class LevelSelect {
     
     //this is the model used for generating the nine boards
 
-    public void loadBoards(GameSave saveslot) {
-    	Setting.save = saveslot;
-    }
+
 
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {

@@ -26,7 +26,11 @@ public class Main extends Application {
 		window = primaryStage;
 		//Music file is not included in the file right now
 		//But the function works
-//		Bgm.play();
+		try {
+
+			Bgm.play();
+		}
+
 
 		// load the layout by fxml
 		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));

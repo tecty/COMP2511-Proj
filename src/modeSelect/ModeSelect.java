@@ -16,6 +16,7 @@ import java.io.IOException;
 import save.GameSave;
 
 import save.SaveManager;
+import setting.Setting;
 
 public class ModeSelect {
 	//components on the interface
@@ -87,7 +88,7 @@ public class ModeSelect {
     	Parent root = loader.load();
     	
     	LevelSelect levelSelect = loader.getController();
-    	levelSelect.loadBoards(newSave);
+    	Setting.save = newSave;
     	
         // get the current Stage
         Stage primaryStage = (Stage)novice.getScene().getWindow();

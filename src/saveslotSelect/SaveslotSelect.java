@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import setting.Setting;
 
 public class SaveslotSelect {
 	//components on FXML file
@@ -62,7 +63,8 @@ public class SaveslotSelect {
 				}
 		    	
 		    	LevelSelect levelSelect = loader.getController();
-		    	levelSelect.loadBoards(saveSlot);
+				// record the save is using in setting class.
+				Setting.save = saveSlot;
 		    	
 		        // get the current Stage
 		        Stage primaryStage = (Stage)slot.getScene().getWindow();
