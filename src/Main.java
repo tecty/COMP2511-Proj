@@ -29,6 +29,8 @@ public class Main extends Application {
 		try {
 
 			Bgm.play();
+		}catch (Exception e){
+			// no nothing
 		}
 
 
