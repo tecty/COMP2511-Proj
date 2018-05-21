@@ -18,10 +18,15 @@ public class SoundEffect{
 	
 	public static void play(String fileName) {
 		if(playable) {
-			// TODO Auto-generated method stub
-			Media hit = new Media(Paths.get(fileName).toUri().toString());
-			mediaPlayer = new MediaPlayer(hit);
-			mediaPlayer.play();
+			try {
+
+				Media hit = new Media(Paths.get(fileName).toUri().toString());
+				mediaPlayer = new MediaPlayer(hit);
+				mediaPlayer.play();
+			} catch (Exception e){
+				// do nothing if system is not support
+			}
+
 		}
 		else return;
 	}

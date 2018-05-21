@@ -49,28 +49,38 @@ public class BoardController {
 
 
     public void reset(Level level){
-        // reset to a given level
-        currentLevel = level;
-        // remove all the cars in previous level in GUI
-        carGroup.getChildren().removeAll(carGroup.getChildren());
-        // remove all the car record in grid
-        for (int x = 0; x < 6; x++) {
-            for (int y = 0; y < 6; y++) {
-                gridBoard[x][y].setCar(null);
+        if(currentLevel == level){
+            // not destroy the old car to prevent
+            // the car from shifting colors
+            // by undo all user's steps
+            while (!history.isEmpty()){
+                undo();
             }
         }
-        // remove all the record moving history
-        history.removeAllElements();
+        else {
+            // reset to a given level
+            currentLevel = level;
+            // remove all the cars in previous level in GUI
+            carGroup.getChildren().removeAll(carGroup.getChildren());
+            // remove all the car record in grid
+            for (int x = 0; x < 6; x++) {
+                for (int y = 0; y < 6; y++) {
+                    gridBoard[x][y].setCar(null);
+                }
+            }
+            // remove all the record moving history
+            history.removeAllElements();
 
-        // add back all the car that belong to this level
-        for(Car each : currentLevel.getCars()) {
-            makeCar(
-                    each.getDir(),
-                    each.getCarId(),
-                    each.getGridX(),
-                    each.getGridY(),
-                    each.getLen()
-            );
+            // add back all the car that belong to this level
+            for(Car each : currentLevel.getCars()) {
+                makeCar(
+                        each.getDir(),
+                        each.getCarId(),
+                        each.getGridX(),
+                        each.getGridY(),
+                        each.getLen()
+                );
+            }
         }
         // reset the step count
         mainController.resetSteps();

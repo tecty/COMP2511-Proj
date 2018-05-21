@@ -42,17 +42,17 @@ public class LevelSelect {
     private void levelLock() {
         //check the playability of each level
 
-        System.out.println("SAVE:" + saveslot.getLevelCleared());
+        System.out.println("SAVE:" + Setting.save.getLevelCleared());
 
-        if(0 > saveslot.getLevelCleared()+1) one.setDisable(true);
-        if(1 > saveslot.getLevelCleared()+1) two.setDisable(true);
-        if(2 > saveslot.getLevelCleared()+1) three.setDisable(true);
-        if(3 > saveslot.getLevelCleared()+1) four.setDisable(true);
-        if(4 > saveslot.getLevelCleared()+1) five.setDisable(true);
-        if(5 > saveslot.getLevelCleared()+1) six.setDisable(true);
-        if(6 > saveslot.getLevelCleared()+1) seven.setDisable(true);
-        if(7 > saveslot.getLevelCleared()+1) eight.setDisable(true);
-        if(8 > saveslot.getLevelCleared()+1) nine.setDisable(true);
+        if(0 > Setting.save.getLevelCleared()+1) one.setDisable(true);
+        if(1 > Setting.save.getLevelCleared()+1) two.setDisable(true);
+        if(2 > Setting.save.getLevelCleared()+1) three.setDisable(true);
+        if(3 > Setting.save.getLevelCleared()+1) four.setDisable(true);
+        if(4 > Setting.save.getLevelCleared()+1) five.setDisable(true);
+        if(5 > Setting.save.getLevelCleared()+1) six.setDisable(true);
+        if(6 > Setting.save.getLevelCleared()+1) seven.setDisable(true);
+        if(7 > Setting.save.getLevelCleared()+1) eight.setDisable(true);
+        if(8 > Setting.save.getLevelCleared()+1) nine.setDisable(true);
     }
 
     @FXML

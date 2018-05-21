@@ -26,12 +26,7 @@ public class Main extends Application {
 		window = primaryStage;
 		//Music file is not included in the file right now
 		//But the function works
-		try {
-
-			Bgm.play();
-		}catch (Exception e){
-			// no nothing
-		}
+		Bgm.play();
 
 
 		// load the layout by fxml
