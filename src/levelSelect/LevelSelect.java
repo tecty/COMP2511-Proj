@@ -36,9 +36,14 @@ public class LevelSelect {
     Button nine;
     @FXML
     Button backButton;
-    
-    //this is the model used for generating the nine boards
 
+    @FXML
+    private void initialize(){
+        // block the unfinished level
+        levelLock();
+    }
+
+    //this is the model used for generating the nine boards
     private void levelLock() {
         //check the playability of each level
 

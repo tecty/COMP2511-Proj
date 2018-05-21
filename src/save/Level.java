@@ -43,10 +43,15 @@ public class Level implements Serializable{
 		int total = 0;
 		//once passed the game
 		if(userStep!=-1) total++;
+		else
+			// if user didn't finished this,
+			// he won't get any stars
+			return 0;
+
 		//once get recommend steps
 		if(userStep < recommendStep) total++;
 		//once get recommend time
-		if(userTime < recommendTime(recommendStep)) total++;
+		if(userTime < recommendTime()) total++;
 		return total;
 	}
 	
@@ -55,8 +60,8 @@ public class Level implements Serializable{
 	}
 	
 	//best time consumed
-	private double recommendTime(int recommendTime) {
-		return 0;
+	private double recommendTime() {
+		return 10*recommendStep;
 	}
 	
 }
