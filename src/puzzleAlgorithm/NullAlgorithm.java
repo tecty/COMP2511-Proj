@@ -19,7 +19,7 @@ public class NullAlgorithm implements PuzzleAlgorithm{
 		cars.add(new Car(MoveDir.VERTICAL,1,2,2,2));
 		cars.add(new Car(MoveDir.VERTICAL,2,0,0,3));
 		cars.add(new Car(MoveDir.VERTICAL,3,2,2,2));
-			
+
 		System.out.println("car fine");
 		return cars;
 	}

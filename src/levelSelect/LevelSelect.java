@@ -13,6 +13,7 @@ import java.io.IOException;
 import game.GameController;
 import save.GameSave;
 import setting.Setting;
+import setting.SoundEffect;
 
 public class LevelSelect {
     @FXML
@@ -38,10 +39,25 @@ public class LevelSelect {
     
     //this is the model used for generating the nine boards
 
+    private void levelLock() {
+        //check the playability of each level
 
+        System.out.println("SAVE:" + saveslot.getLevelCleared());
+
+        if(0 > saveslot.getLevelCleared()+1) one.setDisable(true);
+        if(1 > saveslot.getLevelCleared()+1) two.setDisable(true);
+        if(2 > saveslot.getLevelCleared()+1) three.setDisable(true);
+        if(3 > saveslot.getLevelCleared()+1) four.setDisable(true);
+        if(4 > saveslot.getLevelCleared()+1) five.setDisable(true);
+        if(5 > saveslot.getLevelCleared()+1) six.setDisable(true);
+        if(6 > saveslot.getLevelCleared()+1) seven.setDisable(true);
+        if(7 > saveslot.getLevelCleared()+1) eight.setDisable(true);
+        if(8 > saveslot.getLevelCleared()+1) nine.setDisable(true);
+    }
 
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {
+    	SoundEffect.play("soundEffect/click.mp3");
         // get the current Stage
         Stage primaryStage = (Stage)  one.getScene().getWindow();
 
@@ -93,6 +109,7 @@ public class LevelSelect {
 
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
+    	SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
         Stage primaryStage = (Stage)  backButton.getScene().getWindow();
 

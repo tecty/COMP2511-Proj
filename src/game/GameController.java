@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 import levelSelect.LevelSelect;
 import save.SaveManager;
 import setting.Setting;
+import selector.RandomSelector;
+import setting.SoundEffect;
 
 public class GameController {
     // create game in this controller
@@ -113,6 +115,8 @@ public class GameController {
     	SaveManager.save(Setting.save, Setting.save.getName());
     	//result interface now visible
     	levelClear.setVisible(true);
+    	// play the game successful sound effect.
+        SoundEffect.play("soundEffect/levelPass.mp3");
     }
 
     public void resetLevel(int level){
@@ -137,6 +141,7 @@ public class GameController {
     //reset all cars
     @FXML
     private void reset() {
+        SoundEffect.play("soundEffect/click.mp3");
         resetLevel(currentLevel);
     }
     
@@ -163,12 +168,14 @@ public class GameController {
     
     @FXML
     private void nextLevel() {
+        SoundEffect.play("soundEffect/click.mp3");
         resetLevel(currentLevel+1);
     }
     
     //the undo function
     @FXML
     private void undo() {
+        SoundEffect.play("soundEffect/click.mp3");
     	boardController.undo();
     }
 

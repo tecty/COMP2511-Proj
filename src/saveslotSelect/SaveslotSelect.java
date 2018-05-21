@@ -18,6 +18,7 @@ import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
 import setting.Setting;
+import setting.SoundEffect;
 
 public class SaveslotSelect {
 	//components on FXML file
@@ -52,6 +53,7 @@ public class SaveslotSelect {
 			list.getChildren().add(slot);
 			
 			slot.setOnMouseClicked(e -> {
+				SoundEffect.play("soundEffect/click.mp3");
 				FXMLLoader loader = new FXMLLoader();
 		    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
 		    	Parent root = null;
@@ -78,6 +80,7 @@ public class SaveslotSelect {
 	
 	@FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
+		SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
         Stage primaryStage = (Stage)back.getScene().getWindow();
         // try to load level select scene

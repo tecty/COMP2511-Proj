@@ -8,6 +8,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import selector.RandomSelector;
 
 public class Car extends StackPane implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -20,8 +21,7 @@ public class Car extends StackPane implements Serializable{
     // the length of this car
     final private int len;
     
-    // history moving path
-    private ArrayList<Integer[]> path;
+    private String sound;
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
@@ -32,8 +32,8 @@ public class Car extends StackPane implements Serializable{
         this.len = len;
         this.gridX = gridX;
         this.gridY = gridY;
-        this.path = new ArrayList<>();
-
+        
+        this.sound = RandomSelector.selectSound(len);
 
         // set this car's position as given.
         this.refresh();
@@ -56,35 +56,24 @@ public class Car extends StackPane implements Serializable{
         Rectangle carRectangle = new Rectangle();
         
         getChildren().addAll(carRectangle, img);
-
+        
+    	String chooseImg = "-fx-background-image: url(\"/img/" + RandomSelector.selectImg(getLen(), getDir(), isTarget())+"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;";
+    	
+    	img.setStyle(chooseImg);
+        
         // set the style of this car
         if (dir == MoveDir.HORIZONTAL) {
             // height ==1
             carRectangle.setWidth(getLen() * GameController.GRID_SIZE);
             carRectangle.setHeight(GameController.GRID_SIZE);
-            if(getLen()==2) { //a horizontal car
-            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTarget.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            	else img.setStyle("-fx-background-image: url(\"/img/car.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            }
-            else { //a horizontal truck
-                img.setStyle("-fx-background-image: url(\"/img/truck2.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            }
         }
         else if (dir == MoveDir.VERTICAL){
             // width ==1
             carRectangle.setWidth(GameController.GRID_SIZE);
             carRectangle.setHeight(getLen() * GameController.GRID_SIZE);
-            if(getLen()==2) {
-            	if(isTarget()) img.setStyle("-fx-background-image: url(\"/img/carTargetV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            	else img.setStyle("-fx-background-image: url(\"/img/carV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            }
-            else {
-                img.setStyle("-fx-background-image: url(\"/img/truck2V.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            }
         }
         // TODO: Style and center the car
         // don't know how to center the color block
-
 
         // set the color by given.
         carRectangle.setFill(Color.TRANSPARENT);
@@ -167,6 +156,10 @@ public class Car extends StackPane implements Serializable{
 
     public int getLen() {
         return len;
+    }
+    
+    public String getSound() {
+    	return sound;
     }
 
 }
