@@ -25,7 +25,7 @@ public class Car extends StackPane implements Serializable{
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
-               int len) throws MalformedURLException{
+               int len) {
         // set the information of this car
         this.dir = dir;
         this.carId = carId;

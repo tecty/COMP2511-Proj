@@ -2,16 +2,18 @@ package game;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
 import save.Level;
 import setting.Setting;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Stack;
 
-public class Board extends Pane{
+public class BoardController {
+    @FXML
+    Pane root;
     // store all the car in this game
     Group carGroup = new Group();
     Group gridGroup = new Group();
@@ -35,27 +37,30 @@ public class Board extends Pane{
     //step counter
     //variables prepared for stepCounter
     IntegerProperty steps = new SimpleIntegerProperty();
-    
-    // current level the board is responsible for 
-    int currentLevel;
-    public Board(){
-        // add group into the region on the screen
-//        this.getChildren().add(gridGroup);
-//        this.getChildren().add(carGroup);
+
+    // current level the board is responsible for
+    Level currentLevel;
+
+    // a handle to main controller
+    GameController mainController;
+
+    @FXML private void initialize(){
+        // load all the grid
+        setBoard();
+        root.getChildren().addAll(gridGroup);
+        root.getChildren().addAll(carGroup);
+
     }
 
-    public Group getCarGroup(){
-        return carGroup;
-    }
-    public Group getGridGroup(){
-        return gridGroup;
-    }
 
-    public void reset(int level){
 
+    public void reset(Level level){
+        // reset to a given level
+        currentLevel = level;
+        addCars();
     }
     public void reset(){
-
+        // reset to current level
     }
 
     private void setBoard() {
@@ -70,14 +75,9 @@ public class Board extends Pane{
             }
         }
     }
-    private void addCars() throws MalformedURLException {
-        if(Setting.save ==null) System.out.println("slot empty");
-        Level currLevel = Setting.save.getLevel(currentLevel);
-        if(currLevel==null) {
-            System.out.println("empty");
-            System.exit(1);
-        }
-        for(Car each : currLevel.getCars()) {
+    private void addCars() {
+        System.out.println("try to add come car");
+        for(Car each : currentLevel.getCars()) {
             makeCar(
                     each.getDir(),
                     each.getCarId(),
@@ -105,7 +105,7 @@ public class Board extends Pane{
 
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
-                         int gridY, int len) throws MalformedURLException{
+                         int gridY, int len){
         //if the car cannot be made, ignore this car
         if(!validPosition(gridX, gridY, len, dir)) return;
         // pass through the argument
@@ -160,6 +160,7 @@ public class Board extends Pane{
             // force to refresh the position of the car in GUI
             thisCar.refresh();
 
+            dumpState(thisCar);
 //            // check whether the game is finished
 //            if(checkLevelClear(thisCar)) {
 //                try {
@@ -285,6 +286,7 @@ public class Board extends Pane{
         if(car.isTarget() && car.getGridX()==0) return true;
         return false;
     }
+
     /**
      * Return the actual grid offset of the car by that move and
      * that direction.
@@ -304,7 +306,6 @@ public class Board extends Pane{
     }
 
     public boolean handleCollision(Car car){
-
 
         if (car.getDir() == MoveDir.HORIZONTAL){
             // y = y_0
@@ -433,7 +434,10 @@ public class Board extends Pane{
 
         move.getCar().refresh();
     }
-    public IntegerProperty getStepProperty(){
-        return steps;
+
+    protected void injectMainController(GameController mainController){
+        this.mainController = mainController;
     }
+
+
 }

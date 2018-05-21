@@ -31,8 +31,6 @@ public class GameController {
     // create game in this controller
 	@FXML //finish
 	Pane levelClear;
-    @FXML //finish
-    Pane rootPane;
     //labels
     @FXML
     private Label title = new Label();
@@ -56,12 +54,12 @@ public class GameController {
     private Button replay = new Button();
     @FXML
     private Button next = new Button();
-    
-    
+
+    @FXML private BoardController boardController;
 
 
-    // new board structure for the game
-    private Board boardNew = new Board();
+
+
 
 
 
@@ -69,7 +67,7 @@ public class GameController {
     int chosenLevel;
 
     // the integerProperty is from board now
-    IntegerProperty steps = boardNew.getStepProperty();
+    IntegerProperty steps = new SimpleIntegerProperty();
     
     //timer
 	//variables prepared for timer
@@ -105,9 +103,7 @@ public class GameController {
 
 
 
-
-
-    //load car settings from the save slot 
+    //load car settings from the save slot
     public void loadSaveSlot(int level) throws MalformedURLException {
 //    	System.out.println("load saveslot");
 //
@@ -127,12 +123,12 @@ public class GameController {
 //
 //    	addCars();
 //    	rootPane.getChildren().addAll(carGroup);
+
+        boardController.reset(Setting.save.getLevel(level));
     }
     
     @FXML
     private void initialize(){
-        rootPane.getChildren().add(boardNew.getCarGroup());
-        rootPane.getChildren().add(boardNew.getGridGroup());
 
 //    	System.out.println("initialize");
 //
@@ -154,7 +150,9 @@ public class GameController {
 //	    timeCount.textProperty().bind(time.asString("%.1f"));
 //        timer.start();
 
-        // create a new board
+        // inject this controller to the board
+        // so it can increment the steps
+        boardController.injectMainController(this);
     }
 
     
@@ -196,7 +194,7 @@ public class GameController {
 //    		System.out.println("load Game.fxml fail");
 //			e.printStackTrace();
 //    	}
-        boardNew.reset();
+        boardController.reset();
 
     	//restart timer
     	timer.start();
@@ -238,7 +236,19 @@ public class GameController {
     //the undo function
     @FXML
     private void undo() {
-    	boardNew.undo();
+    	boardController.undo();
+    }
+
+    protected void addSteps(){
+        steps.set(steps.get()+1);
+    }
+
+    protected int getSteps(){
+        return steps.get();
+    }
+
+    private void restSteps(){
+        steps.set(0);
     }
 }
 

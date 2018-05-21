@@ -21,9 +21,13 @@
       <StackPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <BorderPane prefHeight="400.0" prefWidth="600.0">
+               <left>
+               </left>
                <center>
-                  <Pane fx:id="rootPane" prefHeight="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
+                  <Pane BorderPane.alignment="CENTER">
+                      <fx:include source="Board.fxml" fx:id="board" />
+
+                      <BorderPane.margin>
                         <Insets bottom="50.0" left="60.0" top="20.0" />
                      </BorderPane.margin>
                   </Pane>
@@ -114,7 +118,7 @@
             </BorderPane>
          </children>
       </StackPane>
-      <Pane fx:id="levelClear" prefHeight="430.0" prefWidth="630.0" style="-fx-background-color: rgb(255,255,255,0.9);">
+      <Pane fx:id="levelClear" prefHeight="430.0" prefWidth="630.0" style="-fx-background-color: rgb(255,255,255,0.9);" visible="false">
          <children>
             <StackPane layoutX="95.0" layoutY="84.0" prefHeight="262.0" prefWidth="440.0" style="-fx-border-color: BLACK; -fx-border-width: 3; -fx-background-color: #FFFFFF;">
                <children>
