@@ -53,15 +53,15 @@ public class LevelSelect {
         
         System.out.println("SAVE:" + saveslot.getLevelCleared());
         
-        if(0 > saveslot.getLevelCleared()) one.setDisable(true);
-        if(1 > saveslot.getLevelCleared()) two.setDisable(true);
-        if(2 > saveslot.getLevelCleared()) three.setDisable(true);
-        if(3 > saveslot.getLevelCleared()) four.setDisable(true);
-        if(4 > saveslot.getLevelCleared()) five.setDisable(true);
-        if(5 > saveslot.getLevelCleared()) six.setDisable(true);
-        if(6 > saveslot.getLevelCleared()) seven.setDisable(true);
-        if(7 > saveslot.getLevelCleared()) eight.setDisable(true);
-        if(8 > saveslot.getLevelCleared()) nine.setDisable(true);
+        if(0 > saveslot.getLevelCleared()+1) one.setDisable(true);
+        if(1 > saveslot.getLevelCleared()+1) two.setDisable(true);
+        if(2 > saveslot.getLevelCleared()+1) three.setDisable(true);
+        if(3 > saveslot.getLevelCleared()+1) four.setDisable(true);
+        if(4 > saveslot.getLevelCleared()+1) five.setDisable(true);
+        if(5 > saveslot.getLevelCleared()+1) six.setDisable(true);
+        if(6 > saveslot.getLevelCleared()+1) seven.setDisable(true);
+        if(7 > saveslot.getLevelCleared()+1) eight.setDisable(true);
+        if(8 > saveslot.getLevelCleared()+1) nine.setDisable(true);
     }
     
     
