@@ -25,7 +25,7 @@
                </left>
                <center>
                   <Pane BorderPane.alignment="CENTER">
-                      <fx:include source="Board.fxml" fx:id="board" />
+                      <fx:include fx:id="board" source="Board.fxml" />
 
                       <BorderPane.margin>
                         <Insets bottom="50.0" left="60.0" top="20.0" />
@@ -113,6 +113,9 @@
                      <font>
                         <Font size="43.0" />
                      </font>
+                     <BorderPane.margin>
+                        <Insets top="20.0" />
+                     </BorderPane.margin>
                   </Label>
                </top>
             </BorderPane>

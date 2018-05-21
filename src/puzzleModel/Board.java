@@ -1,44 +1,46 @@
-package gameModel;
+package puzzleModel;
+
+import game.MoveDir;
 
 import java.util.ArrayList;
 
-class Board {
-    public int[][] Board;
-    public ArrayList<Car> Car;
+public class Board {
+    public int[][] gridMatrix;
+    public ArrayList<Car> carList;
     // record the order of moving car
     public ArrayList<Integer> carID;
 
     // initialise board
     public Board(ArrayList<Car> c, ArrayList<Integer> carID) {
-        this.Board = new int[6][6];
+        this.gridMatrix = new int[6][6];
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                this.Board[i][j] = -1;
+                this.gridMatrix[i][j] = -1;
             }
         }
-        this.Car = c;
+        this.carList = c;
         //this.carID = new ArrayList<Integer>();
         this.carID = carID;
         updateBoard();
     }
 
     public void updateBoard() {
-        for (int j = 0; j < this.Car.size(); j++) {
-            Car c = this.Car.get(j);
+        for (int j = 0; j < this.carList.size(); j++) {
+            Car c = this.carList.get(j);
             Coordinate co = c.Paths.get(c.Paths.size() - 1);
 
             // move by row
             if (co.x1 == co.x2) {
                 // update new
                 for (int i = co.y1; i <= co.y2; i++) {
-                    this.Board[co.x1][i] = c.getCarID();
+                    this.gridMatrix[co.x1][i] = c.getCarID();
                 }
 
             // move by column
             } else if (co.y1 == co.y2) {
                 // update new
                 for (int i = co.x1; i <= co.x2; i++) {
-                    this.Board[i][co.y1] = c.getCarID();
+                    this.gridMatrix[i][co.y1] = c.getCarID();
                 }
             }
         }
@@ -50,7 +52,7 @@ class Board {
 
     public ArrayList<Car> copyCarList() {
         ArrayList<Car> car = new ArrayList<Car>();
-        for (Car c : this.Car) {
+        for (Car c : this.carList) {
             car.add(c.getCopy());
         }
         return car;
@@ -59,7 +61,7 @@ class Board {
     @Override
     public int hashCode() {
         //System.out.println("CALLING HashBoard");
-        int result = ((this.Car == null) ? 0 : this.Car.hashCode());
+        int result = ((this.carList == null) ? 0 : this.carList.hashCode());
         return result;
     }
 
@@ -71,9 +73,9 @@ class Board {
         if (o == null || !(o instanceof Board)) return false;
 
         Board b = (Board) o;
-        if ((this.Car == null && b.Car != null)) {
+        if ((this.carList == null && b.carList != null)) {
             return false;
-        } else if (!this.Car.equals(b.Car)) {
+        } else if (!this.carList.equals(b.carList)) {
             return false;
         }
         return true;
@@ -84,22 +86,22 @@ class Board {
     public static void printB(Board in) {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                if (in.Board[i][j] == -1)
-                    System.out.print(" " + in.Board[i][j]);
+                if (in.gridMatrix[i][j] == -1)
+                    System.out.print(" " + in.gridMatrix[i][j]);
                 else
-                    System.out.print("  " + in.Board[i][j]);
+                    System.out.print("  " + in.gridMatrix[i][j]);
             }
             System.out.println();
         }
 
-        for (int i = 0; i < in.Car.size(); i++) {
-            System.out.print("\nCar " + in.Car.get(i).getCarID() + " : ");
+        for (int i = 0; i < in.carList.size(); i++) {
+            System.out.print("\ncarList " + in.carList.get(i).getCarID() + " : ");
 
-            for (int j = 0; j < in.Car.get(i).Paths.size(); j++) {
-                System.out.print(" (" + in.Car.get(i).Paths.get(j).x1 + "," +
-                        in.Car.get(i).Paths.get(j).y1 + ") (" +
-                        in.Car.get(i).Paths.get(j).x2 + "," +
-                        in.Car.get(i).Paths.get(j).y2 + ") + ");
+            for (int j = 0; j < in.carList.get(i).Paths.size(); j++) {
+                System.out.print(" (" + in.carList.get(i).Paths.get(j).x1 + "," +
+                        in.carList.get(i).Paths.get(j).y1 + ") (" +
+                        in.carList.get(i).Paths.get(j).x2 + "," +
+                        in.carList.get(i).Paths.get(j).y2 + ") + ");
             }
         }
 
@@ -118,7 +120,7 @@ class Board {
         }
         int cID = this.carID.get(this.carID.size() - 1);
 
-        Car c = this.Car.get(cID);
+        Car c = this.carList.get(cID);
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
         Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
 
@@ -126,24 +128,24 @@ class Board {
         if (co.x1 == co.x2) {
             // reset current
             for (int i = co.y1; i <= co.y2; i++) {
-                this.Board[co.x1][i] = -1;
+                this.gridMatrix[co.x1][i] = -1;
             }
 
             // reset previous
             for (int i = preCo.y1; i <= preCo.y2; i++) {
-                this.Board[preCo.x1][i] = cID;
+                this.gridMatrix[preCo.x1][i] = cID;
             }
 
         // move by column
         } else if (co.y1 == co.y2) {
             // reset current
             for (int i = co.x1; i <= co.x2; i++) {
-                this.Board[i][co.y1] = -1;
+                this.gridMatrix[i][co.y1] = -1;
             }
 
             // add previous
             for (int i = preCo.x1; i <= preCo.x2; i++) {
-                this.Board[i][preCo.y1] = cID;
+                this.gridMatrix[i][preCo.y1] = cID;
             }
 
         }
@@ -161,7 +163,7 @@ class Board {
         // add to carID list
         this.carID.add(cID);
 
-        Car c = this.Car.get(cID);
+        Car c = this.carList.get(cID);
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
         Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
 
@@ -169,23 +171,23 @@ class Board {
         if (co.x1 == co.x2) {
             //reset previous
             for (int i = preCo.y1; i <= preCo.y2; i++) {
-                this.Board[preCo.x1][i] = -1;
+                this.gridMatrix[preCo.x1][i] = -1;
             }
 
             // add new
             for (int i = co.y1; i <= co.y2; i++) {
-                this.Board[co.x1][i] = cID;
+                this.gridMatrix[co.x1][i] = cID;
             }
 
         } else if (co.y1 == co.y2) {
             // reset previous
             for (int i = preCo.x1; i <= preCo.x2; i++) {
-                this.Board[i][preCo.y1] = -1;
+                this.gridMatrix[i][preCo.y1] = -1;
             }
 
             // add new
             for (int i = co.x1; i <= co.x2; i++) {
-                this.Board[i][co.y1] = cID;
+                this.gridMatrix[i][co.y1] = cID;
             }
         }
     }
@@ -195,7 +197,7 @@ class Board {
         // boolean isValid = false;
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
 
-        if (c.num == 0 && (co.y1 > 5 || co.y2 > 5)) {
+        if (c.carID == 0 && (co.y1 > 5 || co.y2 > 5)) {
             // congratulations
             return true;
         }
@@ -210,7 +212,7 @@ class Board {
         // move by row
         if (co.x1 == co.x2) {
             for (int i = co.y1; i <= co.y2; i++) {
-                if (b[co.x1][i] != -1 && b[co.x1][i] != c.num) {
+                if (b[co.x1][i] != -1 && b[co.x1][i] != c.getCarID()) {
                     c.Paths.remove(c.Paths.size() - 1);
                     return false;
                 }
@@ -219,7 +221,7 @@ class Board {
         // move by column
         } else if (co.y1 == co.y2) {
             for (int i = co.x1; i <= co.x2; i++) {
-                if (b[i][co.y1] != -1 && b[i][co.y1] != c.num) {
+                if (b[i][co.y1] != -1 && b[i][co.y1] != c.getCarID()) {
                     c.Paths.remove(c.Paths.size() - 1);
                     return false;
                 }
@@ -228,24 +230,24 @@ class Board {
         return true;
     }
 
-    public List<Board> getPossible() {
+    public ArrayList<Board> getPossible() {
 //		System.out.println("\n GETTING POSSIBLE BOARD");
-        List<Board> possibleBoards = new ArrayList<Board>();
-        for (int i = 0; i < this.Car.size(); i++) {
-            Car car = this.Car.get(i);
+        ArrayList<Board> possibleBoards = new ArrayList<Board>();
+        for (int i = 0; i < this.carList.size(); i++) {
+            Car car = this.carList.get(i);
 
             // horizontal block move left
             if (car.Paths.get(0).x1 == car.Paths.get(0).x2) {
-                if ((car.Paths.get(0).y1 > 0) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y1 - 1] == -1) {
+                if ((car.Paths.get(0).y1 > 0) && this.gridMatrix[car.Paths.get(0).x1][car.Paths.get(0).y1 - 1] == -1) {
                     Coordinate get = new Coordinate(car.Paths.get(0).x1, (car.Paths.get(0).y1 - 1), car.Paths.get(0).x2, (car.Paths.get(0).y2 - 1));
                     ArrayList<Car> cars = new ArrayList<Car>();
-                    for (int j = 0; j < this.Car.size(); j++) {
+                    for (int j = 0; j < this.carList.size(); j++) {
                         if (j == i) {
                             ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
                             paths.add(get);
                             cars.add(new Car(j, paths));
                         } else {
-                            cars.add(j, this.Car.get(j).getCopy());
+                            cars.add(j, this.carList.get(j).getCopy());
                         }
                     }
                     Board g = new Board(cars, (new ArrayList<Integer>()));
@@ -253,16 +255,16 @@ class Board {
                 }
 
                 // horizontal block move right
-                if ((car.Paths.get(0).y2 < 5) && this.Board[car.Paths.get(0).x1][car.Paths.get(0).y2 + 1] == -1) {
+                if ((car.Paths.get(0).y2 < 5) && this.gridMatrix[car.Paths.get(0).x1][car.Paths.get(0).y2 + 1] == -1) {
                     Coordinate get = new Coordinate(car.Paths.get(0).x1, (car.Paths.get(0).y1 + 1), car.Paths.get(0).x2, (car.Paths.get(0).y2 + 1));
                     ArrayList<Car> cars = new ArrayList<Car>();
-                    for (int j = 0; j < this.Car.size(); j++) {
+                    for (int j = 0; j < this.carList.size(); j++) {
                         if (j == i) {
                             ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
                             paths.add(get);
                             cars.add(new Car(j, paths));
                         } else {
-                            cars.add(j, this.Car.get(j).getCopy());
+                            cars.add(j, this.carList.get(j).getCopy());
                         }
                     }
                     Board g = new Board(cars, (new ArrayList<Integer>()));
@@ -271,16 +273,16 @@ class Board {
             } else {
 
                 // vertical block move up
-                if ((car.Paths.get(0).x1 > 0) && this.Board[car.Paths.get(0).x1 - 1][car.Paths.get(0).y1] == -1) {
+                if ((car.Paths.get(0).x1 > 0) && this.gridMatrix[car.Paths.get(0).x1 - 1][car.Paths.get(0).y1] == -1) {
                     Coordinate get = new Coordinate((car.Paths.get(0).x1 - 1), car.Paths.get(0).y1, (car.Paths.get(0).x2 - 1), car.Paths.get(0).y2);
                     ArrayList<Car> cars = new ArrayList<Car>();
-                    for (int j = 0; j < this.Car.size(); j++) {
+                    for (int j = 0; j < this.carList.size(); j++) {
                         if (j == i) {
                             ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
                             paths.add(get);
                             cars.add(new Car(j, paths));
                         } else {
-                            cars.add(j, this.Car.get(j).getCopy());
+                            cars.add(j, this.carList.get(j).getCopy());
                         }
                     }
                     Board g = new Board(cars, (new ArrayList<Integer>()));
@@ -288,16 +290,16 @@ class Board {
                 }
 
                 // vertical block move down
-                if ((car.Paths.get(0).x2 < 5) && this.Board[car.Paths.get(0).x2 + 1][car.Paths.get(0).y2] == -1) {
+                if ((car.Paths.get(0).x2 < 5) && this.gridMatrix[car.Paths.get(0).x2 + 1][car.Paths.get(0).y2] == -1) {
                     Coordinate get = new Coordinate((car.Paths.get(0).x1 + 1), car.Paths.get(0).y1, (car.Paths.get(0).x2 + 1), car.Paths.get(0).y2);
                     ArrayList<Car> cars = new ArrayList<Car>();
-                    for (int j = 0; j < this.Car.size(); j++) {
+                    for (int j = 0; j < this.carList.size(); j++) {
                         if (j == i) {
                             ArrayList<Coordinate> paths = new ArrayList<Coordinate>();
                             paths.add(get);
                             cars.add(new Car(j, paths));
                         } else {
-                            cars.add(j, this.Car.get(j).getCopy());
+                            cars.add(j, this.carList.get(j).getCopy());
                         }
                     }
                     Board g = new Board(cars, (new ArrayList<Integer>()));
@@ -312,10 +314,10 @@ class Board {
     public ArrayList<Car> getUnmovedCar() {
         // return the unmoved car of the solved map
         ArrayList<Car> return_list = new ArrayList<>();
-        for (int i = 0; i < Car.size(); i++) {
-            if (Car.get(i).getPathSize() == 1) {
+        for (int i = 0; i < carList.size(); i++) {
+            if (carList.get(i).getPathSize() == 1) {
                 // only have unused car
-                return_list.add(Car.get(i));
+                return_list.add(carList.get(i));
             }
         }
         return return_list;
@@ -323,14 +325,58 @@ class Board {
 
     public void deleteCarByList(ArrayList<Car> carList) {
         for (int i = carList.size() - 1; i > 0; i--) {
-            Car.remove(carList.get(i).getCarID());
+            this.carList.remove(carList.get(i).getCarID());
         }
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 6; j++) {
-                this.Board[i][j] = -1;
+                this.gridMatrix[i][j] = -1;
             }
         }
         // re-render the board.
         updateBoard();
+    }
+
+    /**
+     * Change the car list in the board to the
+     * style use in the front end.
+     * @return
+     */
+    public ArrayList<game.Car> toCarList(){
+        ArrayList<game.Car> retList = new ArrayList<>();
+        for (int i = 0; i < carList.size(); i++) {
+            // all the car in the car list
+            Car thisCar = carList.get(i);
+            // coordinate of this car
+            Coordinate thisCor =  thisCar.Paths.get(0);
+
+            /**
+             * the coordinate of this package is opposite
+             * from intuitive.
+             */
+            // check it's direction
+            if (thisCor.x1 == thisCor.x2){
+                // move horizontally
+                retList.add(new game.Car(
+                        MoveDir.HORIZONTAL,
+                        i,
+                        Math.min(thisCor.y1,thisCor.y2),
+                        Math.min(thisCor.x1,thisCor.x2),
+                        Math.abs(thisCor.y2-thisCor.y1)+1
+                ));
+            }
+            else{
+                // move vertically
+                retList.add(new game.Car(
+                            MoveDir.VERTICAL,
+                            i,
+                            Math.min(thisCor.y1,thisCor.y2),
+                            Math.min(thisCor.x1,thisCor.x2),
+                            Math.abs(thisCor.x2-thisCor.x1)+1
+                        ));
+            }
+        }
+        System.out.println("The generated board is ");
+//        printB(this);
+        return retList;
     }
 }

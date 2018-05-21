@@ -2,9 +2,12 @@ package save;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import game.Car;
 import puzzleAlgorithm.NullAlgorithm;
 import puzzleAlgorithm.PuzzleAlgorithm;
+import puzzleModel.Generator;
 
 public class GameSave implements Serializable{
 	//version id
@@ -40,10 +43,24 @@ public class GameSave implements Serializable{
 		
 		//generate and record enough level boards
 		allLevels = new ArrayList<>();
+		int stepRequire ;
+
+		// this must be long , so i try to time it
+        long startTime = System.currentTimeMillis();
+
 		for(int i = 0; i < NUM_OF_LEVEL; i++) {
-			allLevels.add(gameGenerate());
+		    stepRequire = 2* NUM_OF_LEVEL + 1;
+		    if(stepRequire> 12){
+		        // max the step require to 12
+		        stepRequire = 12;
+            }
+			allLevels.add(gameGenerate(stepRequire));
 			System.out.println("now the "+i+" loop");
 		}
+        System.out.println("Spend for 9 puzzles "+
+                (System.currentTimeMillis()-startTime)
+                + " ms"
+        );
 	}
 	
 	//following functions return useful information saved in the save slot
@@ -86,11 +103,20 @@ public class GameSave implements Serializable{
 		this.levelCleared =  levelCleared;
 	}
 	
-	public Level gameGenerate() {
+	public Level gameGenerate(int steps) {
 		//the generated set of arranged cars and the corresponding recommend steps are imported in
-		PuzzleAlgorithm algorithm = new NullAlgorithm();
-		Level newLevel = new Level(algorithm.generatePuzzle(isExpertMode), algorithm.getRecommendSteps());
-		System.out.println("generate fine");
-		return newLevel;
+//		PuzzleAlgorithm algorithm = new NullAlgorithm();
+//		System.out.println("generate fine");
+        Generator generator = new Generator();
+
+        puzzleModel.Board board =  generator.generateRandomBoard(steps);
+        for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
+            Car eachCar = it.next();
+            eachCar.dumpCar();
+        }
+        board.printB(board);
+//        System.exit(0);
+        Level newLevel = new Level(board.toCarList(),steps);
+        return newLevel;
 	}
 }

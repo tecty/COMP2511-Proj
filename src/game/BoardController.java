@@ -178,6 +178,7 @@ public class BoardController {
             if(checkLevelClear(thisCar)) {
                 mainController.checkoutFinishPrompt();
             }
+            dumpState(thisCar);
         });
     }
     /**
@@ -334,60 +335,35 @@ public class BoardController {
         // Logic : [leftBoundary ,(minGridCar,) car , (maxGridCar,) rightBoundary]
 
         if (car.getDir() == MoveDir.HORIZONTAL){
-            // setup the leftBoundary and rightBoundary
-            offsetMin = -car.getGridX()                   * GameController.GRID_SIZE;
-            offsetMax = (6 - car.getGridX()- car.getLen())* GameController.GRID_SIZE;
-            // get the range of x
-
-            // find the min
-            for (int x = 0; x < 6; x++) {
-                if (gridBoard[x][car.getGridY()].getCar() == car)
-                    break;
-                if (gridBoard[x][car.getGridY()].getCar() != null ){
-                    // set the new min offset
-                    offsetMin = -(car.getGridX() -x-1)*GameController.GRID_SIZE;
-                }
+            // set the range it initially gain
+            offsetMin = -0; offsetMax=+0;
+            // find the min by gaining range
+            for (int x = car.getGridX()-1; x >= 0; x--) {
+                if(gridBoard[x][car.getGridY()].getCar() ==null)
+                    offsetMin -= GameController.GRID_SIZE;
+                else break;
             }
-
-            // find the max
-            for (int x = car.getGridX() + car.getLen(); x < 6; x++) {
-                // car length = 2 and star at 2, then search start from 4
-                // but board[4] wouldn't contain this car
-                if (gridBoard[x][car.getGridY()].getCar()!= null){
-                    // set the offset max
-                    offsetMax = (x - car.getGridX()- car.getLen() -1)*GameController.GRID_SIZE;
-                    // not need to find the next car would be collision
-                    break;
-                }
+            // find max by gaining range.
+            for (int x = car.getGridX()+car.getLen(); x < 6; x++) {
+                if(gridBoard[x][car.getGridY()].getCar() == null)
+                    offsetMax += GameController.GRID_SIZE;
+                else break;
             }
-
         }else{
             // Vertical: get the range of y
-            // setup the topBoundary and bottomBoundary
-            offsetMin = -car.getGridY()                   * GameController.GRID_SIZE;
-            offsetMax = (6 - car.getGridY()- car.getLen())* GameController.GRID_SIZE;
-            // get the range of x
-
-            // find the min
-            for (int y = 0; y < 6; y++) {
-                if (gridBoard[car.getGridX()][y].getCar() == car)
-                    break;
-                if (gridBoard[car.getGridX()][y].getCar() != null){
-                    // set the new min offset
-                    offsetMin = -(car.getGridY() -y-1)*GameController.GRID_SIZE;
-                }
+            // set the range it initially gain
+            offsetMin = -0; offsetMax=+0;
+            // find the min by gaining range
+            for (int y = car.getGridY()-1; y >= 0; y--) {
+                if(gridBoard[car.getGridX()][y].getCar() ==null)
+                    offsetMin -= GameController.GRID_SIZE;
+                else break;
             }
-
-            // find the max
-            for (int y = car.getGridY() + car.getLen(); y < 6; y++) {
-                // car length = 2 and star at 2, then search start from 4
-                // but board[4] wouldn't contain this car
-                if (gridBoard[car.getGridX()][y].hasCar(car)){
-                    // set the offset max
-                    offsetMax = (y - car.getGridY()- car.getLen() -1)*GameController.GRID_SIZE;
-                    // not need to find the next car would be collision
-                    break;
-                }
+            // find max by gaining range.
+            for (int y = car.getGridY()+car.getLen(); y < 6; y++) {
+                if (gridBoard[car.getGridX()][y].getCar() == null)
+                    offsetMax += GameController.GRID_SIZE;
+                else break;
             }
         }
     }

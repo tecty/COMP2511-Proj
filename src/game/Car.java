@@ -157,7 +157,11 @@ public class Car extends StackPane implements Serializable{
     public int getLen() {
         return len;
     }
-    
+
+    public void dumpCar(){
+        System.out.println("Car "+ getCarId()+
+                " ("+getGridX()+","+getGridY()+")" + " Length: "+ getLen());
+    }
     public String getSound() {
     	return sound;
     }

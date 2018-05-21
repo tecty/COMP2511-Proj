@@ -1,4 +1,4 @@
-package gameModel;
+package puzzleModel;
 
 class Coordinate {
     public int x1;

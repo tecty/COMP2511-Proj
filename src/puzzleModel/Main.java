@@ -1,6 +1,4 @@
-package gameModel;
-
-import java.util.*;
+package puzzleModel;
 
 public class Main {
 
@@ -8,8 +6,10 @@ public class Main {
         Generator g = new Generator();
         long startTime = System.currentTimeMillis();
         // setting desired path as argument of generator
-        Board b = g.generateRandomBoard(2, startTime);
+        Board b = g.generateRandomBoard(12
+                , startTime);
 //		for (int i = 4; i < 18; i+=2) {
+//		    System.out.println("Generating board of "+ i + " steps ");
 //			b = g.generateRandomBoard(i,startTime);
 //		}
 
