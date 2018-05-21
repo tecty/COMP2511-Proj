@@ -5,12 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
-import save.GameSave;
-import save.SaveManager;
 import setting.SoundEffect;
 
-import java.io.File;
 import java.io.IOException;
 
 

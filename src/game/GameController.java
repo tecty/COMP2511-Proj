@@ -399,7 +399,7 @@ public class GameController {
     
     //these functions are for checking if the level is cleared
     private boolean checkLevelClear(Car car){
-    	if(car.isTarget() && car.getGridX()==0) return true;
+    	if(car.isTarget() && car.getGridX()==4) return true;
     	return false;
     }
     

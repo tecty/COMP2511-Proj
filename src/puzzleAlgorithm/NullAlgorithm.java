@@ -16,10 +16,9 @@ public class NullAlgorithm implements PuzzleAlgorithm{
 		ArrayList<Car> cars = new ArrayList<>();
 		try {
 			
-			cars.add(new Car(MoveDir.HORIZONTAL,0,4,2,2));
+			cars.add(new Car(MoveDir.HORIZONTAL,0,0,2,2));
 			cars.add(new Car(MoveDir.VERTICAL,1,2,2,2));
-			cars.add(new Car(MoveDir.VERTICAL,2,0,0,3));
-			cars.add(new Car(MoveDir.VERTICAL,3,2,2,2));
+			cars.add(new Car(MoveDir.VERTICAL,2,5,2,3));
 			
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

@@ -43,7 +43,27 @@ public class LevelSelect {
     	System.out.println("ha");
     	this.saveslot = saveslot;
     	System.out.println("level saveslot");
+    	levelLock();
     }
+    
+    //lock unopened levels first
+    @FXML
+    private void levelLock() {
+    	//check the playability of each level
+        
+        System.out.println("SAVE:" + saveslot.getLevelCleared());
+        
+        if(0 > saveslot.getLevelCleared()) one.setDisable(true);
+        if(1 > saveslot.getLevelCleared()) two.setDisable(true);
+        if(2 > saveslot.getLevelCleared()) three.setDisable(true);
+        if(3 > saveslot.getLevelCleared()) four.setDisable(true);
+        if(4 > saveslot.getLevelCleared()) five.setDisable(true);
+        if(5 > saveslot.getLevelCleared()) six.setDisable(true);
+        if(6 > saveslot.getLevelCleared()) seven.setDisable(true);
+        if(7 > saveslot.getLevelCleared()) eight.setDisable(true);
+        if(8 > saveslot.getLevelCleared()) nine.setDisable(true);
+    }
+    
     
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {
@@ -81,10 +101,12 @@ public class LevelSelect {
         else if(actionEvent.getSource() == eight) game.loadSaveSlot(saveslot, 7);
         else if(actionEvent.getSource() == nine) game.loadSaveSlot(saveslot, 8);
         
+        
         System.out.println("go to play a game of level "+ ((Button)actionEvent.getSource()).getText());
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
     }
+    
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
