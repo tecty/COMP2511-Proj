@@ -43,24 +43,7 @@ public class GameSave implements Serializable{
 		
 		//generate and record enough level boards
 		allLevels = new ArrayList<>();
-		int stepRequire ;
-
-		// this must be long , so i try to time it
-        long startTime = System.currentTimeMillis();
-
-		for(int i = 0; i < NUM_OF_LEVEL; i++) {
-		    stepRequire = 2* NUM_OF_LEVEL + 1;
-		    if(stepRequire> 12){
-		        // max the step require to 12
-		        stepRequire = 12;
-            }
-			allLevels.add(gameGenerate(stepRequire));
-			System.out.println("now the "+i+" loop");
-		}
-        System.out.println("Spend for 9 puzzles "+
-                (System.currentTimeMillis()-startTime)
-                + " ms"
-        );
+		
 	}
 	
 	//following functions return useful information saved in the save slot
@@ -93,6 +76,30 @@ public class GameSave implements Serializable{
 		return sum;
 	}
 	
+	public void loadPuzzle() {
+		int stepRequire ;
+
+		// this must be long , so i try to time it
+        long startTime = System.currentTimeMillis();
+		System.out.println("here1");
+
+		for(int i = 0; i < NUM_OF_LEVEL; i++) {
+			System.out.println("looping");
+		    stepRequire = 2* NUM_OF_LEVEL + 1;
+		    if(stepRequire> 12){
+		        // max the step require to 12
+		        stepRequire = 12;
+            }
+			allLevels.add(gameGenerate(stepRequire));
+//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
+			System.out.println("now the "+i+" loop");
+		}
+        System.out.println("Spend for 9 puzzles "+
+                (System.currentTimeMillis()-startTime)
+                + " ms"
+        );
+	}
+	
 	public Level getLevel(int num) {
 		if(allLevels.get(num)==null) System.out.println("empty");
 		return allLevels.get(num);
@@ -114,7 +121,6 @@ public class GameSave implements Serializable{
             Car eachCar = it.next();
             eachCar.dumpCar();
         }
-        board.printB(board);
 //        System.exit(0);
         Level newLevel = new Level(board.toCarList(),steps);
         return newLevel;

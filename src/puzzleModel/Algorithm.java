@@ -10,8 +10,6 @@ public class Algorithm {
         ArrayList<Board> queue = new ArrayList<Board>();
 
         queue.add(board);
-
-        int cccc = 0;
         while (!queue.isEmpty()) {
             // gridMatrix b = queue.poll();
             Board b = queue.remove(0);

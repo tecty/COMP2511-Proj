@@ -26,7 +26,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="264.0" prefWidth="341.0" spacing="12.0">
                <children>
-                  <ImageView fitHeight="116.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="67.0" fitWidth="259.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@img/title.png" />
                      </image>

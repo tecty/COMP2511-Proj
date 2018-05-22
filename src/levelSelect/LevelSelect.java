@@ -38,7 +38,7 @@ public class LevelSelect {
     Button backButton;
 
     @FXML
-    private void initialize(){
+    private void initialize() throws Exception{
         // block the unfinished level
         levelLock();
     }
