@@ -6,7 +6,6 @@ import java.util.Iterator;
 
 import game.Car;
 import puzzleAlgorithm.NullAlgorithm;
-import puzzleAlgorithm.PuzzleAlgorithm;
 import puzzleModel.Generator;
 
 public class GameSave implements Serializable{
@@ -90,8 +89,8 @@ public class GameSave implements Serializable{
 		        // max the step require to 12
 		        stepRequire = 12;
             }
-			allLevels.add(gameGenerate(stepRequire));
-//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
+//			allLevels.add(gameGenerate(stepRequire));
+			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
 			System.out.println("now the "+i+" loop");
 		}
         System.out.println("Spend for 9 puzzles "+
@@ -107,7 +106,7 @@ public class GameSave implements Serializable{
 	
 	//following functions change some information stored in the save slot
 	public void setLevelCleared(int levelCleared) {
-		this.levelCleared =  levelCleared;
+		this.levelCleared =  levelCleared+1;
 	}
 	
 	public Level gameGenerate(int steps) {

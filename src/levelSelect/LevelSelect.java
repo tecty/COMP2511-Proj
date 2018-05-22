@@ -11,7 +11,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import game.GameController;
-import save.GameSave;
 import setting.Setting;
 import setting.SoundEffect;
 
@@ -49,15 +48,15 @@ public class LevelSelect {
 
         System.out.println("SAVE:" + Setting.save.getLevelCleared());
 
-        if(0 > Setting.save.getLevelCleared()+1) one.setDisable(true);
-        if(1 > Setting.save.getLevelCleared()+1) two.setDisable(true);
-        if(2 > Setting.save.getLevelCleared()+1) three.setDisable(true);
-        if(3 > Setting.save.getLevelCleared()+1) four.setDisable(true);
-        if(4 > Setting.save.getLevelCleared()+1) five.setDisable(true);
-        if(5 > Setting.save.getLevelCleared()+1) six.setDisable(true);
-        if(6 > Setting.save.getLevelCleared()+1) seven.setDisable(true);
-        if(7 > Setting.save.getLevelCleared()+1) eight.setDisable(true);
-        if(8 > Setting.save.getLevelCleared()+1) nine.setDisable(true);
+        if(0 > Setting.save.getLevelCleared()) one.setDisable(true);
+        if(1 > Setting.save.getLevelCleared()) two.setDisable(true);
+        if(2 > Setting.save.getLevelCleared()) three.setDisable(true);
+        if(3 > Setting.save.getLevelCleared()) four.setDisable(true);
+        if(4 > Setting.save.getLevelCleared()) five.setDisable(true);
+        if(5 > Setting.save.getLevelCleared()) six.setDisable(true);
+        if(6 > Setting.save.getLevelCleared()) seven.setDisable(true);
+        if(7 > Setting.save.getLevelCleared()) eight.setDisable(true);
+        if(8 > Setting.save.getLevelCleared()) nine.setDisable(true);
     }
 
     @FXML

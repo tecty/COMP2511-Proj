@@ -1,7 +1,6 @@
 package game;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -18,10 +17,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
 import save.SaveManager;
 import setting.Setting;
-import selector.RandomSelector;
 import setting.SoundEffect;
 
 public class GameController {
@@ -110,9 +107,11 @@ public class GameController {
     	timer.stop();
     	Setting.save.getLevel(currentLevel).update(steps.get(), time.doubleValue());
     	//update the up-till-now cleared level number
-    	if(currentLevel > Setting.save.getLevelCleared()) Setting.save.setLevelCleared(currentLevel);
+    	Setting.save.setLevelCleared(currentLevel);
     	//save the new record
     	SaveManager.save(Setting.save, Setting.save.getName());
+    	//take care the availability of playing the next level
+    	if(Setting.save.getLevelCleared()>=8) next.setDisable(true);
     	//result interface now visible
     	levelClear.setVisible(true);
     	// play the game successful sound effect.
@@ -159,7 +158,6 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LevelSelect levelSelect = loader.getController();
 
         System.out.println("User get to level select ");
         // checkout to level select scene
