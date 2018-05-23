@@ -40,7 +40,7 @@ public class SaveManager {
 		File file = new File(newSave.getFileName());
 		//always refresh the file(whether it is existing or not)
 		file.delete();
-//		System.out.println("Saving file...");
+		System.out.println("Saving file...");
 		try {
 			FileOutputStream fileOut = new FileOutputStream("saving/"+newSave.getFileName());
 			BufferedOutputStream bufferedStream = new BufferedOutputStream(fileOut);
