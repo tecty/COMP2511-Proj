@@ -111,7 +111,7 @@ public class GameController {
     	//save the new record
     	SaveManager.save(Setting.save, Setting.save.getName());
     	//take care the availability of playing the next level
-    	if(Setting.save.getLevelCleared()>=8) next.setDisable(true);
+    	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
     	//result interface now visible
     	levelClear.setVisible(true);
     	// play the game successful sound effect.

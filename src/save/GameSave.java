@@ -80,17 +80,16 @@ public class GameSave implements Serializable{
 
 		// this must be long , so i try to time it
         long startTime = System.currentTimeMillis();
-		System.out.println("here1");
 
 		for(int i = 0; i < NUM_OF_LEVEL; i++) {
 			System.out.println("looping");
-		    stepRequire = 2* NUM_OF_LEVEL + 1;
+		    stepRequire = 2*i+3;
 		    if(stepRequire> 12){
 		        // max the step require to 12
 		        stepRequire = 12;
             }
-//			allLevels.add(gameGenerate(stepRequire));
-			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
+			allLevels.add(gameGenerate(stepRequire));
+//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
 			System.out.println("now the "+i+" loop");
 		}
         System.out.println("Spend for 9 puzzles "+
