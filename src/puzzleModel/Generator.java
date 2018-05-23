@@ -24,7 +24,7 @@ public class Generator {
 
         while (pathLength < desiredLength) {
 
-            if (System.currentTimeMillis() - startTime > 20000) {
+            if (System.currentTimeMillis() - startTime > 10000) {
                 return generateRandomBoard(desiredLength, System.currentTimeMillis());
             }
 
