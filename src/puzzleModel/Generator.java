@@ -24,12 +24,12 @@ public class Generator {
 
         while (pathLength < desiredLength) {
 
-            if (System.currentTimeMillis() - startTime > 20000) {
+            if (System.currentTimeMillis() - startTime > 10000) {
                 return generateRandomBoard(desiredLength, System.currentTimeMillis());
             }
 
             Algorithm alg = new Algorithm();
-            Board solved = alg.Algorithm(board);
+            Board solved = alg.solve(board);
 
             if (solved == null && pathLength < desiredLength) {
                 return generateRandomBoard(desiredLength, startTime);
@@ -53,7 +53,7 @@ public class Generator {
                     board.carList.add(rand);
                     board.updateBoard();
                     Algorithm alg1 = new Algorithm();
-                    Board solved1 = alg1.Algorithm(board);
+                    Board solved1 = alg1.solve(board);
                     if (solved1 == null || (solved1 != null && (solved1.carList.size() + 1) <= pathLength)) {
                         if (rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
                             int k = rand.Paths.get(0).y1;

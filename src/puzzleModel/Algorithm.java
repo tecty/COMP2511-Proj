@@ -4,14 +4,12 @@ import java.util.*;
 
 public class Algorithm {
 
-    public Board Algorithm(Board board) {
+    public Board solve(Board board) {
 
         Set<Board> visited = new HashSet<Board>();
         ArrayList<Board> queue = new ArrayList<Board>();
 
         queue.add(board);
-
-        int cccc = 0;
         while (!queue.isEmpty()) {
             // gridMatrix b = queue.poll();
             Board b = queue.remove(0);
@@ -197,7 +195,7 @@ public class Algorithm {
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
 
         // if the left of Car0 is empty, the game is cleared
-        for (int i = 0; i < co.y1; i++) {
+        for (int i = co.y2; i < 6; i++) {
             if (b.gridMatrix[co.x1][i] != -1 && b.gridMatrix[co.x1][i] != c.carID) {
                 return false;
             }

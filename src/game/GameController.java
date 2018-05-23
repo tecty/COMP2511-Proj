@@ -1,7 +1,6 @@
 package game;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -16,12 +15,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
 import save.SaveManager;
 import setting.Setting;
-import selector.RandomSelector;
 import setting.SoundEffect;
 
 public class GameController {
@@ -51,6 +49,18 @@ public class GameController {
     private Button replay = new Button();
     @FXML
     private Button next = new Button();
+    @FXML
+    private ImageView star0;
+    @FXML
+    private ImageView star1;
+    @FXML
+    private ImageView star2;
+    @FXML
+    private ImageView null0;
+    @FXML
+    private ImageView null1;
+    @FXML
+    private ImageView null2;
 
     @FXML private BoardController boardController;
 
@@ -103,6 +113,10 @@ public class GameController {
         // inject this controller to the board
         // so it can increment the steps
         boardController.injectMainController(this);
+        //initialize game clear result
+        star0.setVisible(false);
+        star1.setVisible(false);
+        star2.setVisible(false);
     }
 
     public void checkoutFinishPrompt()  {
@@ -110,9 +124,15 @@ public class GameController {
     	timer.stop();
     	Setting.save.getLevel(currentLevel).update(steps.get(), time.doubleValue());
     	//update the up-till-now cleared level number
-    	if(currentLevel > Setting.save.getLevelCleared()) Setting.save.setLevelCleared(currentLevel);
+    	Setting.save.setLevelCleared(currentLevel);
     	//save the new record
     	SaveManager.save(Setting.save, Setting.save.getName());
+    	//take care the availability of playing the next level
+    	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
+    	int starNum = Setting.save.getTotalStar();
+    	if(starNum > 0) star0.setVisible(true);
+    	if(starNum > 1) star1.setVisible(true);
+    	if(starNum > 2) star2.setVisible(true);
     	//result interface now visible
     	levelClear.setVisible(true);
     	// play the game successful sound effect.
@@ -159,7 +179,6 @@ public class GameController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        LevelSelect levelSelect = loader.getController();
 
         System.out.println("User get to level select ");
         // checkout to level select scene

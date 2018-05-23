@@ -17,9 +17,10 @@ public class SaveManager {
 		return file.exists();
 	}
 	
-	public static ArrayList<String> loadAllSaves() {
+	public static ArrayList<String> loadAllSaves() throws IOException {
 		ArrayList<String> saveList = new ArrayList<>();
 		File dir = new File("saving");
+		dir.mkdir();
 		if(dir.isDirectory()) {
 			for(String each : dir.list()) {
 				System.out.println("Find saveslot: "+each);
