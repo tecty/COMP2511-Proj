@@ -8,26 +8,28 @@ import game.Car;
 public class Level implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	ArrayList<Car> carList;
-	int recommendStep;
+	ArrayList<Car> carList = new ArrayList<>();
+	int recommendStep =-1;
 	
-	int userStep;
-	double userTime;
-	
-	public Level(ArrayList<Car> carList, int recommendStep) {
-		this.carList = carList;
-		
-		//initialize default record
-		//recommend stuff
-		this.recommendStep = recommendStep;
-		
-		//user stuff
-		userStep = -1; //infinity
-		userTime = Double.POSITIVE_INFINITY;
-		System.out.println("level fine");
+	int userStep=-1;
+	double userTime = Double.POSITIVE_INFINITY;
+	// which save own this level
+	GameSave save;
+
+	public Level(GameSave save) {
+		this.save = save;
 	}
-	
+
+	public void loadPuzzle(ArrayList<Car> carList, int recommendStep){
+		this.carList = carList;
+		this.recommendStep = recommendStep;
+		// flush the save to disk
+		this.save.flush();
+	}
+
 	public void update(int userStep, double userTime) {
+		// the previous star
+		int old_star = userStar();
 		//should keep the best record in the saveslot
 		if(this.userStep==-1 || this.userStep > userStep) {
 			System.out.println("new "+userStep);
@@ -37,10 +39,23 @@ public class Level implements Serializable{
 			System.out.println("new "+userTime);
 			this.userTime = userTime;
 		}
+
+		// user may gain more star if they replay
+		int new_star = userStar();
+		if (new_star != old_star){
+			// gain more hint
+			save.addHint(new_star-old_star);
+		}
+		// flush the user record to disk
+		save.flush();
 	}	
 	
 	public int userStar() {
 		int total = 0;
+		// this puzzle is not generated
+		if (recommendStep == -1)
+			return total;
+
 		//once passed the game
 		if(userStep!=-1) total++;
 		else

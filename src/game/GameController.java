@@ -126,7 +126,7 @@ public class GameController {
     	//update the up-till-now cleared level number
     	Setting.save.setLevelCleared(currentLevel);
     	//save the new record
-    	SaveManager.save(Setting.save, Setting.save.getName());
+    	SaveManager.save(Setting.save);
     	//take care the availability of playing the next level
     	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
     	int starNum = Setting.save.getTotalStar();

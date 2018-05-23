@@ -2,13 +2,11 @@ package save;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import game.Car;
-import puzzleAlgorithm.NullAlgorithm;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import puzzleModel.Generator;
+import setting.Setting;
 
 public class GameSave implements Serializable{
 	//version id
@@ -51,6 +49,10 @@ public class GameSave implements Serializable{
 	public String getName() {
 		return name;
 	}
+	public String getFileName(){
+		// try to remove dependent code
+		return name +".sav";
+	}
 	
 	public String printExpertMode() {
 		if(isExpertMode) return "Expert Mode";
@@ -68,7 +70,14 @@ public class GameSave implements Serializable{
 	public int getHintRemain() {
 		return hintNum;
 	}
-	
+
+	public void useHint(){
+		this.hintNum--;
+	}
+	protected void addHint(int num){
+		this.hintNum ++;
+	}
+
 	public int getTotalStar() {
 		int sum = 0;
 		for(Level each : allLevels) {
@@ -77,26 +86,62 @@ public class GameSave implements Serializable{
 		return sum;
 	}
 	
-	public void loadPuzzle() {
+	public void gameGenerate() {
 		int stepRequire ;
 
-		for(int i = 0; i < NUM_OF_LEVEL; i++) {
-			System.out.println("looping");
-		    stepRequire = 2*i+3;
-		    if(stepRequire> 10){
-		        // max the step require to 12
-		        stepRequire = 10;
-            }
-//		    System.out.println("Now require "+stepRequire+" steps");
-		    if(isExpertMode) allLevels.add(gameGenerate(10));
-		    else allLevels.add(gameGenerate(stepRequire));
-//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
-//			System.out.println("now the "+i+" loop");
+		// add all the empty level
+		for (int i = 0; i < NUM_OF_LEVEL; i++) {
+			allLevels.add(new Level(this));
 		}
-//        System.out.println("Spend for 9 puzzles "+
-//                (System.currentTimeMillis()-startTime)
-//                + " ms"
-//        );
+
+		// load first two puzzle
+        loadPuzzle(allLevels.get(0),3);
+        loadPuzzle(allLevels.get(1),5);
+
+        // use background daemon to load the rest.
+        for (int i = 2; i < NUM_OF_LEVEL; i++) {
+			stepRequire = 2*i +3;
+			// step require must be max out at 10
+			// or this save is in expert mode
+			// then it would be set to 10 manually
+			if (stepRequire>10 || isExpertMode)
+				stepRequire = 10;
+
+			// create a prepare to run thread
+            PuzzleCreatorThread thisThread =
+                    new PuzzleCreatorThread(allLevels.get(i),stepRequire);
+
+
+
+			// send the generate task to
+            // background executor
+            Setting.puzzleCreator.submit(thisThread);
+//            thisThread.run();
+
+			// load this puzzle
+//			loadPuzzle(
+//					allLevels.get(i),
+//					stepRequire
+//			);
+		}
+
+
+
+
+//		for(int i = 0; i < NUM_OF_LEVEL; i++) {
+//			System.out.println("looping");
+//		    stepRequire = 2*i+3;
+//		    if(stepRequire> 10){
+//		        // max the step require to 10
+//		        stepRequire = 10;
+//            }
+//			// add a level
+//		    if(isExpertMode) allLevels.add(gameGenerate(10));
+//		    else allLevels.add(gameGenerate(stepRequire));
+//		}
+
+		// save this file when generated 9 puzzles.
+//		SaveManager.save(this);
 	}
 	
 	public Level getLevel(int num) {
@@ -108,32 +153,49 @@ public class GameSave implements Serializable{
 	public void setLevelCleared(int levelCleared) {
 		this.levelCleared =  levelCleared+1;
 	}
-	
-	public Level gameGenerate(int steps) {
+
+	/**
+	 * Load a new puzzle to an empty level.
+	 * @param level Level need to be load.
+	 * @param steps Require step for that puzzle.
+	 * @return
+	 */
+	public void loadPuzzle(Level level, int steps) {
 		//the generated set of arranged cars and the corresponding recommend steps are imported in
-//		PuzzleAlgorithm algorithm = new NullAlgorithm();
-//		System.out.println("generate fine");
         Generator generator = new Generator();
 
-        long startTime = System.currentTimeMillis();
+        // print which level it has generated
+		System.out.println("Generated level: "+ allLevels.indexOf(level));
 
-        puzzleModel.Board board =  generator.generateRandomBoard(steps, startTime);
-        
-//        System.out.println("===================================");
-//        Algorithm alg = new Algorithm();
-//        Board solved = alg.solve(board);
-//        System.out.println("Solution of output board = " + (solved.carID.size() + 1));
-//        System.out.println("Time: " + (System.currentTimeMillis() - startTime));
-//        Board.printB(board);
-//        Board.printB(solved);
-//        System.out.println("===================================");
-
-        for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
-            Car eachCar = it.next();
-            eachCar.dumpCar();
-        }
-//        System.exit(0);
-        Level newLevel = new Level(board.toCarList(),steps);
-        return newLevel;
+		// use algorithm to generate the board
+        puzzleModel.Board board =  generator.generateRandomBoard(steps);
+		// solve the puzzle to get a correct recommended step
+        Algorithm alg = new Algorithm();
+        Board solved = alg.solve(board);
+		// load the new puzzle and correct
+		// recommend step into this save
+		level.loadPuzzle(
+				board.toCarList(),
+				solved.carID.size() + 1);
 	}
+
+	/**
+	 * Flush this save to disk, this must happen
+	 * atomically.
+	 */
+	public void flush(){
+		synchronized (this){
+			// because save would destroy the file,
+			// so, only can save one time.
+			SaveManager.save(this);
+		}
+	}
+
+//	private void addPuzzle(int stepsRequire){
+//	    // add a brand new puzzle by game generator;
+//        this.allLevels.add(gameGenerate(stepsRequire));
+//        synchronized (this){
+
+//        }
+//    }
 }

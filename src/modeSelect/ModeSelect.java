@@ -11,14 +11,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
 import levelSelect.LoadPuzzle;
-
-import java.beans.EventHandler;
 import java.io.IOException;
-
 import save.GameSave;
-
 import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
@@ -52,15 +47,18 @@ public class ModeSelect {
     
     @FXML
     private void initialize() {
+    	// clear all error message
     	duplicateWarning.setVisible(false);
     	emptyWarning.setVisible(false);
     	overFillWarning.setVisible(false);
     	loading.setVisible(false);
     }
-    
+
+
     @FXML
     private void modeAction(ActionEvent actionEvent) throws IOException  {
     	SoundEffect.play("soundEffect/click.mp3");
+
     	initialize();
     	//check the name of the new save-slot
     	String name = saveslotName.getText();
@@ -80,8 +78,7 @@ public class ModeSelect {
     		saveslotName.setText(null);
     	}
     	//generate a new Save file
-    	//add format suffix
-    	name = name + ".sav";
+
     	System.out.println("New saveslot "+name+" is created");
     	
 		loading.setVisible(true);
@@ -89,16 +86,17 @@ public class ModeSelect {
     	
     	GameSave newSave;
     	//first check which gaming mode the player chooses
-    	if(actionEvent.getSource() == novice) {
+    	if(actionEvent.getSource() == novice)
     		newSave = new GameSave(name, false);
-    	}
-    	else newSave = new GameSave(name, true);	
-		System.out.println("here1");
+    	else
+    	    newSave = new GameSave(name, true);
 
     	//try to save the new save slot
-    	SaveManager.save(newSave, name);
+    	SaveManager.save(newSave);
 
+    	// checkout this save to the this GUI
     	Setting.save = newSave;
+
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("../levelSelect/LoadPuzzle.fxml"));
@@ -108,8 +106,12 @@ public class ModeSelect {
         Stage primaryStage = (Stage)novice.getScene().getWindow();
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
+
+        // create a thread to generate a puzzle
 		Thread loadPuzzle = new Thread(load);
+		Thread t = new Thread(loadPuzzle);
 		load.setOnSucceeded(e->{
+
 			LoadPuzzle puzzle = loader.getController();
 			try {
 				puzzle.load();
@@ -137,7 +139,7 @@ public class ModeSelect {
     private class Load extends Task<Void>{
 		@Override
 		protected Void call() throws Exception{
-			Setting.save.loadPuzzle();
+			Setting.save.gameGenerate();
 			return null;
 		}
 	}
