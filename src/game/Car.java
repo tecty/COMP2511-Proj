@@ -25,7 +25,7 @@ public class Car extends StackPane implements Serializable{
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
-               int len) throws MalformedURLException{
+               int len) {
         // set the information of this car
         this.dir = dir;
         this.carId = carId;
@@ -157,7 +157,11 @@ public class Car extends StackPane implements Serializable{
     public int getLen() {
         return len;
     }
-    
+
+    public void dumpCar(){
+        System.out.println("Car "+ getCarId()+
+                " ("+getGridX()+","+getGridY()+")" + " Length: "+ getLen());
+    }
     public String getSound() {
     	return sound;
     }

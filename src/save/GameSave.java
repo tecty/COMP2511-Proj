@@ -2,11 +2,13 @@ package save;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 
+import game.Car;
 import puzzleAlgorithm.NullAlgorithm;
-import puzzleAlgorithm.PuzzleAlgorithm;
-
-import levelSelect.Level;
+import puzzleModel.Algorithm;
+import puzzleModel.Board;
+import puzzleModel.Generator;
 
 public class GameSave implements Serializable{
 	//version id
@@ -42,10 +44,7 @@ public class GameSave implements Serializable{
 		
 		//generate and record enough level boards
 		allLevels = new ArrayList<>();
-		for(int i = 0; i < NUM_OF_LEVEL; i++) {
-			allLevels.add(gameGenerate());
-			System.out.println("now the "+i+" loop");
-		}
+		
 	}
 	
 	//following functions return useful information saved in the save slot
@@ -78,21 +77,63 @@ public class GameSave implements Serializable{
 		return sum;
 	}
 	
+	public void loadPuzzle() {
+		int stepRequire ;
+
+		for(int i = 0; i < NUM_OF_LEVEL; i++) {
+			System.out.println("looping");
+		    stepRequire = 2*i+3;
+		    if(stepRequire> 10){
+		        // max the step require to 12
+		        stepRequire = 10;
+            }
+//		    System.out.println("Now require "+stepRequire+" steps");
+		    if(isExpertMode) allLevels.add(gameGenerate(10));
+		    else allLevels.add(gameGenerate(stepRequire));
+//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
+//			System.out.println("now the "+i+" loop");
+		}
+//        System.out.println("Spend for 9 puzzles "+
+//                (System.currentTimeMillis()-startTime)
+//                + " ms"
+//        );
+	}
+	
 	public Level getLevel(int num) {
-		if(allLevels.get(num)==null) System.out.println("empty");
+//		if(allLevels.get(num)==null) System.out.println("empty");
 		return allLevels.get(num);
 	}
 	
 	//following functions change some information stored in the save slot
 	public void setLevelCleared(int levelCleared) {
-		this.levelCleared =  levelCleared;
+		this.levelCleared =  levelCleared+1;
 	}
 	
-	public Level gameGenerate() {
+	public Level gameGenerate(int steps) {
 		//the generated set of arranged cars and the corresponding recommend steps are imported in
-		PuzzleAlgorithm algorithm = new NullAlgorithm();
-		Level newLevel = new Level(algorithm.generatePuzzle(isExpertMode), algorithm.getRecommendSteps());
-		System.out.println("generate fine");
-		return newLevel;
+//		PuzzleAlgorithm algorithm = new NullAlgorithm();
+//		System.out.println("generate fine");
+        Generator generator = new Generator();
+
+        long startTime = System.currentTimeMillis();
+
+        puzzleModel.Board board =  generator.generateRandomBoard(steps, startTime);
+        
+//        System.out.println("===================================");
+//        Algorithm alg = new Algorithm();
+//        Board solved = alg.solve(board);
+//        System.out.println("Solution of output board = " + (solved.carID.size() + 1));
+//        System.out.println("Time: " + (System.currentTimeMillis() - startTime));
+//        Board.printB(board);
+//        Board.printB(solved);
+//        System.out.println("===================================");
+
+        for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
+            Car eachCar = it.next();
+            eachCar.dumpCar();
+        }
+//        System.exit(0);
+        Level newLevel = new Level(board.toCarList(),steps);
+        return newLevel;
 	}
 }

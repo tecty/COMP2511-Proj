@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
+import setting.Setting;
 import setting.SoundEffect;
 
 public class SaveslotSelect {
@@ -35,18 +36,18 @@ public class SaveslotSelect {
 		// try to load level select scene
 		ArrayList<String> allSaveNames = SaveManager.loadAllSaves();
 		for(String each : allSaveNames) {
-			GameSave saveslot = SaveManager.load(each);
+			GameSave saveSlot = SaveManager.load(each);
 			
 			Button slot = new Button();
 			slot.setPrefHeight(80);
 			slot.setPrefWidth(482);
 
 			String slotText = each.substring(0,each.length()-4) + " - " +	//save-slot name
-							  saveslot.printExpertMode() + "\n" +			//gaming mode
+							  saveSlot.printExpertMode() + "\n" +			//gaming mode
 							  SaveManager.lastModifiedTime(each) + "\n"  +		//last time played
-							  "Level: " + saveslot.getLevelCleared() + "\t" +		//the highest level achieved
-							  "Hint: " + saveslot.getHintRemain() + "\t" +			//number of remaining hint chances
-							  "Total Star: " + saveslot.getTotalStar();		//number of star collected
+							  "Level: " + saveSlot.getLevelCleared() + "\t" +		//the highest level achieved
+							  "Hint: " + saveSlot.getHintRemain() + "\t" +			//number of remaining hint chances
+							  "Total Star: " + saveSlot.getTotalStar();		//number of star collected
 			slot.setText(slotText);
 			slot.setTextAlignment(TextAlignment.CENTER);
 			list.getChildren().add(slot);
@@ -64,7 +65,8 @@ public class SaveslotSelect {
 				}
 		    	
 		    	LevelSelect levelSelect = loader.getController();
-		    	levelSelect.loadBoards(saveslot);
+				// record the save is using in setting class.
+				Setting.save = saveSlot;
 		    	
 		        // get the current Stage
 		        Stage primaryStage = (Stage)slot.getScene().getWindow();

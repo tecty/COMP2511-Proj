@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import game.GameController;
-import save.GameSave;
+import setting.Setting;
 import setting.SoundEffect;
 
 public class LevelSelect {
@@ -35,36 +35,30 @@ public class LevelSelect {
     Button nine;
     @FXML
     Button backButton;
-    
-    //this is the model used for generating the nine boards
-    GameSave saveslot;
-    
-    public void loadBoards(GameSave saveslot) {
-    	System.out.println("ha");
-    	this.saveslot = saveslot;
-    	System.out.println("level saveslot");
-    	levelLock();
-    }
-    
-    //lock unopened levels first
+
     @FXML
-    private void levelLock() {
-    	//check the playability of each level
-        
-        System.out.println("SAVE:" + saveslot.getLevelCleared());
-        
-        if(0 > saveslot.getLevelCleared()+1) one.setDisable(true);
-        if(1 > saveslot.getLevelCleared()+1) two.setDisable(true);
-        if(2 > saveslot.getLevelCleared()+1) three.setDisable(true);
-        if(3 > saveslot.getLevelCleared()+1) four.setDisable(true);
-        if(4 > saveslot.getLevelCleared()+1) five.setDisable(true);
-        if(5 > saveslot.getLevelCleared()+1) six.setDisable(true);
-        if(6 > saveslot.getLevelCleared()+1) seven.setDisable(true);
-        if(7 > saveslot.getLevelCleared()+1) eight.setDisable(true);
-        if(8 > saveslot.getLevelCleared()+1) nine.setDisable(true);
+    private void initialize() throws Exception{
+        // block the unfinished level
+        levelLock();
     }
-    
-    
+
+    //this is the model used for generating the nine boards
+    private void levelLock() {
+        //check the playability of each level
+
+        System.out.println("SAVE:" + Setting.save.getLevelCleared());
+
+        if(0 > Setting.save.getLevelCleared()) one.setDisable(true);
+        if(1 > Setting.save.getLevelCleared()) two.setDisable(true);
+        if(2 > Setting.save.getLevelCleared()) three.setDisable(true);
+        if(3 > Setting.save.getLevelCleared()) four.setDisable(true);
+        if(4 > Setting.save.getLevelCleared()) five.setDisable(true);
+        if(5 > Setting.save.getLevelCleared()) six.setDisable(true);
+        if(6 > Setting.save.getLevelCleared()) seven.setDisable(true);
+        if(7 > Setting.save.getLevelCleared()) eight.setDisable(true);
+        if(8 > Setting.save.getLevelCleared()) nine.setDisable(true);
+    }
+
     @FXML
     private void levelAction(ActionEvent actionEvent) throws IOException  {
     	SoundEffect.play("soundEffect/click.mp3");
@@ -88,25 +82,35 @@ public class LevelSelect {
         	e.printStackTrace();
         	System.exit(0);
         }
-        
-        GameController game = loader.getController();
-        //now choose which level will be loaded
-        if(actionEvent.getSource() == one) game.loadSaveSlot(saveslot, 0);
-        else if(actionEvent.getSource() == two) game.loadSaveSlot(saveslot, 1);
-        else if(actionEvent.getSource() == three) game.loadSaveSlot(saveslot, 2);
-        else if(actionEvent.getSource() == four) game.loadSaveSlot(saveslot, 3);
-        else if(actionEvent.getSource() == five) game.loadSaveSlot(saveslot, 4);
-        else if(actionEvent.getSource() == six) game.loadSaveSlot(saveslot, 5);
-        else if(actionEvent.getSource() == seven) game.loadSaveSlot(saveslot, 6);
-        else if(actionEvent.getSource() == eight) game.loadSaveSlot(saveslot, 7);
-        else if(actionEvent.getSource() == nine) game.loadSaveSlot(saveslot, 8);
-        
-        
+
+        // get the controller of the game, and set the save slot it would use
+        GameController gameController = loader.getController();
+
         System.out.println("go to play a game of level "+ ((Button)actionEvent.getSource()).getText());
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
+
+        //now choose which level will be loaded
+        if(actionEvent.getSource() == one)
+            gameController.resetLevel(0);
+        else if(actionEvent.getSource() == two)
+            gameController.resetLevel(1);
+        else if(actionEvent.getSource() == three)
+            gameController.resetLevel(2);
+        else if(actionEvent.getSource() == four)
+            gameController.resetLevel(3);
+        else if(actionEvent.getSource() == five)
+            gameController.resetLevel(4);
+        else if(actionEvent.getSource() == six)
+            gameController.resetLevel(5);
+        else if(actionEvent.getSource() == seven)
+            gameController.resetLevel(6);
+        else if(actionEvent.getSource() == eight)
+            gameController.resetLevel(7);
+        else if(actionEvent.getSource() == nine)
+            gameController.resetLevel(8);
     }
-    
+
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");

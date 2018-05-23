@@ -1,5 +1,6 @@
 package modeSelect;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,17 +9,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import levelSelect.LevelSelect;
+import levelSelect.LoadPuzzle;
 
+import java.beans.EventHandler;
 import java.io.IOException;
 
 import save.GameSave;
 
 import save.SaveManager;
+import setting.Setting;
 import setting.SoundEffect;
 
 public class ModeSelect {
+	@FXML
+	Pane loading = new Pane();
+	
 	//components on the interface
 	//input textField
 	@FXML
@@ -40,11 +48,14 @@ public class ModeSelect {
     @FXML
     Button backButton;    
 
+    private Load load = new Load();
+    
     @FXML
     private void initialize() {
     	duplicateWarning.setVisible(false);
     	emptyWarning.setVisible(false);
     	overFillWarning.setVisible(false);
+    	loading.setVisible(false);
     }
     
     @FXML
@@ -73,30 +84,41 @@ public class ModeSelect {
     	name = name + ".sav";
     	System.out.println("New saveslot "+name+" is created");
     	
+		loading.setVisible(true);
+
+    	
     	GameSave newSave;
     	//first check which gaming mode the player chooses
     	if(actionEvent.getSource() == novice) {
     		newSave = new GameSave(name, false);
     	}
     	else newSave = new GameSave(name, true);	
-    	
+		System.out.println("here1");
+
     	//try to save the new save slot
     	SaveManager.save(newSave, name);
-    	    	
+
+    	Setting.save = newSave;
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
+    	loader.setLocation(getClass().getResource("../levelSelect/LoadPuzzle.fxml"));
+
     	Parent root = loader.load();
-    	
-    	LevelSelect levelSelect = loader.getController();
-    	levelSelect.loadBoards(newSave);
-    	
         // get the current Stage
         Stage primaryStage = (Stage)novice.getScene().getWindow();
-
-        
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
+		Thread loadPuzzle = new Thread(load);
+		load.setOnSucceeded(e->{
+			LoadPuzzle puzzle = loader.getController();
+			try {
+				puzzle.load();
+			} catch (Exception e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+		});
+		loadPuzzle.start();
     }
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
@@ -109,5 +131,14 @@ public class ModeSelect {
         System.out.println("User get to settings ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
+        
     }
+    
+    private class Load extends Task<Void>{
+		@Override
+		protected Void call() throws Exception{
+			Setting.save.loadPuzzle();
+			return null;
+		}
+	}
 }

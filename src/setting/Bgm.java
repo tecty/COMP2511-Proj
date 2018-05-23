@@ -15,10 +15,14 @@ public class Bgm {
 			mediaPlayer.stop();
 		}
 		else {
-			Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
-		    mediaPlayer = new MediaPlayer(hit);
-			mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-		    mediaPlayer.setAutoPlay(true);
+			try {
+				Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
+				mediaPlayer = new MediaPlayer(hit);
+				mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+				mediaPlayer.setAutoPlay(true);
+			}catch (Exception e ){
+				// do nothing if system is not support playing mp3
+			}
 		}
 	}
 	
@@ -29,10 +33,14 @@ public class Bgm {
 	public static void play()
 	{
 		if(playable) {
-			Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
-		    mediaPlayer = new MediaPlayer(hit);
-		    mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-		    mediaPlayer.setAutoPlay(true);
+			try {
+				Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
+				mediaPlayer = new MediaPlayer(hit);
+				mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+				mediaPlayer.setAutoPlay(true);
+			}catch (Exception e){
+				// do nothing if system is not support.
+			}
 		}
 		else return;
 	}

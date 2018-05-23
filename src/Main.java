@@ -28,6 +28,7 @@ public class Main extends Application {
 		//But the function works
 		Bgm.play();
 
+
 		// load the layout by fxml
 		Parent root = FXMLLoader.load(getClass().getResource("Main.fxml"));
 

@@ -17,9 +17,10 @@ public class SaveManager {
 		return file.exists();
 	}
 	
-	public static ArrayList<String> loadAllSaves() {
+	public static ArrayList<String> loadAllSaves() throws IOException {
 		ArrayList<String> saveList = new ArrayList<>();
 		File dir = new File("saving");
+		dir.mkdir();
 		if(dir.isDirectory()) {
 			for(String each : dir.list()) {
 				System.out.println("Find saveslot: "+each);
@@ -35,7 +36,7 @@ public class SaveManager {
 		return sdf.format(file.lastModified());
 	}
 	
-	public static void save(GameSave newSave, String fileName) throws IOException {
+	public static void save(GameSave newSave, String fileName)  {
 		File file = new File(fileName);
 		//always refresh the file(whether it is existing or not)
 		file.delete();

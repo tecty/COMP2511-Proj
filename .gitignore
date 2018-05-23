@@ -25,3 +25,7 @@ hs_err_pid*
 
 src/game/Game.fxml
 saving/*.sav
+
+# remove the recording from ides.
+.idea/*
+.code/*

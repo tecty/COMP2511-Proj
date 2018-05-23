@@ -1,19 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -22,9 +27,15 @@
       <StackPane prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <BorderPane prefHeight="400.0" prefWidth="600.0">
+               <left>
+               </left>
                <center>
-                  <Pane fx:id="rootPane" prefHeight="300.0" prefWidth="300.0" BorderPane.alignment="CENTER">
-                     <BorderPane.margin>
+                  <Pane BorderPane.alignment="CENTER">
+                     <children>
+                         <fx:include fx:id="board" source="Board.fxml" />
+                     </children>
+
+                      <BorderPane.margin>
                         <Insets bottom="50.0" left="60.0" top="20.0" />
                      </BorderPane.margin>
                   </Pane>
@@ -110,6 +121,9 @@
                      <font>
                         <Font size="43.0" />
                      </font>
+                     <BorderPane.margin>
+                        <Insets top="20.0" />
+                     </BorderPane.margin>
                   </Label>
                </top>
             </BorderPane>
@@ -117,73 +131,85 @@
       </StackPane>
       <Pane fx:id="levelClear" prefHeight="430.0" prefWidth="630.0" style="-fx-background-color: rgb(255,255,255,0.9);">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="226.0" layoutX="122.0" layoutY="87.0" stroke="#797979" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeType="INSIDE" strokeWidth="3.0" width="359.0" />
-            <GridPane layoutX="150.0" layoutY="118.0" prefHeight="43.0" prefWidth="301.0">
+            <StackPane layoutX="95.0" layoutY="84.0" prefHeight="262.0" prefWidth="440.0" style="-fx-border-color: BLACK; -fx-border-width: 3; -fx-background-color: #FFFFFF;">
                <children>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <image>
-                        <Image url="@../img/star.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.halignment="RIGHT">
-                     <image>
-                        <Image url="@../img/starNull.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="2">
-                     <image>
-                        <Image url="@../img/star.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.halignment="RIGHT">
-                     <image>
-                        <Image url="@../img/star.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="2">
-                     <image>
-                        <Image url="@../img/starNull.png" />
-                     </image>
-                  </ImageView>
-                  <ImageView fitHeight="62.0" fitWidth="60.0" GridPane.columnIndex="1" GridPane.halignment="CENTER">
-                     <image>
-                        <Image url="@../img/starNull.png" />
-                     </image>
-                  </ImageView>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <GridPane alignment="TOP_CENTER">
+                          <columnConstraints>
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                          </columnConstraints>
+                          <rowConstraints>
+                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          </rowConstraints>
+                           <children>
+                              <ImageView fx:id="star1" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                 <image>
+                                    <Image url="@../img/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="star2" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                 <image>
+                                    <Image url="@../img/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="star0" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT">
+                                 <image>
+                                    <Image url="@../img/star.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="null0" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="RIGHT">
+                                 <image>
+                                    <Image url="@../img/starNull.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="null1" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER">
+                                 <image>
+                                    <Image url="@../img/starNull.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="null2" fitHeight="85.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                 <image>
+                                    <Image url="@../img/starNull.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="20.0" />
+                           </VBox.margin>
+                        </GridPane>
+                        <Label alignment="CENTER" text="Congratulations">
+                           <font>
+                              <Font size="30.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <HBox alignment="CENTER" prefHeight="55.0" prefWidth="394.0">
+                           <children>
+                              <Button fx:id="returnTo" cancelButton="true" mnemonicParsing="false" onAction="#backAction" prefWidth="100.0" text="Menu">
+                                 <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </HBox.margin></Button>
+                              <Button fx:id="replay" mnemonicParsing="false" onAction="#reset" prefWidth="100.0" text="Retry">
+                                 <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </HBox.margin></Button>
+                              <Button fx:id="next" defaultButton="true" mnemonicParsing="false" onAction="#nextLevel" prefWidth="100.0" text="Next">
+                                 <HBox.margin>
+                                    <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                                 </HBox.margin></Button>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
-            <Pane layoutX="150.0" layoutY="169.0" prefHeight="62.0" prefWidth="301.0">
-               <children>
-                  <Label layoutX="58.0" layoutY="9.0" text="Level Cleared!">
-                     <font>
-                        <Font size="30.0" />
-                     </font>
-                  </Label>
-               </children>
-            </Pane>
-            <GridPane layoutX="157.0" layoutY="242.0" prefHeight="56.0" prefWidth="289.0">
-               <children>
-                  <Button fx:id="next" mnemonicParsing="false" onAction="#nextLevel" text="Next" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button fx:id="returnTo" mnemonicParsing="false" onAction="#backAction" text="Return" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-                  <Button fx:id="replay" mnemonicParsing="false" onAction="#reset" text="Replay" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-               </children>
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.0" minWidth="10.0" prefWidth="85.0" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="121.0" minWidth="10.0" prefWidth="96.0" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding></StackPane>
          </children>
       </Pane>
    </children>
