@@ -6,6 +6,8 @@ import java.util.Iterator;
 
 import game.Car;
 import puzzleAlgorithm.NullAlgorithm;
+import puzzleModel.Algorithm;
+import puzzleModel.Board;
 import puzzleModel.Generator;
 
 public class GameSave implements Serializable{
@@ -84,10 +86,11 @@ public class GameSave implements Serializable{
 		for(int i = 0; i < NUM_OF_LEVEL; i++) {
 			System.out.println("looping");
 		    stepRequire = 2*i+3;
-		    if(stepRequire> 12){
+		    if(stepRequire> 10){
 		        // max the step require to 12
-		        stepRequire = 12;
+		        stepRequire = 10;
             }
+		    System.out.println("Now require "+stepRequire+" steps");
 			allLevels.add(gameGenerate(stepRequire));
 //			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
 			System.out.println("now the "+i+" loop");
@@ -114,7 +117,19 @@ public class GameSave implements Serializable{
 //		System.out.println("generate fine");
         Generator generator = new Generator();
 
-        puzzleModel.Board board =  generator.generateRandomBoard(steps);
+        long startTime = System.currentTimeMillis();
+
+        puzzleModel.Board board =  generator.generateRandomBoard(steps, startTime);
+        
+        System.out.println("===================================");
+        Algorithm alg = new Algorithm();
+        Board solved = alg.solve(board);
+        System.out.println("Solution of output board = " + (solved.carID.size() + 1));
+        System.out.println("Time: " + (System.currentTimeMillis() - startTime));
+        Board.printB(board);
+        Board.printB(solved);
+        System.out.println("===================================");
+
         for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
             Car eachCar = it.next();
             eachCar.dumpCar();

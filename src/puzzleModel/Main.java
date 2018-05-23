@@ -14,7 +14,7 @@ public class Main {
 //		}
 
         Algorithm alg = new Algorithm();
-        Board solved = alg.Algorithm(b);
+        Board solved = alg.solve(b);
         System.out.println("Solution of output board = " + (solved.carID.size() + 1));
         System.out.println("Time: " + (System.currentTimeMillis() - startTime));
         Board.printB(b);

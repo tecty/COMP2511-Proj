@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Algorithm {
 
-    public Board Algorithm(Board board) {
+    public Board solve(Board board) {
 
         Set<Board> visited = new HashSet<Board>();
         ArrayList<Board> queue = new ArrayList<Board>();

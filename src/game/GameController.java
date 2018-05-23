@@ -15,6 +15,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import save.SaveManager;
@@ -48,6 +49,18 @@ public class GameController {
     private Button replay = new Button();
     @FXML
     private Button next = new Button();
+    @FXML
+    private ImageView star0;
+    @FXML
+    private ImageView star1;
+    @FXML
+    private ImageView star2;
+    @FXML
+    private ImageView null0;
+    @FXML
+    private ImageView null1;
+    @FXML
+    private ImageView null2;
 
     @FXML private BoardController boardController;
 
@@ -100,6 +113,10 @@ public class GameController {
         // inject this controller to the board
         // so it can increment the steps
         boardController.injectMainController(this);
+        //initialize game clear result
+        star0.setVisible(false);
+        star1.setVisible(false);
+        star2.setVisible(false);
     }
 
     public void checkoutFinishPrompt()  {
@@ -112,6 +129,10 @@ public class GameController {
     	SaveManager.save(Setting.save, Setting.save.getName());
     	//take care the availability of playing the next level
     	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
+    	int starNum = Setting.save.getTotalStar();
+    	if(starNum > 0) star0.setVisible(true);
+    	if(starNum > 1) star1.setVisible(true);
+    	if(starNum > 2) star2.setVisible(true);
     	//result interface now visible
     	levelClear.setVisible(true);
     	// play the game successful sound effect.

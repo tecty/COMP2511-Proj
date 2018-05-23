@@ -97,22 +97,17 @@ public class ModeSelect {
 
     	//try to save the new save slot
     	SaveManager.save(newSave, name);
-		System.out.println("here1");
 
     	Setting.save = newSave;
-		System.out.println("here1");
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
     	loader.setLocation(getClass().getResource("../levelSelect/LoadPuzzle.fxml"));
-		System.out.println("here2");
 
     	Parent root = loader.load();
-		System.out.println("here3");
         // get the current Stage
         Stage primaryStage = (Stage)novice.getScene().getWindow();
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));
-		System.out.println("here4");
 		Thread loadPuzzle = new Thread(load);
 		load.setOnSucceeded(e->{
 			LoadPuzzle puzzle = loader.getController();
