@@ -45,7 +45,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="314.0" prefWidth="150.0">
                            <children>
-                              <Button fx:id="hint" defaultButton="true" mnemonicParsing="false" prefWidth="100.0" text="Hint">
+                              <Button fx:id="hint" defaultButton="true" mnemonicParsing="false" onAction="#findHint" prefWidth="100.0" text="Hint">
                                  <VBox.margin>
                                     <Insets bottom="20.0" />
                                  </VBox.margin>

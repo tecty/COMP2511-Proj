@@ -197,6 +197,11 @@ public class GameController {
         SoundEffect.play("soundEffect/click.mp3");
     	boardController.undo();
     }
+    
+    @FXML
+    private void findHint() {
+    	boardController.nextStep();
+    }
 
     protected void addSteps(){
         steps.set(steps.get()+1);

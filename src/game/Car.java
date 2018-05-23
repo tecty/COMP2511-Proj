@@ -166,4 +166,12 @@ public class Car extends StackPane implements Serializable{
     	return sound;
     }
 
+    public puzzleModel.Car getAlgorithmCar(){
+    	ArrayList<puzzleModel.Coordinate> paths = new ArrayList<puzzleModel.Coordinate>();
+    	if(this.getDir()==MoveDir.HORIZONTAL) paths.add(new puzzleModel.Coordinate( this.getGridY(), this.getGridX(), this.getGridY(), this.getGridX()+this.getLen()-1));
+    	else paths.add(new puzzleModel.Coordinate(gridY, gridX, gridY+this.getLen()-1, gridX));
+    	puzzleModel.Car algCar = new puzzleModel.Car(this.getCarId(), paths);
+    	System.out.println("alg car generated");
+    	return algCar;
+    }
 }

@@ -2,17 +2,27 @@ package game;
 
 import javafx.fxml.FXML;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import puzzleModel.Algorithm;
+import puzzleModel.Board;
 import save.Level;
 
+import java.util.ArrayList;
 import java.util.Stack;
 
 public class BoardController {
     @FXML
     Pane root;
+    
+    //controller for the hint
+    boolean onHint;
+    
     // store all the car in this game
     Group carGroup = new Group();
     Group gridGroup = new Group();
+    
+    ArrayList<Car> currStat = new ArrayList<>();
 
     // reference to the gridBoard
     private Grid[][] gridBoard = new Grid[6][6];
@@ -38,6 +48,8 @@ public class BoardController {
     GameController mainController;
 
     @FXML private void initialize(){
+    	//set the hint not activated
+    	onHint = false;
         // load all the grid
         setBoard();
         root.getChildren().addAll(gridGroup);
@@ -47,6 +59,10 @@ public class BoardController {
 
 
     public void reset(Level level){
+    	//set the hint not activated
+    	onHint = false;
+    	currStat.removeAll(currStat);
+    	//reset the level
         if(currentLevel == level){
             // not destroy the old car to prevent
             // the car from shifting colors
@@ -123,6 +139,7 @@ public class BoardController {
         // pass through the argument
         Car thisCar = new Car(dir, carId, gridX,gridY,len);
         // add to the group to show
+        currStat.add(thisCar);
         carGroup.getChildren().add(thisCar);
 
         // reference it from the board
@@ -413,5 +430,35 @@ public class BoardController {
         this.mainController = mainController;
     }
 
+    
+    //the followings are animation stuff
+    public void nextStep() {
+    	ArrayList<puzzleModel.Car> cars = new ArrayList<>();
+    	for(Car each : currStat) {
+    		cars.add(each.getAlgorithmCar());
+    	}
+    	System.out.println("algArray generated");
+    	//summarize the current board situation into a Board class
+    	Board currBoard = new Board(cars, new ArrayList<>());
+    	//now use a solving algorithm to solve the puzzle
+    	Algorithm alg = new Algorithm();
+    	if(alg.unlockCar(currBoard)) return;
+    	Board solveBoard = alg.solve(currBoard);
+    	
+    	
+    	System.out.println("currBoard generated");
+    	Board.printB(currBoard);
+    	System.out.println("solveBoard generated");
+    	Board.printB(solveBoard);
+    	
+    	puzzleModel.Car nextStep = solveBoard.popFirst();
+    	
+    	System.out.println("car get");
+    	puzzleModel.Coordinate co = nextStep.popFirstCo();
+    	
+    	System.out.println("Move the car " + nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+"), ("+co.x2+", "+co.y2+")");
+    }
+    
+    
 
 }

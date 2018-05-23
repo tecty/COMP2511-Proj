@@ -11,6 +11,7 @@ public class Algorithm {
 
         queue.add(board);
         while (!queue.isEmpty()) {
+        	System.out.println("solving");
             // gridMatrix b = queue.poll();
             Board b = queue.remove(0);
 
@@ -36,7 +37,7 @@ public class Algorithm {
         // return board;
         return null;
     }
-
+    
     private boolean listContainBoard(ArrayList<Board> list, Board b) {
         if (list.size() == 0) return false;
 
@@ -188,13 +189,13 @@ public class Algorithm {
     }
 
     // check final state
-    private boolean unlockCar(Board b) {
+    public boolean unlockCar(Board b) {
 
         // get coordinates of Car0
         Car c = b.carList.get(0);
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
 
-        // if the left of Car0 is empty, the game is cleared
+        // if the right of Car0 is empty, the game is cleared
         for (int i = co.y2; i < 6; i++) {
             if (b.gridMatrix[co.x1][i] != -1 && b.gridMatrix[co.x1][i] != c.carID) {
                 return false;

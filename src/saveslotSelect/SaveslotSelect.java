@@ -54,6 +54,9 @@ public class SaveslotSelect {
 			
 			slot.setOnMouseClicked(e -> {
 				SoundEffect.play("soundEffect/click.mp3");
+				
+				Setting.save = saveSlot;
+				
 				FXMLLoader loader = new FXMLLoader();
 		    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
 		    	Parent root = null;
@@ -63,10 +66,7 @@ public class SaveslotSelect {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
-		    	
-		    	LevelSelect levelSelect = loader.getController();
 				// record the save is using in setting class.
-				Setting.save = saveSlot;
 		    	
 		        // get the current Stage
 		        Stage primaryStage = (Stage)slot.getScene().getWindow();
