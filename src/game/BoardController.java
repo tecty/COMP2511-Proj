@@ -63,6 +63,7 @@ public class BoardController {
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
         root.getChildren().add(dummy);
+        //the dummy should not cover the real cars
         dummy.setVisible(false);
         dummy.toBack();
         gridGroup.toBack();

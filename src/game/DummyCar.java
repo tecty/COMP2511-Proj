@@ -47,7 +47,6 @@ public class DummyCar extends StackPane{
 	    //add animation transition to the dummy car
 	    transition.setDuration(Duration.millis(1000));
 	    transition.setNode(this);
-	    System.out.println();
 	    
 	    //remind: the axis in Coordinate class is different from the axis in Grid
 	    if(nextCar.getDir()==MoveDir.HORIZONTAL) {
