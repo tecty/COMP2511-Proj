@@ -34,8 +34,8 @@
                         <Insets bottom="10.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button fx:id="newGameButton" defaultButton="true" mnemonicParsing="false" onAction="#modeSelectAction" prefWidth="135.0" text="New game" />
-                  <Button fx:id="continueButton" mnemonicParsing="false" onAction="#levelSelectAction" prefWidth="135.0" text="Continue" />
+                  <Button fx:id="newGameButton" defaultButton="true" mnemonicParsing="false" onAction="#newGameAction" prefWidth="135.0" text="New game" />
+                  <Button fx:id="continueButton" mnemonicParsing="false" onAction="#continueAction" prefWidth="135.0" text="Continue" />
                   <Button fx:id="settingButton" mnemonicParsing="false" onAction="#settingAction" prefWidth="135.0" text="Settings" />
                   <Button fx:id="quitButton" mnemonicParsing="false" onAction="#quitAction" prefWidth="135.0" text="Quit" />
                </children>

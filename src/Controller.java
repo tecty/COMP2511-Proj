@@ -9,7 +9,9 @@ import setting.SoundEffect;
 
 import java.io.IOException;
 
-
+/**
+ * The controller for the index of scene. The first scene show to user.
+ */
 public class Controller {
     @FXML
     private Button newGameButton;
@@ -20,8 +22,13 @@ public class Controller {
     @FXML
     private Button quitButton;
 
+    /**
+     * Handle if user want to create a new game.
+     * @param actionEvent The source trigger this action.
+     * @throws IOException Exception might have when loading scene
+     */
     @FXML
-    private void modeSelectAction(ActionEvent actionEvent) throws IOException {
+    private void newGameAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
     	// try to load mode select scene
     	Parent root = FXMLLoader.load(getClass().getResource("modeSelect/ModeSelect.fxml"));
@@ -31,12 +38,16 @@ public class Controller {
     	primaryStage.setScene(new Scene(root));
     }
 
+    /**
+     * Handle user want to continue a game.
+     * @param actionEvent The source trigger this action.
+     * @throws IOException Exception might have when loading scene
+     */
     @FXML
-    private void levelSelectAction(ActionEvent actionEvent) throws IOException {
+    private void continueAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
     	// get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
-
 
         // try to load level select scene
         Parent root = FXMLLoader.load(getClass().getResource("save/SaveSlotSelect.fxml"));
@@ -45,6 +56,11 @@ public class Controller {
         primaryStage.setScene(new Scene(root));
     }
 
+    /**
+     * Handle user want to toggle the settings.
+     * @param actionEvent The source trigger this action.
+     * @throws IOException Exception might have when loading scene
+     */
     @FXML
     private void settingAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
@@ -59,6 +75,10 @@ public class Controller {
         primaryStage.setScene(new Scene(root));
     }
 
+    /**
+     * Handle user want to quit this game smoothly.
+     * @param actionEvent The source trigger this action.
+     */
     @FXML
     private void quitAction(ActionEvent actionEvent) {
     	SoundEffect.play("soundEffect/click.mp3");
