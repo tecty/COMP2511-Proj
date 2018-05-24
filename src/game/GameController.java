@@ -154,7 +154,7 @@ public class GameController {
 
 
         //update the up-till-now cleared level number
-        Setting.save.setLevelCleared(currentLevel);
+        Setting.save.addLevelCleared(currentLevel);
         System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).calStar());
 
         //take care the availability of playing the next level

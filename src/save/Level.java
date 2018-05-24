@@ -8,6 +8,9 @@ import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import puzzleModel.Generator;
 
+/**
+ * Class store the information of each level.
+ */
 public class Level implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
@@ -27,7 +30,12 @@ public class Level implements Serializable{
 	// whether this level have hinted by computer
     private boolean hinted ;
 
-
+    /**
+     * Create a blank level by inject the save it
+     * belong and the level count of this level.
+     * @param save The save object this level belong to.
+     * @param levelId The level count of this level.
+     */
 	public Level(GameSave save, int levelId) {
 	    // inject basic information about this level
 		this.save = save;
@@ -36,6 +44,9 @@ public class Level implements Serializable{
         hinted = false;
 	}
 
+    /**
+     * Load a puzzle for this level (this level object have no puzzle).
+     */
 	protected void loadPuzzle(){
         //the generated set of arranged cars and the corresponding recommend steps are imported in
         Generator generator = new Generator();
@@ -68,6 +79,11 @@ public class Level implements Serializable{
 		this.save.flush();
 	}
 
+    /**
+     * Update the user's record of this level.
+     * @param userStep Step is finished by user for this level.
+     * @param userTime Time is finished by user for this level.
+     */
 	public void update(int userStep, double userTime) {
 	    //flag to need file save
         boolean needUpdate = false;
@@ -99,6 +115,12 @@ public class Level implements Serializable{
         }
     }
 
+    /**
+     * Calculate how much stars is gain for given user performance.
+     * @param userStep Step is finished by user for this level.
+     * @param userTime Time is finished by user for this level.
+     * @return Star is gained for this performance.
+     */
     public int calStar(int userStep, double userTime){
 
         int total = 0;
@@ -122,16 +144,27 @@ public class Level implements Serializable{
         if(userTime <= recommendTime()) total++;
         return total;
     }
-	
+
+    /**
+     * How much star user is gain by the performance record.
+     * @return Star user is gained by the record performance.
+     */
 	public int calStar() {
         return  calStar(userStep,userTime);
 	}
-	
+
+    /**
+     * What's this puzzle is about.
+     * @return List of cars' information which construct the puzzle.
+     */
 	public ArrayList<Car> getCars(){
 		return carList;
 	}
-	
-	//best time consumed
+
+    /**
+     * The recommended time for user to solve this puzzle.
+     * @return Recommend time for solve this puzzle.
+     */
 	public double recommendTime() {
         // use a approximate 2nd degree function to calculate
 		double recTime = 0.22* recommendStep*recommendStep + 10;
@@ -140,10 +173,19 @@ public class Level implements Serializable{
 	    return recTime;
 	}
 
+    /**
+     * Steps for perfectly solve this puzzle.
+     * @return The perfect step to finish this puzzle.
+     */
 	public int getRecommendStep(){
 		return recommendStep;
 	}
 
+    /**
+     * User want to use a hint in this level, which means he would have
+     * penalty of only getting one star.
+     * @return Whether user get that hint.
+     */
     public boolean useHint() {
         if (hinted && !save.isExpertMode()){
             // user already by this level's
@@ -161,6 +203,10 @@ public class Level implements Serializable{
         return false;
     }
 
+    /**
+     * Check whether this level store a puzzle.
+     * @return Whether this level has a puzzle.
+     */
     protected boolean isPuzzleLoaded() {
 	    // use recommended step to
         // identify whether this level is empty

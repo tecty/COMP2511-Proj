@@ -5,6 +5,9 @@ import java.util.ArrayList;
 
 import setting.Setting;
 
+/**
+ * Class hold the saved information.
+ */
 public class GameSave implements Serializable{
 	//version id
 	private static final long serialVersionUID = 1L;
@@ -28,9 +31,12 @@ public class GameSave implements Serializable{
 	// how many user has use his stars
 	private int usedStars;
 
-
-	//this should be initialized when a New Game starts
-	//so the initializations of all boards should be carried out here
+    /**
+     * Initialize a save file with a name and whether
+     * it is a expert save.
+     * @param name Name of the save file.
+     * @param expertMode Whether it's a expert save.
+     */
 	public GameSave(String name, boolean expertMode) {
 		//record the name of the slot
 		this.name = name;
@@ -50,36 +56,65 @@ public class GameSave implements Serializable{
 		usedStars = -9;
 		
 	}
-	
-	//following functions return useful information saved in the save slot
+
+    /**
+     * Return name of this save.
+      * @return This save's name.
+     */
 	private String getName() {
 		return name;
 	}
+
+    /**
+     * Return the actual name save in file system.
+     * @return File name is saved in file system.
+     */
 	protected String getFileName(){
 		// try to remove dependent code
 		return getName() +".sav";
 	}
-	
+
+    /**
+     * Print the prompt of expert mode.
+     * @return The prompt text whether it is expert mode.
+     */
 	protected String printExpertMode() {
 		if(expertMode) return "Expert Mode";
 		return "Novice Mode";
 	}
-	
+
+    /**
+     * Return whether this save is expert mode.
+     * @return Whether this save is expert save.
+     */
 	protected boolean isExpertMode() {
 		return expertMode;
 	}
 
+    /**
+     * How many level user has finished.
+     * @return The count of level user is finished currently.
+     */
 	public int getLevelCleared() {
 		return levelCleared;
 	}
-	
-	protected int getTotalStars(){
+
+    /**
+     * Total stars user gets.
+     * @return Total stars user got in this save.
+     */
+	protected int getTotalStar(){
 		return totalStars;
 	}
 
+    /**
+     * User has gain a star, needed to be recorded in this save.
+     * @param starsGain How many stars user is gain this time.
+     */
 	protected void addStars(int starsGain){
 		totalStars += starsGain;
 	}
+
 	/**
 	 * User try to use a hint.
 	 * @return True if they used a hint, false when
@@ -93,18 +128,18 @@ public class GameSave implements Serializable{
 		return false;
 	}
 
+    /**
+     * Get how many hint remains in this save.
+     * @return How many hint can spend in this save.
+     */
 	public int getHintNum() {
 		return (totalStars-usedStars)/3;
 	}
 
-	protected int getTotalStar() {
-		int sum = 0;
-		for(Level each : allLevels) {
-			sum += each.calStar();
-		}
-		return sum;
-	}
-	
+    /**
+     * Generate the puzzles for each puzzle. Use background thread
+     * pool to accelerate the procedure.
+     */
 	public void gameGenerate() {
 		// add all the empty level
 		for (int i = 0; i < NUM_OF_LEVEL; i++) {
@@ -126,19 +161,31 @@ public class GameSave implements Serializable{
 		}
 
 	}
-	
+
+    /**
+     * Get the level by level number.
+     * @param num Level number.
+     * @return Level object of that level number.
+     */
 	public Level getLevel(int num) {
 		return allLevels.get(num);
 	}
-	
-	//following functions change some information stored in the save slot
-	public void setLevelCleared(int levelCleared) {
-		this.levelCleared =  levelCleared+1;
+
+    /**
+     * Add up the level cleared, if user finished
+     * an unfinished level.
+     * @param levelCleared User currently finished level.
+     */
+	public void addLevelCleared(int levelCleared) {
+	    // only can have more level clear when this
+        // level is not finished before.
+	    if (levelCleared == this.levelCleared)
+	    	this.levelCleared =  levelCleared+1;
 	}
 
 
 	/**
-	 * Flush this save to disk, this must happen
+	 * Flush this save to disk, this action must happen
 	 * atomically.
 	 */
 	protected void flush(){
