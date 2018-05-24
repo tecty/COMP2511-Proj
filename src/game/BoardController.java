@@ -57,8 +57,6 @@ public class BoardController {
         root.getChildren().addAll(carGroup);
     }
 
-
-
     public void reset(Level level){
     	//set the hint not activated
        	onHint = false;

@@ -104,6 +104,8 @@ public class GameController {
 
     @FXML
     private void initialize(){
+    	hint.setText("Hint: "+Setting.save.getHintRemain());
+    	
     	//bind the value of moveCounter to the stepCounter showing in fxml
     	stepCount.textProperty().bind(steps.asString("%d"));
 
@@ -200,7 +202,12 @@ public class GameController {
     
     @FXML
     private void findHint() {
-    	boardController.nextStep();
+    	if(Setting.save.getHintRemain()>=1) {
+    		Setting.save.useHint();
+    		boardController.nextStep();
+    		hint.setText("Hint: "+Setting.save.getHintRemain());
+    		hint.setDisable(true);
+    	}
     }
 
     protected void addSteps(){

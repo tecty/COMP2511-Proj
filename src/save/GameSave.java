@@ -69,6 +69,10 @@ public class GameSave implements Serializable{
 		return hintNum;
 	}
 	
+	public void useHint() {
+		hintNum--;
+	}
+	
 	public int getTotalStar() {
 		int sum = 0;
 		for(Level each : allLevels) {
@@ -87,16 +91,9 @@ public class GameSave implements Serializable{
 		        // max the step require to 12
 		        stepRequire = 10;
             }
-//		    System.out.println("Now require "+stepRequire+" steps");
 		    if(isExpertMode) allLevels.add(gameGenerate(10));
 		    else allLevels.add(gameGenerate(stepRequire));
-//			allLevels.add(new Level(new NullAlgorithm().generatePuzzle(true), 3));
-//			System.out.println("now the "+i+" loop");
 		}
-//        System.out.println("Spend for 9 puzzles "+
-//                (System.currentTimeMillis()-startTime)
-//                + " ms"
-//        );
 	}
 	
 	public Level getLevel(int num) {
@@ -118,16 +115,6 @@ public class GameSave implements Serializable{
         long startTime = System.currentTimeMillis();
 
         puzzleModel.Board board =  generator.generateRandomBoard(steps, startTime);
-        
-//        System.out.println("===================================");
-//        Algorithm alg = new Algorithm();
-//        Board solved = alg.solve(board);
-//        System.out.println("Solution of output board = " + (solved.carID.size() + 1));
-//        System.out.println("Time: " + (System.currentTimeMillis() - startTime));
-//        Board.printB(board);
-//        Board.printB(solved);
-//        System.out.println("===================================");
-
         for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
             Car eachCar = it.next();
             eachCar.dumpCar();
