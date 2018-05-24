@@ -26,7 +26,7 @@ public class Car extends StackPane implements Serializable{
     // the length of this car
     final private int len;
     
-    private String sound;
+    private String appearance;
 
     //animation stuff
 //    Pane img = null;
@@ -41,8 +41,6 @@ public class Car extends StackPane implements Serializable{
         this.len = len;
         this.gridX = gridX;
         this.gridY = gridY;
-        
-        this.sound = RandomSelector.selectSound(len);
 
         // set this car's position as given.
         this.refresh();
@@ -58,15 +56,15 @@ public class Car extends StackPane implements Serializable{
             setWidth(GameController.GRID_SIZE);
             setHeight(getLen() * GameController.GRID_SIZE);
         }
-
         
         // set the appearance of this car
+        appearance = RandomSelector.selectImg(getLen(), getDir(), isTarget());
         Pane img = new Pane();
         Rectangle carRectangle = new Rectangle();
         
         getChildren().addAll(carRectangle, img);
         
-    	String chooseImg = "-fx-background-image: url(\"/img/" + RandomSelector.selectImg(getLen(), getDir(), isTarget())+"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;";
+    	String chooseImg = "-fx-background-image: url(\"/img/" + appearance +"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;";
     	
     	img.setStyle(chooseImg);
         
@@ -173,12 +171,13 @@ public class Car extends StackPane implements Serializable{
         return len;
     }
 
+    public String getAppearance() {
+    	return appearance;
+    }
+    
     public void dumpCar(){
         System.out.println("Car "+ getCarId()+
                 " ("+getGridX()+","+getGridY()+")" + " Length: "+ getLen());
-    }
-    public String getSound() {
-    	return sound;
     }
 
     public puzzleModel.Car getAlgorithmCar(){
