@@ -32,4 +32,24 @@ public class RandomSelector {
 		else
 			return "soundEffect/truckhorn"+ choice + ".mp3";
 	}
+	
+	public static String selectFlashImg(int len, MoveDir dir, boolean target) {
+		if(len==2) {
+			if(dir==MoveDir.HORIZONTAL) {
+				if(target) return "carTargetFlash.png";
+				else return "carFlash.png";
+			}
+			else {
+				return "carVFlash.png";
+			}
+		}
+		else {
+			if(dir==MoveDir.HORIZONTAL) {
+				return "truckFlash.png";
+			}
+			else {
+				return "truckVFlash.png";
+			}
+		}
+	}
 }

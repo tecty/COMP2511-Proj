@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import selector.RandomSelector;
 
 public class Car extends StackPane implements Serializable{
@@ -58,6 +63,7 @@ public class Car extends StackPane implements Serializable{
         getChildren().addAll(carRectangle, img);
         
     	String chooseImg = "-fx-background-image: url(\"/img/" + RandomSelector.selectImg(getLen(), getDir(), isTarget())+"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;";
+    	String flashImg = "-fx-background-image: url(\"/img/" + RandomSelector.selectFlashImg(getLen(), getDir(), isTarget())+"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;";
     	
     	img.setStyle(chooseImg);
         
@@ -77,7 +83,15 @@ public class Car extends StackPane implements Serializable{
 
         // set the color by given.
         carRectangle.setFill(Color.TRANSPARENT);
-        
+        KeyFrame keyFrame1On = new KeyFrame(Duration.seconds(0), new KeyValue(img.styleProperty(), chooseImg));
+        KeyFrame startFadeOut = new KeyFrame(Duration.seconds(0.2), new KeyValue(img.opacityProperty(), 1.0));
+        KeyFrame endFadeOut = new KeyFrame(Duration.seconds(0.5), new KeyValue(img.opacityProperty(), 0.0));
+//        KeyFrame keyFrame2On = new KeyFrame(Duration.seconds(0.5), new KeyValue(img.styleProperty(), flashImg));
+//        KeyFrame endFadeIn = new KeyFrame(Duration.seconds(0.8), new KeyValue(img.opacityProperty(), 1.0));
+        Timeline timelineOn = new Timeline(keyFrame1On, startFadeOut, endFadeOut);
+        timelineOn.setAutoReverse(true);
+        timelineOn.setCycleCount(Animation.INDEFINITE);
+        timelineOn.play();
     }
     
     public void refresh() {
