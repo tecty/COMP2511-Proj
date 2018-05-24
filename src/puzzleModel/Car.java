@@ -104,12 +104,20 @@ class Car {
 
     
     	/**
-    	 * get  method of Path size
+    	 * get method for Path size
     	 * @return Paths.size()
     	 */
     public int getPathSize() {
     		//return the path size to check whether it has been used
         return Paths.size();
+    }
+
+    /**
+     * get method for first coordinate of path
+     * @return
+     */
+    public Coordinate popFirstCo() {
+        return Paths.get(0);
     }
 
 }

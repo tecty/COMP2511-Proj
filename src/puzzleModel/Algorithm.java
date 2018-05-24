@@ -239,38 +239,4 @@ public class Algorithm {
         }
     }
     
-    /* This function was not used in the final algorithm
-    private boolean listContainBoard(ArrayList<Board> list, Board b) {
-        if (list.size() == 0) return false;
-
-        boolean t = false;
-
-        // for each board
-        for (int j = 0; j < list.size(); j++) {
-
-            // get curr board
-            Board curr = list.get(j);
-
-            // for each car in curr board
-            for (int k = 0; k < curr.carList.size(); k++) {
-
-                // get curr car, and b.carList
-                Car car = curr.carList.get(k);
-                Car c = b.carList.get(k);
-
-                // get last coordinate of corresponding car
-                Coordinate co = car.Paths.get(car.Paths.size() - 1);
-                Coordinate oco = c.Paths.get(c.Paths.size() - 1);
-
-                if (co.x1 == oco.x1 && co.x2 == oco.x2 && co.y1 == oco.y1 && co.y2 == oco.y2) {
-                    continue;
-                }
-                if (k == curr.carList.size())
-                    return true;
-                break;
-            }
-        }
-        return false;
-    }
-    */
 }

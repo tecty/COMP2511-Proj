@@ -21,43 +21,39 @@ public class Generator {
         // gridMatrix.printB(board);
 
         int pathLength = 0;
-        //while path length of current board is less than desired Length add car
+
         while (pathLength < desiredLength) {
-    			//if it runs for a long time restart
+
             if (System.currentTimeMillis() - startTime > 10000) {
                 return generateRandomBoard(desiredLength, System.currentTimeMillis());
             }
-            //find the solution of current board
+
             Algorithm alg = new Algorithm();
             Board solved = alg.solve(board);
-            
-            //if no solution and path length less than desired length restart
+
             if (solved == null && pathLength < desiredLength) {
                 return generateRandomBoard(desiredLength, startTime);
             }
-            //updated path length
+
             pathLength = solved.carID.size() + 1;
 //	        System.out.println("solution length = " + pathLength);
 
-            //if current board has more than 13 cars it means it full and no place to add car restart
             if (board.carList.size() >= 13) {
                 return generateRandomBoard(desiredLength, startTime);
             }
-            //if current board has more than 10 cars and still have long way to reach the desired length restart
+
             if (board.carList.size() >= 10 && (desiredLength - pathLength) >= 5) {
                 return generateRandomBoard(desiredLength, startTime);
             }
-            //if the current board has less than 13 car it has chance to add car
+
             if (board.carList.size() < 13) {
                 Car rand = getRandomCar(board.carList.size());
                 int[][] gameboard = board.gridMatrix;
-                //is free to add this random car add it
                 if (isFree(gameboard, rand)) {
                     board.carList.add(rand);
                     board.updateBoard();
                     Algorithm alg1 = new Algorithm();
                     Board solved1 = alg1.solve(board);
-                    //after add the random if it has no solution delete it
                     if (solved1 == null || (solved1 != null && (solved1.carList.size() + 1) <= pathLength)) {
                         if (rand.Paths.get(0).x1 == rand.Paths.get(0).x2) {
                             int k = rand.Paths.get(0).y1;
