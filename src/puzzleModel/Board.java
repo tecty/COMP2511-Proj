@@ -19,7 +19,7 @@ public class Board {
             }
         }
         this.carList = c;
-        //this.carID = new ArrayList<Integer>();
+//        this.carID = new ArrayList<Integer>();
         this.carID = carID;
         updateBoard();
     }
@@ -50,6 +50,16 @@ public class Board {
         return this.carID.size() + 1;
     }
 
+
+    public Car popFirst() {
+		int id = this.carID.remove(0);
+		Coordinate r = this.carList.get(id).Paths.remove(1);
+		ArrayList<Coordinate> n = new ArrayList<Coordinate>();
+		n.add(r);
+		Car c = new Car(id, n);
+		return c;
+	}
+    
     public ArrayList<Car> copyCarList() {
         ArrayList<Car> car = new ArrayList<Car>();
         for (Car c : this.carList) {
@@ -111,124 +121,124 @@ public class Board {
         }
         System.out.println();
     }
-
-
-    public boolean undo() {
-        // cannot undo at the start of game
-        if (this.carID.size() == 0) {
-            return false;
-        }
-        int cID = this.carID.get(this.carID.size() - 1);
-
-        Car c = this.carList.get(cID);
-        Coordinate co = c.Paths.get(c.Paths.size() - 1);
-        Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
-
-        // move by row
-        if (co.x1 == co.x2) {
-            // reset current
-            for (int i = co.y1; i <= co.y2; i++) {
-                this.gridMatrix[co.x1][i] = -1;
-            }
-
-            // reset previous
-            for (int i = preCo.y1; i <= preCo.y2; i++) {
-                this.gridMatrix[preCo.x1][i] = cID;
-            }
-
-        // move by column
-        } else if (co.y1 == co.y2) {
-            // reset current
-            for (int i = co.x1; i <= co.x2; i++) {
-                this.gridMatrix[i][co.y1] = -1;
-            }
-
-            // add previous
-            for (int i = preCo.x1; i <= preCo.x2; i++) {
-                this.gridMatrix[i][preCo.y1] = cID;
-            }
-
-        }
-
-        // remove form paths
-        c.Paths.remove(c.Paths.size() - 1);
-        // remove from carID
-        this.carID.remove(this.carID.size() - 1);
-
-        return true;
-    }
-
-    // add cID to carID list, reset previous board, move/add new board
-    public void moveCar(int cID) {
-        // add to carID list
-        this.carID.add(cID);
-
-        Car c = this.carList.get(cID);
-        Coordinate co = c.Paths.get(c.Paths.size() - 1);
-        Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
-
-        // move by row
-        if (co.x1 == co.x2) {
-            //reset previous
-            for (int i = preCo.y1; i <= preCo.y2; i++) {
-                this.gridMatrix[preCo.x1][i] = -1;
-            }
-
-            // add new
-            for (int i = co.y1; i <= co.y2; i++) {
-                this.gridMatrix[co.x1][i] = cID;
-            }
-
-        } else if (co.y1 == co.y2) {
-            // reset previous
-            for (int i = preCo.x1; i <= preCo.x2; i++) {
-                this.gridMatrix[i][preCo.y1] = -1;
-            }
-
-            // add new
-            for (int i = co.x1; i <= co.x2; i++) {
-                this.gridMatrix[i][co.y1] = cID;
-            }
-        }
-    }
-
-
-    public boolean isValidMove(int[][] b, Car c) {
-        // boolean isValid = false;
-        Coordinate co = c.Paths.get(c.Paths.size() - 1);
-
-        if (c.carID == 0 && (co.y1 > 5 || co.y2 > 5)) {
-            // congratulations
-            return true;
-        }
-
-        // out of range
-        if (co.x1 > 5 || co.x2 > 5 || co.y2 > 5 || co.y2 > 5 ||
-                co.x1 < 0 || co.x2 < 0 || co.y2 < 0 || co.y2 < 0) {
-            c.Paths.remove(c.Paths.size() - 1);
-            return false;
-        }
-
-        // move by row
-        if (co.x1 == co.x2) {
-            for (int i = co.y1; i <= co.y2; i++) {
-                if (b[co.x1][i] != -1 && b[co.x1][i] != c.getCarID()) {
-                    c.Paths.remove(c.Paths.size() - 1);
-                    return false;
-                }
-            }
-
-        // move by column
-        } else if (co.y1 == co.y2) {
-            for (int i = co.x1; i <= co.x2; i++) {
-                if (b[i][co.y1] != -1 && b[i][co.y1] != c.getCarID()) {
-                    c.Paths.remove(c.Paths.size() - 1);
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//
+//
+//    public boolean undo() {
+//        // cannot undo at the start of game
+//        if (this.carID.size() == 0) {
+//            return false;
+//        }
+//        int cID = this.carID.get(this.carID.size() - 1);
+//
+//        Car c = this.carList.get(cID);
+//        Coordinate co = c.Paths.get(c.Paths.size() - 1);
+//        Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
+//
+//        // move by row
+//        if (co.x1 == co.x2) {
+//            // reset current
+//            for (int i = co.y1; i <= co.y2; i++) {
+//                this.gridMatrix[co.x1][i] = -1;
+//            }
+//
+//            // reset previous
+//            for (int i = preCo.y1; i <= preCo.y2; i++) {
+//                this.gridMatrix[preCo.x1][i] = cID;
+//            }
+//
+//        // move by column
+//        } else if (co.y1 == co.y2) {
+//            // reset current
+//            for (int i = co.x1; i <= co.x2; i++) {
+//                this.gridMatrix[i][co.y1] = -1;
+//            }
+//
+//            // add previous
+//            for (int i = preCo.x1; i <= preCo.x2; i++) {
+//                this.gridMatrix[i][preCo.y1] = cID;
+//            }
+//
+//        }
+//
+//        // remove form paths
+//        c.Paths.remove(c.Paths.size() - 1);
+//        // remove from carID
+//        this.carID.remove(this.carID.size() - 1);
+//
+//        return true;
+//    }
+//
+//    // add cID to carID list, reset previous board, move/add new board
+//    public void moveCar(int cID) {
+//        // add to carID list
+//        this.carID.add(cID);
+//
+//        Car c = this.carList.get(cID);
+//        Coordinate co = c.Paths.get(c.Paths.size() - 1);
+//        Coordinate preCo = c.Paths.get(c.Paths.size() - 2);
+//
+//        // move by row
+//        if (co.x1 == co.x2) {
+//            //reset previous
+//            for (int i = preCo.y1; i <= preCo.y2; i++) {
+//                this.gridMatrix[preCo.x1][i] = -1;
+//            }
+//
+//            // add new
+//            for (int i = co.y1; i <= co.y2; i++) {
+//                this.gridMatrix[co.x1][i] = cID;
+//            }
+//
+//        } else if (co.y1 == co.y2) {
+//            // reset previous
+//            for (int i = preCo.x1; i <= preCo.x2; i++) {
+//                this.gridMatrix[i][preCo.y1] = -1;
+//            }
+//
+//            // add new
+//            for (int i = co.x1; i <= co.x2; i++) {
+//                this.gridMatrix[i][co.y1] = cID;
+//            }
+//        }
+//    }
+//
+//
+//    public boolean isValidMove(int[][] b, Car c) {
+//        // boolean isValid = false;
+//        Coordinate co = c.Paths.get(c.Paths.size() - 1);
+//
+//        if (c.carID == 0 && (co.y1 > 5 || co.y2 > 5)) {
+//            // congratulations
+//            return true;
+//        }
+//
+//        // out of range
+//        if (co.x1 > 5 || co.x2 > 5 || co.y2 > 5 || co.y2 > 5 ||
+//                co.x1 < 0 || co.x2 < 0 || co.y2 < 0 || co.y2 < 0) {
+//            c.Paths.remove(c.Paths.size() - 1);
+//            return false;
+//        }
+//
+//        // move by row
+//        if (co.x1 == co.x2) {
+//            for (int i = co.y1; i <= co.y2; i++) {
+//                if (b[co.x1][i] != -1 && b[co.x1][i] != c.getCarID()) {
+//                    c.Paths.remove(c.Paths.size() - 1);
+//                    return false;
+//                }
+//            }
+//
+//        // move by column
+//        } else if (co.y1 == co.y2) {
+//            for (int i = co.x1; i <= co.x2; i++) {
+//                if (b[i][co.y1] != -1 && b[i][co.y1] != c.getCarID()) {
+//                    c.Paths.remove(c.Paths.size() - 1);
+//                    return false;
+//                }
+//            }
+//        }
+//        return true;
+//    }
 
     public ArrayList<Board> getPossible() {
 //		System.out.println("\n GETTING POSSIBLE BOARD");

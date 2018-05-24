@@ -1,6 +1,6 @@
 package puzzleModel;
 
-class Coordinate {
+public class Coordinate {
     public int x1;
     public int y1;
     public int x2;

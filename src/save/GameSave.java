@@ -50,7 +50,7 @@ public class GameSave implements Serializable{
 		// try to remove dependent code
 		return name +".sav";
 	}
-	
+
 	public String printExpertMode() {
 		if(expertMode) return "Expert Mode";
 		return "Novice Mode";
