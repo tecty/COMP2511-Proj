@@ -19,6 +19,9 @@ import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
 
+/**
+ * Controller handle the save to load by user.
+ */
 public class SaveslotSelect {
 	//components on FXML file
 	//static panes
@@ -27,7 +30,11 @@ public class SaveslotSelect {
 	//buttons
 	@FXML
 	Button back;
-	
+
+	/**
+	 * Initialize the UI component that contain save's information.
+	 * @throws IOException Exception may happen when loading a scene.
+	 */
 	@FXML
 	private void initialize() throws IOException {
 		VBox list = new VBox();
@@ -79,8 +86,12 @@ public class SaveslotSelect {
 		}
 		slotPage.setContent(list);
 	}
-	
-	
+
+	/**
+	 * If user want to get to main scene.
+	 * @param actionEvent Source trigger this action.
+	 * @throws IOException Exception may occur by loading a scene.
+	 */
 	@FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
 		SoundEffect.play("soundEffect/click.mp3");
