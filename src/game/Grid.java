@@ -40,7 +40,7 @@ public class Grid extends Rectangle {
         this.x = x; this.y = y;
         
         transition = new FillTransition();
-        transition.setDuration(Duration.millis(500));
+        transition.setDuration(Duration.millis(700));
 		transition.setShape(this);
 		transition.setFromValue(Color.GREY);
 		transition.setToValue(Color.rgb(239, 239, 239));

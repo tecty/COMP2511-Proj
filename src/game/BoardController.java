@@ -1,12 +1,8 @@
 package game;
 
-import javafx.animation.Animation;
-import javafx.animation.FillTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
@@ -65,9 +61,9 @@ public class BoardController {
 
     public void reset(Level level){
     	//set the hint not activated
-    	onHint = false;
+       	onHint = false;
     	cleanHint();
-    	currStat.removeAll(currStat);
+    	
     	//reset the level
         if(currentLevel == level){
             // not destroy the old car to prevent
@@ -78,6 +74,7 @@ public class BoardController {
             }
         }
         else {
+        	currStat.removeAll(currStat);
             // reset to a given level
             currentLevel = level;
             // remove all the cars in previous level in GUI
@@ -238,7 +235,10 @@ public class BoardController {
         }
         
         //refresh hint status
-        if(Setting.save.expertMode()) onHint = false;
+        if(Setting.save.expertMode()) {
+        	System.out.println("MoveCar: this is expert Mode");
+        	onHint = false;
+        }
         
         // refresh the coordinate in the board
         cleanHint();
@@ -247,6 +247,12 @@ public class BoardController {
         
         // change the car's stage would add up move counter
         mainController.addSteps();
+        
+        if(onHint) {
+        	System.out.println("onHint is on");
+        	nextStep();
+        }
+        else System.out.println("onHint is off");
     }
 
 
@@ -445,38 +451,50 @@ public class BoardController {
     public void nextStep() {
     	onHint = true;
     	ArrayList<puzzleModel.Car> cars = new ArrayList<>();
+    	System.out.println("here");
+    	if(currStat.isEmpty()) System.out.println("empty");
     	for(Car each : currStat) {
     		cars.add(each.getAlgorithmCar());
     	}
-    	System.out.println("algArray generated");
+    	System.out.println("here");
+
     	//summarize the current board situation into a Board class
     	Board currBoard = new Board(cars, new ArrayList<>());
     	//now use a solving algorithm to solve the puzzle
     	Algorithm alg = new Algorithm();
+    	System.out.println("here");
+
     	if(alg.unlockCar(currBoard)) return;
+    	System.out.println("here");
+
     	Board solveBoard = alg.solve(currBoard);
-    	
-    	
-    	System.out.println("currBoard generated");
-    	Board.printB(currBoard);
-    	System.out.println("solveBoard generated");
-    	Board.printB(solveBoard);
+    	System.out.println("here");
     	
     	puzzleModel.Car nextStep = solveBoard.popFirst();
     	
-    	System.out.println("car get");
     	puzzleModel.Coordinate co = nextStep.popFirstCo();
     	
-    	//change the color of the next covered grid
+    	
+    	//flash the car suggest to move
+    	System.out.println("the car to flash: "+nextStep.getCarID());
+    	Car nextCar = currStat.get(nextStep.getCarID());
+    	nextCar.flash();
+    	System.out.println("the chosen car is at " + nextCar.getGridX() + ", " + nextCar.getGridY());
+    	
+    	//flash the grid suggest to move on
     	for(int i = co.y1; i <= co.y2; i++) {
     		for(int j = co.x1; j <= co.x2; j++) {
     			gridBoard[i][j].flash();
     		}
     	}
+    	
     	System.out.println("Move the car " + nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+"), ("+co.x2+", "+co.y2+")");
     }
     
     private void cleanHint() {
+    	for(Car each : currStat) {
+    		each.stopFlash();
+    	}
     	for(int i = 0; i < 6; i++) {
     		for(int j = 0; j < 6; j++) {
     			gridBoard[i][j].stopFlash();
