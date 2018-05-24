@@ -179,9 +179,6 @@ public class Car extends StackPane implements Serializable{
         System.out.println("Car "+ getCarId()+
                 " ("+getGridX()+","+getGridY()+")" + " Length: "+ getLen());
     }
-    public String getSound() {
-    	return sound;
-    }
 
     public puzzleModel.Car getAlgorithmCar(){
         ArrayList<puzzleModel.Coordinate> paths = new ArrayList<puzzleModel.Coordinate>();
