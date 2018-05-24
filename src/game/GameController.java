@@ -155,7 +155,7 @@ public class GameController {
 
         //update the up-till-now cleared level number
         Setting.save.setLevelCleared(currentLevel);
-        System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).userStar());
+        System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).calStar());
 
         //take care the availability of playing the next level
     	if(Setting.save.getLevelCleared()>8) next.setDisable(true);

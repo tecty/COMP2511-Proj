@@ -100,7 +100,7 @@ public class GameSave implements Serializable{
 	public int getTotalStar() {
 		int sum = 0;
 		for(Level each : allLevels) {
-			sum += each.userStar();
+			sum += each.calStar();
 		}
 		return sum;
 	}

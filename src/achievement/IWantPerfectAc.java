@@ -22,7 +22,7 @@ public class IWantPerfectAc implements Achievement {
     public boolean isAchieved(GameSave save) {
         // achieve when one of the level is achieved by three star
         for (int level = 0; level < save.getLevelCleared(); level++) {
-            if (save.getLevel(level).userStar()==3)
+            if (save.getLevel(level).calStar()==3)
                 return true;
         }
         return false;

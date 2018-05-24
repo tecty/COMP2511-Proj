@@ -73,7 +73,7 @@ public class Level implements Serializable{
         boolean needUpdate = false;
 
         // the previous star
-        int old_star = userStar();
+        int old_star = calStar();
         //should keep the best record in the saveslot
         if (this.userStep == -1 || this.userStep > userStep) {
             System.out.println("new " + userStep);
@@ -87,7 +87,7 @@ public class Level implements Serializable{
         }
 
         // user may gain more star if they replay
-        int new_star = userStar();
+        int new_star = calStar();
         if (needUpdate){
             if (new_star > old_star) {
                 // now this level have gained more star
@@ -123,7 +123,7 @@ public class Level implements Serializable{
         return total;
     }
 	
-	public int userStar() {
+	public int calStar() {
         return  calStar(userStep,userTime);
 	}
 	
@@ -134,7 +134,7 @@ public class Level implements Serializable{
 	//best time consumed
 	public double recommendTime() {
         // use a approximate 2nd degree function to calculate
-		double recTime = 0.37* recommendStep*recommendStep + 10;
+		double recTime = 0.22* recommendStep*recommendStep + 10;
 		// need to be integer
         recTime =((int) recTime);
 	    return recTime;
@@ -145,8 +145,11 @@ public class Level implements Serializable{
 	}
 
     public boolean useHint() {
-        if (hinted){
-            // user already by this level's hint
+        if (hinted && !save.isExpertMode()){
+            // user already by this level's
+            // hint and the user is play non-expert
+            // mode, they would get a lot of
+            // hint one he has purchase this level's hint
             return true;
         }
         if (save.useHint()){
