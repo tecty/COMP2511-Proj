@@ -2,7 +2,7 @@ package puzzleModel;
 
 import java.util.ArrayList;
 
-class Car {
+public class Car {
     //public ArrayList<Coordinate> Paths = new ArrayList<Coordinate>();
     public int carID;
     public ArrayList<Coordinate> Paths;
@@ -83,4 +83,7 @@ class Car {
         return Paths.size();
     }
 
+    public Coordinate popFirstCo() {
+        return Paths.get(0);
+    }
 }

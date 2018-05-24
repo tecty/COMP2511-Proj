@@ -4,10 +4,15 @@ import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import selector.RandomSelector;
 
 public class Car extends StackPane implements Serializable{
@@ -22,6 +27,10 @@ public class Car extends StackPane implements Serializable{
     final private int len;
     
     private String sound;
+
+    //animation stuff
+//    Pane img = null;
+//    Timeline timelineOn;
 
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
@@ -77,7 +86,13 @@ public class Car extends StackPane implements Serializable{
 
         // set the color by given.
         carRectangle.setFill(Color.TRANSPARENT);
-        
+//
+//        //set up animation property
+//        KeyFrame startFadeOut = new KeyFrame(Duration.seconds(0.0), new KeyValue(img.opacityProperty(), 1.0));
+//        KeyFrame endFadeOut = new KeyFrame(Duration.seconds(0.5), new KeyValue(img.opacityProperty(), 0.0));
+//        timelineOn = new Timeline(startFadeOut, endFadeOut);
+//        timelineOn.setAutoReverse(true);
+//        timelineOn.setCycleCount(Animation.INDEFINITE);
     }
     
     public void refresh() {
@@ -166,4 +181,21 @@ public class Car extends StackPane implements Serializable{
     	return sound;
     }
 
+    public puzzleModel.Car getAlgorithmCar(){
+        ArrayList<puzzleModel.Coordinate> paths = new ArrayList<puzzleModel.Coordinate>();
+        if(this.getDir()==MoveDir.HORIZONTAL) paths.add(new puzzleModel.Coordinate( this.getGridY(), this.getGridX(), this.getGridY(), this.getGridX()+this.getLen()-1));
+        else paths.add(new puzzleModel.Coordinate(gridY, gridX, gridY+this.getLen()-1, gridX));
+        puzzleModel.Car algCar = new puzzleModel.Car(this.getCarId(), paths);
+        System.out.println("alg car generated");
+        return algCar;
+    }
+//
+//    public void flash() {
+//        timelineOn.play();
+//    }
+//
+//    public void stopFlash() {
+//        timelineOn.stop();
+//        img.setOpacity(1.0);
+//    }
 }

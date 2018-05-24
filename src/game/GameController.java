@@ -1,7 +1,6 @@
 package game;
 
 import java.io.IOException;
-import java.util.Set;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -243,8 +242,12 @@ public class GameController {
     @FXML
     private void hintAction(){
         // reduce the hint count and refresh the text
-        if (Setting.save.useHint())
+        if (Setting.save.useHint()){
+            // hint the next step in the board
+            boardController.hintNextStep();
+            // reduce the hint count in the save
             refreshHint();
+        }
     }
 
     protected void addSteps(){

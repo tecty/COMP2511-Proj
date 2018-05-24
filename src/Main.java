@@ -58,6 +58,8 @@ public class Main extends Application {
 			SaveManager.save(Setting.save);
 		}
 
+		System.exit(0);
+
 		// stop the executor
         Setting.puzzleCreator.shutdownNow();
     }

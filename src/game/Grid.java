@@ -1,7 +1,12 @@
 package game;
 
+import javafx.animation.Animation;
+import javafx.animation.FillTransition;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
+
+import java.time.Clock;
 
 public class Grid extends Rectangle {
     // the small grid that contain each car
@@ -11,6 +16,10 @@ public class Grid extends Rectangle {
     // the coordinate of this gird
     final private int x;
     final private int y;
+
+    //animation manager
+    FillTransition transition;
+
 
     public Grid(int x, int y) {
         // set this rectangle's size by the settings
@@ -32,6 +41,15 @@ public class Grid extends Rectangle {
         );
 
         this.x = x; this.y = y;
+
+
+        transition = new FillTransition();
+        transition.setDuration(Duration.millis(700));
+        transition.setShape(this);
+        transition.setFromValue(Color.GREY);
+        transition.setToValue(Color.rgb(239, 239, 239));
+        transition.setAutoReverse(true);
+        transition.setCycleCount(Animation.INDEFINITE);
     }
 
     public boolean hasCar(Car car){
@@ -48,5 +66,14 @@ public class Grid extends Rectangle {
         if (!hasCar(car) || car == null){
             this.car = car;
         }
+    }
+
+    public void flash() {
+        transition.playFromStart();
+    }
+
+    public void stopFlash() {
+        transition.stop();
+        this.setFill(Color.GREY);
     }
 }
