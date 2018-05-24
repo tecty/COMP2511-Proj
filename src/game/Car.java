@@ -174,4 +174,6 @@ public class Car extends StackPane implements Serializable{
     	System.out.println("alg car generated");
     	return algCar;
     }
+    
+    
 }

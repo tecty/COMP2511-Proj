@@ -1,12 +1,16 @@
 package game;
 
+import javafx.animation.Animation;
+import javafx.animation.FillTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
+import setting.Setting;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -47,6 +51,7 @@ public class BoardController {
     // a handle to main controller
     GameController mainController;
 
+
     @FXML private void initialize(){
     	//set the hint not activated
     	onHint = false;
@@ -61,6 +66,7 @@ public class BoardController {
     public void reset(Level level){
     	//set the hint not activated
     	onHint = false;
+    	cleanHint();
     	currStat.removeAll(currStat);
     	//reset the level
         if(currentLevel == level){
@@ -230,11 +236,15 @@ public class BoardController {
             }
             history.push(new Movement(car, gridY - car.getGridY()));
         }
-
+        
+        //refresh hint status
+        if(Setting.save.expertMode()) onHint = false;
+        
         // refresh the coordinate in the board
+        cleanHint();
         refreshCarInBoard(car, gridX, gridY);
 
-
+        
         // change the car's stage would add up move counter
         mainController.addSteps();
     }
@@ -433,6 +443,7 @@ public class BoardController {
     
     //the followings are animation stuff
     public void nextStep() {
+    	onHint = true;
     	ArrayList<puzzleModel.Car> cars = new ArrayList<>();
     	for(Car each : currStat) {
     		cars.add(each.getAlgorithmCar());
@@ -456,9 +467,21 @@ public class BoardController {
     	System.out.println("car get");
     	puzzleModel.Coordinate co = nextStep.popFirstCo();
     	
+    	//change the color of the next covered grid
+    	for(int i = co.y1; i <= co.y2; i++) {
+    		for(int j = co.x1; j <= co.x2; j++) {
+    			gridBoard[i][j].flash();
+    		}
+    	}
     	System.out.println("Move the car " + nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+"), ("+co.x2+", "+co.y2+")");
     }
     
-    
+    private void cleanHint() {
+    	for(int i = 0; i < 6; i++) {
+    		for(int j = 0; j < 6; j++) {
+    			gridBoard[i][j].stopFlash();
+    		}
+    	}
+    }
 
 }
