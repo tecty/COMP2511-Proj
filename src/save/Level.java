@@ -11,7 +11,7 @@ import puzzleModel.Generator;
 public class Level implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
-	ArrayList<Car> carList = new ArrayList<>();
+	private ArrayList<Car> carList = new ArrayList<>();
 
 	// level id for the id in the array in that save slot
     private int levelId;
@@ -25,7 +25,7 @@ public class Level implements Serializable{
 	private GameSave save;
 
 	// whether this level have hinted by computer
-    boolean hinted ;
+    private boolean hinted ;
 
 
 	public Level(GameSave save, int levelId) {
@@ -36,7 +36,7 @@ public class Level implements Serializable{
         hinted = false;
 	}
 
-	public void loadPuzzle(){
+	protected void loadPuzzle(){
         //the generated set of arranged cars and the corresponding recommend steps are imported in
         Generator generator = new Generator();
 
@@ -159,5 +159,11 @@ public class Level implements Serializable{
         }
         // use hint fail
         return false;
+    }
+
+    protected boolean isPuzzleLoaded() {
+	    // use recommended step to
+        // identify whether this level is empty
+        return recommendStep == -1;
     }
 }

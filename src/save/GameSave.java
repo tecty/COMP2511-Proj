@@ -10,14 +10,14 @@ public class GameSave implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	//save-slot name
-	String name;
+	private String name;
 	
 	//the total number of puzzles in one save
-	private final static int NUM_OF_LEVEL = 9;
+	protected final static int NUM_OF_LEVEL = 9;
 
 	//currently totally generate 9 boards in the save
 	ArrayList<Level> allLevels;
-	boolean expertMode;
+	private boolean expertMode;
 	
 	//variables recording the progress of this save-slot
 	//number of levels cleared
@@ -52,20 +52,20 @@ public class GameSave implements Serializable{
 	}
 	
 	//following functions return useful information saved in the save slot
-	public String getName() {
+	private String getName() {
 		return name;
 	}
-	public String getFileName(){
+	protected String getFileName(){
 		// try to remove dependent code
 		return getName() +".sav";
 	}
 	
-	public String printExpertMode() {
+	protected String printExpertMode() {
 		if(expertMode) return "Expert Mode";
 		return "Novice Mode";
 	}
 	
-	public boolean isExpertMode() {
+	protected boolean isExpertMode() {
 		return expertMode;
 	}
 
@@ -77,7 +77,7 @@ public class GameSave implements Serializable{
 		return totalStars;
 	}
 
-	public void addStars(int starsGain){
+	protected void addStars(int starsGain){
 		totalStars += starsGain;
 	}
 	/**
@@ -97,7 +97,7 @@ public class GameSave implements Serializable{
 		return (totalStars-usedStars)/3;
 	}
 
-	public int getTotalStar() {
+	protected int getTotalStar() {
 		int sum = 0;
 		for(Level each : allLevels) {
 			sum += each.calStar();
@@ -141,7 +141,7 @@ public class GameSave implements Serializable{
 	 * Flush this save to disk, this must happen
 	 * atomically.
 	 */
-	public void flush(){
+	protected void flush(){
 		synchronized (this){
 			// because save would destroy the file,
 			// so, only can save one time.

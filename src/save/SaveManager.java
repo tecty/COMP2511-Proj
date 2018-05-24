@@ -1,5 +1,7 @@
 package save;
 
+import setting.Setting;
+
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,7 +19,7 @@ public class SaveManager {
 		return file.exists();
 	}
 	
-	public static ArrayList<String> loadAllSaves() throws IOException {
+	protected static ArrayList<String> loadAllSaves()  {
 		ArrayList<String> saveList = new ArrayList<>();
 		File dir = new File("saving");
 		dir.mkdir();
@@ -30,7 +32,7 @@ public class SaveManager {
 		return saveList;
 	}
 	
-	public static String lastModifiedTime(String fileName) {
+	protected static String lastModifiedTime(String fileName) {
 		File file = new File("saving/"+fileName);
 		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");			
 		return sdf.format(file.lastModified());
@@ -65,7 +67,7 @@ public class SaveManager {
 		
 		if (file.exists()) {
 			try {
-				System.out.println("Loading file");
+//				System.out.println("Loading file");
 
 				FileInputStream fileIn = new FileInputStream("saving/"+fileName);
 				ObjectInputStream inputStream = new ObjectInputStream(fileIn);
@@ -74,7 +76,7 @@ public class SaveManager {
 				inputStream.close();
 				fileIn.close();
 
-				System.out.println("File loaded");
+//				System.out.println("File loaded");
 
 			} catch (IOException | ClassNotFoundException e) {
 				System.out.println("Failed to load! " + e.getLocalizedMessage());
@@ -82,6 +84,17 @@ public class SaveManager {
 		} else {
 			System.out.println("Nothing to load.");
 		}
+
 		return saveslot;
 	}
+    protected static void tryRepairSave(GameSave save){
+        for (int i = 0; i < GameSave.NUM_OF_LEVEL; i++) {
+            if (save.getLevel(i).isPuzzleLoaded()){
+                // submit this level for background generation
+                PuzzleCreatorThread thisThread =
+                        new PuzzleCreatorThread(save.getLevel(i));
+                Setting.puzzleCreator.submit(thisThread);
+            }
+        }
+    }
 }

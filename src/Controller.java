@@ -32,14 +32,14 @@ public class Controller {
     }
 
     @FXML
-    private void levelSelectAction(ActionEvent actionEvent) throws IOException, ClassNotFoundException {  	
+    private void levelSelectAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
     	// get the current Stage
         Stage primaryStage = (Stage)  newGameButton.getScene().getWindow();
 
 
         // try to load level select scene
-        Parent root = FXMLLoader.load(getClass().getResource("saveslotSelect/SaveSlotSelect.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("save/SaveSlotSelect.fxml"));
         System.out.println("User get to choose a savelot ");
         // checkout to level select scene
         primaryStage.setScene(new Scene(root));

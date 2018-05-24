@@ -1,4 +1,4 @@
-package saveslotSelect;
+package save;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class SaveslotSelect {
 	Button back;
 	
 	@FXML
-	private void initialize() throws ClassNotFoundException, IOException {
+	private void initialize() throws IOException {
 		VBox list = new VBox();
 		list.setPrefWidth(Control.USE_COMPUTED_SIZE);
 		// try to load level select scene
@@ -41,6 +41,7 @@ public class SaveslotSelect {
 			slot.setPrefHeight(80);
 			slot.setPrefWidth(482);
 
+			// show the button's text
 			String slotText = each.substring(0,each.length()-4) + " - " +	//save-slot name
 							  saveSlot.printExpertMode() + "\n" +			//gaming mode
 							  SaveManager.lastModifiedTime(each) + "\n"  +		//last time played
@@ -50,7 +51,11 @@ public class SaveslotSelect {
 			slot.setText(slotText);
 			slot.setTextAlignment(TextAlignment.CENTER);
 			list.getChildren().add(slot);
-			
+
+			// try to repair that save
+			SaveManager.tryRepairSave(saveSlot);
+
+
 			slot.setOnMouseClicked(e -> {
 				SoundEffect.play("soundEffect/click.mp3");
 				FXMLLoader loader = new FXMLLoader();

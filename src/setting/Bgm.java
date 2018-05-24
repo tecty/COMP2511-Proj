@@ -9,24 +9,25 @@ public class Bgm {
 	private static MediaPlayer mediaPlayer;
 	private static boolean playable = true;
 
-	public static void changeStat(boolean result) {
+	protected static void changeStat(boolean result) {
 		playable = result;
-		if(!result) {
-			mediaPlayer.stop();
-		}
-		else {
-			try {
-				Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
-				mediaPlayer = new MediaPlayer(hit);
-				mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
-				mediaPlayer.setAutoPlay(true);
-			}catch (Exception e ){
-				// do nothing if system is not support playing mp3
+		try {
+			if(!result) {
+				mediaPlayer.stop();
 			}
+			else {
+					Media hit = new Media(Paths.get("music/bgm.mp3").toUri().toString());
+					mediaPlayer = new MediaPlayer(hit);
+					mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.seek(Duration.ZERO));
+					mediaPlayer.setAutoPlay(true);
+
+			}
+		}catch (Exception e ){
+			// do nothing if system is not support playing mp3
 		}
 	}
 	
-	public static boolean getStat() {
+	protected static boolean getStat() {
 		return playable;
 	}
 	
@@ -42,6 +43,5 @@ public class Bgm {
 				// do nothing if system is not support.
 			}
 		}
-		else return;
 	}
 }

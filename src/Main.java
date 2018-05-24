@@ -18,7 +18,7 @@ import java.util.concurrent.Executors;
 
 
 public class Main extends Application {
-	Stage window;
+	private Stage window;
 
 	public static void main (String[] args) {
 		launch(args);
@@ -41,7 +41,7 @@ public class Main extends Application {
 		// set the scene by the fxml file
 		primaryStage.setScene(new Scene(root));
 
-		window.setOnCloseRequest(windowEvent -> {closeApp();});
+		window.setOnCloseRequest(windowEvent -> closeApp());
 
 		// show the window
 		window.show();
@@ -58,10 +58,9 @@ public class Main extends Application {
 			SaveManager.save(Setting.save);
 		}
 
+		// force to stop the system
 		System.exit(0);
 
-		// stop the executor
-        Setting.puzzleCreator.shutdownNow();
     }
 
 }
