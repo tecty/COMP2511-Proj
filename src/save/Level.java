@@ -24,9 +24,16 @@ public class Level implements Serializable{
 	// which save own this level
 	private GameSave save;
 
+	// whether this level have hinted by computer
+    boolean hinted ;
+
+
 	public Level(GameSave save, int levelId) {
+	    // inject basic information about this level
 		this.save = save;
 		this.levelId = levelId;
+		// whether this level is hinted
+        hinted = false;
 	}
 
 	public void loadPuzzle(){
@@ -82,10 +89,10 @@ public class Level implements Serializable{
         // user may gain more star if they replay
         int new_star = userStar();
         if (needUpdate){
-            if (new_star != old_star) {
+            if (new_star > old_star) {
                 // now this level have gained more star
                 // gain more hint
-                save.addHint(new_star - old_star);
+                save.addStars(new_star - old_star);
             }
             // flush the user record to disk
             save.flush();
@@ -98,7 +105,10 @@ public class Level implements Serializable{
         // this puzzle is not generated
         if (recommendStep == -1)
             return 0;
-
+        if (hinted)
+            // if a user use a hint,
+            // he only could get one star at most
+            return 1;
         //once passed the game
         if(userStep!=-1) total++;
         else
@@ -123,10 +133,28 @@ public class Level implements Serializable{
 	
 	//best time consumed
 	public double recommendTime() {
-		return 10*recommendStep;
+        // use a approximate 2nd degree function to calculate
+		double recTime = 0.37* recommendStep*recommendStep + 10;
+		// need to be integer
+        recTime =((int) recTime);
+	    return recTime;
 	}
 
 	public int getRecommendStep(){
 		return recommendStep;
 	}
+
+    public boolean useHint() {
+        if (hinted){
+            // user already by this level's hint
+            return true;
+        }
+        if (save.useHint()){
+            // save approve this level to use hint
+            hinted = true;
+            return true;
+        }
+        // use hint fail
+        return false;
+    }
 }

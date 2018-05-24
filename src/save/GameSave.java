@@ -22,9 +22,13 @@ public class GameSave implements Serializable{
 	//variables recording the progress of this save-slot
 	//number of levels cleared
 	private int levelCleared;
-	//number of remaining hint chances
-	private int hintNum;
-	
+
+	// how many stars user gets
+	private int totalStars;
+	// how many user has use his stars
+	private int usedStars;
+
+
 	//this should be initialized when a New Game starts
 	//so the initializations of all boards should be carried out here
 	public GameSave(String name, boolean expertMode) {
@@ -35,10 +39,15 @@ public class GameSave implements Serializable{
 		
 		//initialize the variables recording game progress
 		levelCleared = 0; //no level is cleared initially
-		hintNum = 3; //give this save-slot three stars  
-		
+
 		//generate and record enough level boards
 		allLevels = new ArrayList<>();
+
+		// total stars initial is 0
+		totalStars = 0;
+		// every 3 stars can get one hint
+		// initially user have hint
+		usedStars = -9;
 		
 	}
 	
@@ -48,7 +57,7 @@ public class GameSave implements Serializable{
 	}
 	public String getFileName(){
 		// try to remove dependent code
-		return name +".sav";
+		return getName() +".sav";
 	}
 	
 	public String printExpertMode() {
@@ -64,24 +73,28 @@ public class GameSave implements Serializable{
 		return levelCleared;
 	}
 	
-	public int getHintRemain() {
-		return hintNum;
+	protected int getTotalStars(){
+		return totalStars;
 	}
 
+	public void addStars(int starsGain){
+		totalStars += starsGain;
+	}
 	/**
 	 * User try to use a hint.
 	 * @return True if they used a hint, false when
 	 * they couldn't use that hint.
 	 */
-	public boolean useHint(){
-		if (hintNum>0){
-			this.hintNum--;
+	protected boolean useHint(){
+		if (getHintNum()>0){
+			usedStars+=3;
 			return true;
 		}
 		return false;
 	}
-	protected void addHint(int num){
-		this.hintNum ++;
+
+	public int getHintNum() {
+		return (totalStars-usedStars)/3;
 	}
 
 	public int getTotalStar() {

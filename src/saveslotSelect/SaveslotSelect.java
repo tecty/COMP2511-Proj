@@ -14,7 +14,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
 import save.GameSave;
 import save.SaveManager;
 import setting.Setting;
@@ -46,7 +45,7 @@ public class SaveslotSelect {
 							  saveSlot.printExpertMode() + "\n" +			//gaming mode
 							  SaveManager.lastModifiedTime(each) + "\n"  +		//last time played
 							  "Level: " + saveSlot.getLevelCleared() + "\t" +		//the highest level achieved
-							  "Hint: " + saveSlot.getHintRemain() + "\t" +			//number of remaining hint chances
+							  "Hint: " + saveSlot.getHintNum() + "\t" +			//number of remaining hint chances
 							  "Total Star: " + saveSlot.getTotalStar();		//number of star collected
 			slot.setText(slotText);
 			slot.setTextAlignment(TextAlignment.CENTER);

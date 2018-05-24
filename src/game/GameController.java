@@ -120,7 +120,7 @@ public class GameController {
 
     private void refreshHint(){
         // setting the hint by save
-        hint.setText("Hint :" + Setting.save.getHintRemain());
+        hint.setText("Hint :" + Setting.save.getHintNum());
     }
 
     public void checkoutFinishPrompt()  {
@@ -189,13 +189,11 @@ public class GameController {
 
         // reset the rec step and time
         recommendSteps.setText("/"+thisLevel.getRecommendStep());
-        recommendSec.setText("/"+thisLevel.recommendTime());
+        recommendSec.setText("/"+String.format("%.0f",thisLevel.recommendTime()));
 
         // reset the time
 
         timer.start();
-
-
     }
 
     //The followings are button-linked functions
@@ -242,7 +240,7 @@ public class GameController {
     @FXML
     private void hintAction(){
         // reduce the hint count and refresh the text
-        if (Setting.save.useHint()){
+        if (Setting.save.getLevel(currentLevel).useHint()){
             // hint the next step in the board
             boardController.hintNextStep();
             // reduce the hint count in the save
