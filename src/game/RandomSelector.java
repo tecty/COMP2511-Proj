@@ -2,8 +2,6 @@ package game;
 
 import java.util.Random;
 
-import game.MoveDir;
-
 public class RandomSelector {
 	public static String selectImg(int len, MoveDir dir, boolean target) {
 		//this is a car

@@ -1,22 +1,18 @@
 package game;
 
-import javafx.animation.Animation;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
-import setting.Setting;
 
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * 
+ */
 public class BoardController {
     @FXML
     Pane root;

@@ -1,8 +1,9 @@
 package setting;
 
-import java.nio.file.Paths;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
-import javafx.scene.media.*;
+import java.nio.file.Paths;
 
 /**
  * Handling play a sound effect.

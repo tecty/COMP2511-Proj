@@ -12,11 +12,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import levelSelect.LoadPuzzle;
-import java.io.IOException;
 import save.GameSave;
 import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
+
+import java.io.IOException;
 
 /**
  * Controller responsible for create a new game by given name and difficulty.

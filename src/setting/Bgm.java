@@ -1,8 +1,10 @@
 package setting;
 
-import java.nio.file.Paths;
-import javafx.scene.media.*;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
+
+import java.nio.file.Paths;
 
 public class Bgm {
 	//mediaPlayer-object will not we cleaned away since someone holds a reference to it!	

@@ -1,19 +1,19 @@
 package save;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import game.Car;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import puzzleModel.Generator;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Class store the information of each level.
  */
 public class Level implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
+
 	private ArrayList<Car> carList = new ArrayList<>();
 
 	// level id for the id in the array in that save slot
@@ -21,7 +21,7 @@ public class Level implements Serializable{
 
 	// not puzzle for this level
 	private int recommendStep =-1;
-	
+
 	private int userStep=-1;
 	private double userTime = Double.POSITIVE_INFINITY;
 	// which save own this level
@@ -29,6 +29,9 @@ public class Level implements Serializable{
 
 	// whether this level have hinted by computer
     private boolean hinted ;
+
+    // how much star has gain by this level
+    private int gainStar=0 ;
 
     /**
      * Create a blank level by inject the save it
@@ -88,8 +91,7 @@ public class Level implements Serializable{
 	    //flag to need file save
         boolean needUpdate = false;
 
-        // the previous star
-        int old_star = calStar();
+
         //should keep the best record in the saveslot
         if (this.userStep == -1 || this.userStep > userStep) {
             System.out.println("new " + userStep);
@@ -105,10 +107,12 @@ public class Level implements Serializable{
         // user may gain more star if they replay
         int new_star = calStar();
         if (needUpdate){
-            if (new_star > old_star) {
+            if (new_star > gainStar) {
                 // now this level have gained more star
                 // gain more hint
-                save.addStars(new_star - old_star);
+                save.addStars(new_star - gainStar);
+                // refresh the gain stars;
+                gainStar = new_star;
             }
             // flush the user record to disk
             save.flush();

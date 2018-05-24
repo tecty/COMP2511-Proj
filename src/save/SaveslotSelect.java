@@ -1,8 +1,5 @@
 package save;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,10 +11,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import save.GameSave;
-import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Controller handle the save to load by user.

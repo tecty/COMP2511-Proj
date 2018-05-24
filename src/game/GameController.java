@@ -1,14 +1,7 @@
 package game;
 
-import java.io.IOException;
-
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,6 +14,8 @@ import javafx.stage.Stage;
 import save.Level;
 import setting.Setting;
 import setting.SoundEffect;
+
+import java.io.IOException;
 
 public class GameController {
     // create game in this controller

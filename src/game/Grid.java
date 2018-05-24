@@ -6,8 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.time.Clock;
-
 public class Grid extends Rectangle {
     // the small grid that contain each car
 

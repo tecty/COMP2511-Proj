@@ -1,12 +1,12 @@
 package game;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Car extends StackPane implements Serializable{
 	private static final long serialVersionUID = 1L;

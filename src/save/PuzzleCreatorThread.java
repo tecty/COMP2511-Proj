@@ -1,9 +1,5 @@
 package save;
 
-import puzzleModel.Algorithm;
-import puzzleModel.Board;
-import puzzleModel.Generator;
-
 /**
  * Thread object for load a puzzle to a given level
  */

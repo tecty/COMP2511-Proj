@@ -1,9 +1,9 @@
 package save;
 
+import setting.Setting;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-
-import setting.Setting;
 
 /**
  * Class hold the saved information.
