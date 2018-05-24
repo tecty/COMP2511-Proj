@@ -12,6 +12,7 @@ import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
+import setting.Setting;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -21,7 +22,7 @@ public class BoardController {
     Pane root;
     
     //animation class
-    DummyCar dummy = new DummyCar();
+    DummyCar dummy;
     
     // store all the car in this game
     Group carGroup = new Group();
@@ -62,10 +63,6 @@ public class BoardController {
         setBoard();
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
-        root.getChildren().add(dummy);
-        //the dummy should not cover the real cars
-        dummy.setVisible(false);
-        dummy.toBack();
         gridGroup.toBack();
     }
 
@@ -209,7 +206,13 @@ public class BoardController {
             if(checkLevelClear(thisCar)) {
                 mainController.checkoutFinishPrompt();
             }
-//            dumpState(thisCar);
+
+//            if (onHint && !Setting.save.isExpertMode()){
+//                // if an not expert, pay for a hint,
+//
+//                // then hint till this session end  end.
+//                hintNextStep();
+//            }
         });
     }
     /**
@@ -450,8 +453,16 @@ public class BoardController {
 
     //the followings are animation stuff
     public void hintNextStep() {
+        // initialise the dummy car object
+        dummy = new DummyCar();
+        // show the dummy car
+        root.getChildren().add(dummy);
+        //the dummy should not cover the real cars
+        dummy.toFront();
+        // car group should be most front
+        carGroup.toFront();
+
         onHint = true;
-        dummy.setVisible(true);
         ArrayList<puzzleModel.Car> cars = new ArrayList<>();
         if(currStat.isEmpty()) System.out.println("empty");
         for(Car each : currStat) {
@@ -483,13 +494,17 @@ public class BoardController {
                 gridBoard[i][j].flash();
             }
         }
-
-        System.out.println("Move the car " + nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+"), ("+co.x2+", "+co.y2+")");
+//        System.out.println("Move the car " +
+//                nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+")," +
+//                " ("+co.x2+", "+co.y2+")");
     }
 
 
     private void cleanHint() {
-    	dummy.setVisible(false);
+        // remove the dummy car.
+        if (dummy!= null)
+            root.getChildren().remove(dummy);
+        // remove all the grid that is flashing.
         for(int i = 0; i < 6; i++) {
             for(int j = 0; j < 6; j++) {
                 gridBoard[i][j].stopFlash();
