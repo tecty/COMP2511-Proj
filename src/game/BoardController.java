@@ -485,24 +485,23 @@ public class BoardController {
         //the dummy car originally inherits all physical locations and appearance from nextCar
         double dummyX = nextCar.getGridX() * GameController.GRID_SIZE;
         double dummyY = nextCar.getGridY() * GameController.GRID_SIZE;
+        
+        String nextCarAppearance = nextCar.getAppearance();
+        String dummyCarAppearance = nextCarAppearance.substring(0, nextCarAppearance.length()-4).concat("Dummy.png");
+        System.out.println(dummyCarAppearance);
         if(nextCar.getDir() == MoveDir.HORIZONTAL) {
         	//physical location
             carRectangle.setWidth(nextCar.getLen() * GameController.GRID_SIZE);
             carRectangle.setHeight(GameController.GRID_SIZE);
-            //appearance
-            if(nextCar.getLen()==2) dummyCarImg.setStyle("-fx-background-image: url(\"/img/carDummy.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            else dummyCarImg.setStyle("-fx-background-image: url(\"/img/truckDummy.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
         }
         else {
         	//physical location
         	carRectangle.setWidth(GameController.GRID_SIZE);
             carRectangle.setHeight(nextCar.getLen() * GameController.GRID_SIZE); 
-            //appearance
-            if(nextCar.getLen()==2) dummyCarImg.setStyle("-fx-background-image: url(\"/img/carDummyV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-            else dummyCarImg.setStyle("-fx-background-image: url(\"/img/truckDummyV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
-        }
+         }
+        //appearance
+        dummyCarImg.setStyle("-fx-background-image: url(\"/img/"+dummyCarAppearance+"\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
         carRectangle.setFill(Color.TRANSPARENT);
-        
         dummyCar.relocate(dummyX, dummyY);
         
         //add animation transition to the dummy car
