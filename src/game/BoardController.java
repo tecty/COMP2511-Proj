@@ -194,7 +194,7 @@ public class BoardController {
             if(checkLevelClear(thisCar)) {
                 mainController.checkoutFinishPrompt();
             }
-            dumpState(thisCar);
+//            dumpState(thisCar);
         });
     }
     /**

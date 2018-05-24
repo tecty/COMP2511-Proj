@@ -3,7 +3,7 @@ package achievement;
 import save.GameSave;
 
 /***
- * Use save file to decide whether the achievement
+ * Use save file to decide whether the achieve
  * is achieved.
  */
 public interface Achievement {

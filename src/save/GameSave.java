@@ -2,13 +2,8 @@ package save;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import game.Car;
-import puzzleAlgorithm.NullAlgorithm;
-import puzzleModel.Algorithm;
-import puzzleModel.Board;
-import puzzleModel.Generator;
+import setting.Setting;
 
 public class GameSave implements Serializable{
 	//version id
@@ -22,21 +17,21 @@ public class GameSave implements Serializable{
 
 	//currently totally generate 9 boards in the save
 	ArrayList<Level> allLevels;
-	boolean isExpertMode;
+	boolean expertMode;
 	
 	//variables recording the progress of this save-slot
 	//number of levels cleared
 	private int levelCleared;
 	//number of remaining hint chances
-	private int hintNum;	
+	private int hintNum;
 	
 	//this should be initialized when a New Game starts
 	//so the initializations of all boards should be carried out here
-	public GameSave(String name, boolean isExpertMode) {
+	public GameSave(String name, boolean expertMode) {
 		//record the name of the slot
 		this.name = name;
 		//record the gaming mode (only novice or expert)
-		this.isExpertMode = isExpertMode; 
+		this.expertMode = expertMode;
 		
 		//initialize the variables recording game progress
 		levelCleared = 0; //no level is cleared initially
@@ -51,16 +46,20 @@ public class GameSave implements Serializable{
 	public String getName() {
 		return name;
 	}
-	
+	public String getFileName(){
+		// try to remove dependent code
+		return name +".sav";
+	}
+
 	public String printExpertMode() {
-		if(isExpertMode) return "Expert Mode";
+		if(expertMode) return "Expert Mode";
 		return "Novice Mode";
 	}
 	
-	public boolean expertMode() {
-		return isExpertMode;
+	public boolean isExpertMode() {
+		return expertMode;
 	}
-	
+
 	public int getLevelCleared() {
 		return levelCleared;
 	}
@@ -68,11 +67,23 @@ public class GameSave implements Serializable{
 	public int getHintRemain() {
 		return hintNum;
 	}
-	
-	public void useHint() {
-		hintNum--;
+
+	/**
+	 * User try to use a hint.
+	 * @return True if they used a hint, false when
+	 * they couldn't use that hint.
+	 */
+	public boolean useHint(){
+		if (hintNum>0){
+			this.hintNum--;
+			return true;
+		}
+		return false;
 	}
-	
+	protected void addHint(int num){
+		this.hintNum ++;
+	}
+
 	public int getTotalStar() {
 		int sum = 0;
 		for(Level each : allLevels) {
@@ -81,23 +92,29 @@ public class GameSave implements Serializable{
 		return sum;
 	}
 	
-	public void loadPuzzle() {
-		int stepRequire ;
-
-		for(int i = 0; i < NUM_OF_LEVEL; i++) {
-			System.out.println("looping");
-		    stepRequire = 2*i+3;
-		    if(stepRequire> 10){
-		        // max the step require to 12
-		        stepRequire = 10;
-            }
-		    if(isExpertMode) allLevels.add(gameGenerate(10));
-		    else allLevels.add(gameGenerate(stepRequire));
+	public void gameGenerate() {
+		// add all the empty level
+		for (int i = 0; i < NUM_OF_LEVEL; i++) {
+			allLevels.add(new Level(this, i));
 		}
+
+		// load two puzzle in front ground
+        allLevels.get(0).loadPuzzle();
+        allLevels.get(1).loadPuzzle();
+        // use background daemon to load the rest.
+        for (int i = 2; i < NUM_OF_LEVEL; i++) {
+			// create a prepare to run thread
+            PuzzleCreatorThread thisThread =
+                    new PuzzleCreatorThread(allLevels.get(i));
+
+			// send the generate task to
+            // background executor
+            Setting.puzzleCreator.submit(thisThread);
+		}
+
 	}
 	
 	public Level getLevel(int num) {
-//		if(allLevels.get(num)==null) System.out.println("empty");
 		return allLevels.get(num);
 	}
 	
@@ -105,22 +122,19 @@ public class GameSave implements Serializable{
 	public void setLevelCleared(int levelCleared) {
 		this.levelCleared =  levelCleared+1;
 	}
-	
-	public Level gameGenerate(int steps) {
-		//the generated set of arranged cars and the corresponding recommend steps are imported in
-//		PuzzleAlgorithm algorithm = new NullAlgorithm();
-//		System.out.println("generate fine");
-        Generator generator = new Generator();
 
-        long startTime = System.currentTimeMillis();
 
-        puzzleModel.Board board =  generator.generateRandomBoard(steps, startTime);
-        for (Iterator<Car> it = board.toCarList().iterator(); it.hasNext(); ) {
-            Car eachCar = it.next();
-            eachCar.dumpCar();
-        }
-//        System.exit(0);
-        Level newLevel = new Level(board.toCarList(),steps);
-        return newLevel;
+	/**
+	 * Flush this save to disk, this must happen
+	 * atomically.
+	 */
+	public void flush(){
+		synchronized (this){
+			// because save would destroy the file,
+			// so, only can save one time.
+			SaveManager.save(this);
+		}
 	}
+
+
 }

@@ -46,7 +46,7 @@ public class LevelSelect {
     private void levelLock() {
         //check the playability of each level
 
-        System.out.println("SAVE:" + Setting.save.getLevelCleared());
+//        System.out.println("SAVE:" + Setting.save.getLevelCleared());
 
         if(0 > Setting.save.getLevelCleared()) one.setDisable(true);
         if(1 > Setting.save.getLevelCleared()) two.setDisable(true);

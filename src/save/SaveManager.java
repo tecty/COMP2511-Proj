@@ -36,13 +36,13 @@ public class SaveManager {
 		return sdf.format(file.lastModified());
 	}
 	
-	public static void save(GameSave newSave, String fileName)  {
-		File file = new File(fileName);
+	public static void save(GameSave newSave)  {
+		File file = new File(newSave.getFileName());
 		//always refresh the file(whether it is existing or not)
 		file.delete();
 		System.out.println("Saving file...");
 		try {
-			FileOutputStream fileOut = new FileOutputStream("saving/"+fileName);
+			FileOutputStream fileOut = new FileOutputStream("saving/"+newSave.getFileName());
 			BufferedOutputStream bufferedStream = new BufferedOutputStream(fileOut);
 			ObjectOutputStream outputStream = new ObjectOutputStream(bufferedStream);
 
@@ -50,7 +50,7 @@ public class SaveManager {
 			outputStream.close();
 			fileOut.close();
 
-			System.out.println("File saved.");
+//			System.out.println("File saved.");
 
 		} catch (IOException e) {
 			System.out.println("Failed to save, I/O exception");
@@ -59,7 +59,7 @@ public class SaveManager {
 	}
 	
 	
-	public static GameSave load(String fileName) throws IOException, ClassNotFoundException{
+	public static GameSave load(String fileName) {
 		File file = new File("saving/"+fileName);
 		GameSave saveslot = null;
 		

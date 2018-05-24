@@ -54,24 +54,23 @@ public class SaveslotSelect {
 			
 			slot.setOnMouseClicked(e -> {
 				SoundEffect.play("soundEffect/click.mp3");
-				
-				Setting.save = saveSlot;
-				
 				FXMLLoader loader = new FXMLLoader();
-		    	loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
-		    	Parent root = null;
-		    	try {
-					root = loader.load();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				try {
+
+					// record the save is using in setting class.
+					Setting.save = saveSlot;
+
+					// load the root node by fxml
+					loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
+
+					// get the current Stage
+					Stage primaryStage = (Stage)slot.getScene().getWindow();
+					// checkout to level select scene
+					primaryStage.setScene(new Scene(loader.load()));
+				}catch (Exception exception){
+					// do nothing
+					exception.printStackTrace();
 				}
-				// record the save is using in setting class.
-		    	
-		        // get the current Stage
-		        Stage primaryStage = (Stage)slot.getScene().getWindow();
-		        // checkout to level select scene
-		        primaryStage.setScene(new Scene(root));
 			});
 		}
 		slotPage.setContent(list);

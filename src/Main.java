@@ -8,7 +8,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import save.SaveManager;
 import setting.Bgm;
+import setting.Setting;
+
+import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 public class Main extends Application {
@@ -39,14 +45,21 @@ public class Main extends Application {
 
 		// show the window
 		window.show();
+
+        // setup the executor for generating puzzles
+        Setting.puzzleCreator= Executors.newFixedThreadPool(2);
 	}
 
 	private void closeApp(){
 	    // not a correct way to do this
 	    // A graceful way to close the game
         // may prompt a sure to close
-        // TODO: save the current game stage
-        System.out.println("user will save it progress");
+		if (Setting.save!= null){
+			SaveManager.save(Setting.save);
+		}
+
+		// stop the executor
+        Setting.puzzleCreator.shutdownNow();
     }
 
 }

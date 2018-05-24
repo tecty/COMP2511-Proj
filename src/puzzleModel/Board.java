@@ -385,7 +385,7 @@ public class Board {
                         ));
             }
         }
-        System.out.println("The generated board is ");
+//        System.out.println("The generated board is ");
 //        printB(this);
         return retList;
     }
