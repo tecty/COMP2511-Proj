@@ -1,11 +1,18 @@
 package game;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
+import setting.Setting;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -13,6 +20,10 @@ import java.util.Stack;
 public class BoardController {
     @FXML
     Pane root;
+    
+    //animation class
+    DummyCar dummy;
+    
     // store all the car in this game
     Group carGroup = new Group();
     Group gridGroup = new Group();
@@ -52,11 +63,13 @@ public class BoardController {
         setBoard();
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
+        gridGroup.toBack();
     }
 
 
 
     public void reset(Level level){
+    	cleanHint();
         if(currentLevel == level){
             // not destroy the old car to prevent
             // the car from shifting colors
@@ -193,7 +206,13 @@ public class BoardController {
             if(checkLevelClear(thisCar)) {
                 mainController.checkoutFinishPrompt();
             }
-//            dumpState(thisCar);
+
+//            if (onHint && !Setting.save.isExpertMode()){
+//                // if an not expert, pay for a hint,
+//
+//                // then hint till this session end  end.
+//                hintNextStep();
+//            }
         });
     }
     /**
@@ -234,6 +253,7 @@ public class BoardController {
         // refresh the coordinate in the board
         refreshCarInBoard(car, gridX, gridY);
 
+        cleanHint();
 
         // change the car's stage would add up move counter
         mainController.addSteps();
@@ -433,6 +453,15 @@ public class BoardController {
 
     //the followings are animation stuff
     public void hintNextStep() {
+        // initialise the dummy car object
+        dummy = new DummyCar();
+        // show the dummy car
+        root.getChildren().add(dummy);
+        //the dummy should not cover the real cars
+        dummy.toFront();
+        // car group should be most front
+        carGroup.toFront();
+
         onHint = true;
         ArrayList<puzzleModel.Car> cars = new ArrayList<>();
         if(currStat.isEmpty()) System.out.println("empty");
@@ -455,31 +484,32 @@ public class BoardController {
 
 
         //flash the car suggest to move
-        System.out.println("the car to flash: "+nextStep.getCarID());
         Car nextCar = currStat.get(nextStep.getCarID());
-//        nextCar.flash();
-        System.out.println("the chosen car is at " + nextCar.getGridX() + ", " + nextCar.getGridY());
-
-        //flash the grid suggest to move on
+        
+        dummy.project(nextCar, co);
+        
+        //flash the destination grids
         for(int i = co.y1; i <= co.y2; i++) {
             for(int j = co.x1; j <= co.x2; j++) {
                 gridBoard[i][j].flash();
             }
         }
-
-        System.out.println("Move the car " + nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+"), ("+co.x2+", "+co.y2+")");
+//        System.out.println("Move the car " +
+//                nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+")," +
+//                " ("+co.x2+", "+co.y2+")");
     }
 
 
-//    private void cleanHint() {
-//        for(Car each : currStat) {
-//            each.stopFlash();
-//        }
-//        for(int i = 0; i < 6; i++) {
-//            for(int j = 0; j < 6; j++) {
-//                gridBoard[i][j].stopFlash();
-//            }
-//        }
-//    }
+    private void cleanHint() {
+        // remove the dummy car.
+        if (dummy!= null)
+            root.getChildren().remove(dummy);
+        // remove all the grid that is flashing.
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
+                gridBoard[i][j].stopFlash();
+            }
+        }
+    }
 
 }
