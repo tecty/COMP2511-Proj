@@ -18,6 +18,9 @@ import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
 
+/**
+ * Controller responsible for create a new game by given name and difficulty.
+ */
 public class ModeSelect {
 	@FXML
 	Pane loading = new Pane();
@@ -44,8 +47,11 @@ public class ModeSelect {
     Button backButton;    
 
     private Load load = new Load();
-    
-    @FXML
+
+	/**
+	 * Initialize all the error message to not show.
+	 */
+	@FXML
     private void initialize() {
     	// clear all error message
     	duplicateWarning.setVisible(false);
@@ -54,7 +60,11 @@ public class ModeSelect {
     	loading.setVisible(false);
     }
 
-
+	/**
+	 * Create a new game.
+	 * @param actionEvent The source trigger this action.
+	 * @throws IOException Exception may trigger by loading scene.
+	 */
     @FXML
     private void modeAction(ActionEvent actionEvent) throws IOException  {
     	SoundEffect.play("soundEffect/click.mp3");
@@ -122,7 +132,13 @@ public class ModeSelect {
 		});
 		loadPuzzle.start();
     }
-    @FXML
+
+	/**
+	 * Handle user want to go to main scene.
+	 * @param actionEvent Source trigger this action.
+	 * @throws IOException Exception may trigger by loading scene.
+	 */
+	@FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
         // checkout to main menu
@@ -135,8 +151,11 @@ public class ModeSelect {
         primaryStage.setScene(new Scene(root));
         
     }
-    
-    private class Load extends Task<Void>{
+
+	/**
+	 * class for generate all the puzzle of this new game.
+	 */
+	private class Load extends Task<Void>{
 		@Override
 		protected Void call() throws Exception{
 			Setting.save.gameGenerate();

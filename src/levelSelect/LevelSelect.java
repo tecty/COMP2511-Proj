@@ -14,6 +14,9 @@ import game.GameController;
 import setting.Setting;
 import setting.SoundEffect;
 
+/**
+ * Controller handle level selection.
+ */
 public class LevelSelect {
     @FXML
     Button one;
@@ -36,13 +39,19 @@ public class LevelSelect {
     @FXML
     Button backButton;
 
+    /**
+     * Initial by lock the levels the user couldn't play.
+     * @throws Exception
+     */
     @FXML
-    private void initialize() throws Exception{
+    private void initialize() {
         // block the unfinished level
         levelLock();
     }
 
-    //this is the model used for generating the nine boards
+    /**
+     * Disable all the button for the level that user couldn't reach.
+     */
     private void levelLock() {
         //check the playability of each level
 
@@ -59,8 +68,12 @@ public class LevelSelect {
         if(8 > Setting.save.getLevelCleared()) nine.setDisable(true);
     }
 
+    /**
+     * Load the correspond level by button.
+     * @param actionEvent The source (button) trigger this action.
+     */
     @FXML
-    private void levelAction(ActionEvent actionEvent) throws IOException  {
+    private void levelAction(ActionEvent actionEvent)  {
     	SoundEffect.play("soundEffect/click.mp3");
         // get the current Stage
         Stage primaryStage = (Stage)  one.getScene().getWindow();
@@ -111,6 +124,11 @@ public class LevelSelect {
             gameController.resetLevel(8);
     }
 
+    /**
+     * Handle if user want to show get to main scene
+     * @param actionEvent The source trigger this event.
+     * @throws IOException Exception may trigger by loading scene.
+     */
     @FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
