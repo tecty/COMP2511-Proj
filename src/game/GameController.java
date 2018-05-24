@@ -1,6 +1,7 @@
 package game;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javafx.animation.AnimationTimer;
 import javafx.beans.property.BooleanProperty;
@@ -18,7 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import save.SaveManager;
+import save.Level;
 import setting.Setting;
 import setting.SoundEffect;
 
@@ -55,12 +56,12 @@ public class GameController {
     private ImageView star1;
     @FXML
     private ImageView star2;
+
+    // text for recommend step and time
     @FXML
-    private ImageView null0;
+    private Label recommendSteps;
     @FXML
-    private ImageView null1;
-    @FXML
-    private ImageView null2;
+    private Label recommendSec;
 
     @FXML private BoardController boardController;
 
@@ -113,30 +114,61 @@ public class GameController {
         // inject this controller to the board
         // so it can increment the steps
         boardController.injectMainController(this);
-        //initialize game clear result
-        star0.setVisible(false);
-        star1.setVisible(false);
-        star2.setVisible(false);
+
+        // refresh the hint's text by hint count
+        refreshHint();
+    }
+
+    private void refreshHint(){
+        // setting the hint by save
+        hint.setText("Hint :" + Setting.save.getHintRemain());
     }
 
     public void checkoutFinishPrompt()  {
     	//first stop the timer
     	timer.stop();
-    	Setting.save.getLevel(currentLevel).update(steps.get(), time.doubleValue());
-    	//update the up-till-now cleared level number
-    	Setting.save.setLevelCleared(currentLevel);
-    	//save the new record
-    	SaveManager.save(Setting.save, Setting.save.getName());
-    	//take care the availability of playing the next level
+        //initial the start with no thing show
+        star0.setVisible(false);
+        star1.setVisible(false);
+        star2.setVisible(false);
+
+        //local variable for this level
+        Level level = Setting.save.getLevel(currentLevel);
+
+        // try to update the game info
+        level.update(steps.get(), time.doubleValue());
+        // show the star's judgement by this game's performance
+        switch (level.calStar(steps.get(), time.doubleValue())){
+            case 1:
+                star0.setVisible(true);
+                break;
+            case 2:
+                star0.setVisible(true);
+                star1.setVisible(true);
+                break;
+            case 3:
+                star0.setVisible(true);
+                star1.setVisible(true);
+                star2.setVisible(true);
+                break;
+        }
+
+
+        //update the up-till-now cleared level number
+        Setting.save.setLevelCleared(currentLevel);
+        System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).userStar());
+
+        //take care the availability of playing the next level
     	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
-    	int starNum = Setting.save.getTotalStar();
-    	if(starNum > 0) star0.setVisible(true);
-    	if(starNum > 1) star1.setVisible(true);
-    	if(starNum > 2) star2.setVisible(true);
+
     	//result interface now visible
     	levelClear.setVisible(true);
     	// play the game successful sound effect.
         SoundEffect.play("soundEffect/levelPass.mp3");
+
+        // star may be gain while game is succeed
+        refreshHint();
+
     }
 
     public void resetLevel(int level){
@@ -146,15 +178,25 @@ public class GameController {
         //hide the result interface
         levelClear.setVisible(false);
 
+        // the level entity of this game
+        Level thisLevel = Setting.save.getLevel(currentLevel);
+
         // reset the board by loading a save
         // step counter would reset there
-        boardController.reset(Setting.save.getLevel(currentLevel));
-
-        // reset the time
-        timer.start();
+        boardController.reset(thisLevel);
 
         // reset the title
-    	title.setText("Puzzle "+(level+1));
+        title.setText("Puzzle "+(level+1));
+
+        // reset the rec step and time
+        recommendSteps.setText("/"+thisLevel.getRecommendStep());
+        recommendSec.setText("/"+thisLevel.recommendTime());
+
+        // reset the time
+
+        timer.start();
+
+
     }
 
     //The followings are button-linked functions
@@ -196,6 +238,13 @@ public class GameController {
     private void undo() {
         SoundEffect.play("soundEffect/click.mp3");
     	boardController.undo();
+    }
+
+    @FXML
+    private void hintAction(){
+        // reduce the hint count and refresh the text
+        if (Setting.save.useHint())
+            refreshHint();
     }
 
     protected void addSteps(){

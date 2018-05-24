@@ -20,7 +20,7 @@ public class LoadPuzzle{
 //	
 	public void load() throws Exception{
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("../levelSelect/levelSelect.fxml"));
+		loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));
 		Parent root = loader.load();
 		Stage primaryStage = (Stage) loading.getScene().getWindow();
 		primaryStage.setScene(new Scene(root));
