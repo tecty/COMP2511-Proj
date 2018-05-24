@@ -13,10 +13,10 @@ import puzzleModel.Coordinate;
  */
 public class DummyCar extends StackPane{
 	//animation transition
-    TranslateTransition transition;
+    private TranslateTransition transition;
     //generate a dummy car as a hint notation
     //attach the same car image of nextCar to the dummy car
-    ImageView dummyCarImg;
+    private ImageView dummyCarImg;
 
 
 	/**

@@ -27,7 +27,7 @@ public class Grid extends Rectangle {
      * @param x The grid X position of this grid.
      * @param y The grid Y position of this grid.
      */
-    public Grid(int x, int y) {
+    Grid(int x, int y) {
         // set this rectangle's size by the settings
         // in game controller
         setWidth(GameController.GRID_SIZE);
@@ -63,7 +63,7 @@ public class Grid extends Rectangle {
      * @param car This car want to detect collection.
      * @return Whether this car has a collision here.
      */
-    public boolean hasCar(Car car){
+    private boolean hasCar(Car car){
         return !(car == this.car ||this.car ==null);
     }
 
@@ -90,14 +90,14 @@ public class Grid extends Rectangle {
     /**
      * flush this position to give a hint.
      */
-    public void flash() {
+    void flash() {
         transition.playFromStart();
     }
 
     /**
      * Stop this flash, because user has follow this hint.
      */
-    public void stopFlash() {
+    void stopFlash() {
         transition.stop();
         this.setFill(Color.GREY);
     }

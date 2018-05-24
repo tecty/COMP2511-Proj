@@ -18,7 +18,7 @@ public class BoardController {
     Pane root;
     
     //animation class
-    DummyCar dummy;
+    private DummyCar dummy;
     
     // store all the car in this game
     Group carGroup = new Group();
@@ -38,21 +38,21 @@ public class BoardController {
     private double offsetMax, offsetMin;
 
     // store the moved car id of each step
-    Stack<Movement> history = new Stack<>();
+    private Stack<Movement> history = new Stack<>();
 
 
     // current level the board is responsible for
-    Level currentLevel;
+    private Level currentLevel;
 
     // a handle to main controller
-    GameController mainController;
+    private GameController mainController;
 
 
     // car list for the
-    ArrayList<Car> currStat = new ArrayList<>();
+    private ArrayList<Car> currStat = new ArrayList<>();
 
     // boolean for the hint state
-    boolean onHint = false;
+    private boolean onHint = false;
 
     /**
      * Initialise the board by adding two groups of elements.
