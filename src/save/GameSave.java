@@ -19,7 +19,7 @@ public class GameSave implements Serializable{
 	protected final static int NUM_OF_LEVEL = 9;
 
 	//currently totally generate 9 boards in the save
-	ArrayList<Level> allLevels;
+	private ArrayList<Level> allLevels;
 	private boolean expertMode;
 	
 	//variables recording the progress of this save-slot

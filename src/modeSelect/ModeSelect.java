@@ -11,7 +11,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import levelSelect.LoadPuzzle;
 import save.GameSave;
 import save.SaveManager;
 import setting.Setting;
@@ -110,7 +109,7 @@ public class ModeSelect {
 
     	//now try to jump to the level select scene with the specified saving slot
     	FXMLLoader loader = new FXMLLoader();
-    	loader.setLocation(getClass().getResource("../levelSelect/LoadPuzzle.fxml"));
+    	loader.setLocation(getClass().getResource("LoadPuzzle.fxml"));
 
     	Parent root = loader.load();
         // get the current Stage

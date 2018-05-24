@@ -4,7 +4,7 @@ package save;
  * Thread object for load a puzzle to a given level
  */
 public class PuzzleCreatorThread implements Runnable {
-    Level level;
+    private Level level;
 
     /**
      * Inject the tread's task by level and how many the step
