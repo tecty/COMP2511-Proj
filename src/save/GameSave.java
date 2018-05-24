@@ -87,7 +87,7 @@ public class GameSave implements Serializable{
      * Return whether this save is expert mode.
      * @return Whether this save is expert save.
      */
-	protected boolean isExpertMode() {
+	public boolean isExpertMode() {
 		return expertMode;
 	}
 

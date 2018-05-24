@@ -6,6 +6,7 @@ import javafx.scene.layout.Pane;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
+import setting.Setting;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -224,12 +225,12 @@ public class BoardController {
                 mainController.checkoutFinishPrompt();
             }
 
-//            if (onHint && !Setting.save.isExpertMode()){
-//                // if an not expert, pay for a hint,
-//
-//                // then hint till this session end  end.
-//                hintNextStep();
-//            }
+            if (onHint && !Setting.save.isExpertMode()){
+                // if an not expert, pay for a hint,
+
+                // then hint till this session end  end.
+                hintNextStep();
+            }
         });
     }
     /**
@@ -504,6 +505,7 @@ public class BoardController {
      * Handle user's instruction to show a hint in board.
      */
     public void hintNextStep() {
+    	onHint = true;
         // initialise the dummy car object
         dummy = new DummyCar();
         // show the dummy car
@@ -564,6 +566,10 @@ public class BoardController {
                 gridBoard[i][j].stopFlash();
             }
         }
+    }
+    
+    public void turnOffHint() {
+    	onHint = false;
     }
 
 }
