@@ -1,8 +1,14 @@
 package game;
 
+import javafx.animation.Animation;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 import puzzleModel.Algorithm;
 import puzzleModel.Board;
 import save.Level;
@@ -13,6 +19,15 @@ import java.util.Stack;
 public class BoardController {
     @FXML
     Pane root;
+    
+    //animation transition
+    TranslateTransition transition = new TranslateTransition();
+  //generate a dummy car as a hint notation
+    StackPane dummyCar = new StackPane();
+    Rectangle carRectangle = new Rectangle();
+    //attach the same car image of nextCar to the dummy car
+    Pane dummyCarImg = new Pane();
+    
     // store all the car in this game
     Group carGroup = new Group();
     Group gridGroup = new Group();
@@ -52,11 +67,19 @@ public class BoardController {
         setBoard();
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
+        dummyCar.getChildren().add(carRectangle);
+        dummyCar.getChildren().add(dummyCarImg);
+        //add this dummy car into the board
+        root.getChildren().add(dummyCar);
+        dummyCar.toBack();
+        gridGroup.toBack();
+        dummyCar.setVisible(false);
     }
 
 
 
     public void reset(Level level){
+    	cleanHint();
         if(currentLevel == level){
             // not destroy the old car to prevent
             // the car from shifting colors
@@ -234,6 +257,7 @@ public class BoardController {
         // refresh the coordinate in the board
         refreshCarInBoard(car, gridX, gridY);
 
+        cleanHint();
 
         // change the car's stage would add up move counter
         mainController.addSteps();
@@ -434,6 +458,7 @@ public class BoardController {
     //the followings are animation stuff
     public void hintNextStep() {
         onHint = true;
+        dummyCar.setVisible(true);
         ArrayList<puzzleModel.Car> cars = new ArrayList<>();
         if(currStat.isEmpty()) System.out.println("empty");
         for(Car each : currStat) {
@@ -455,12 +480,41 @@ public class BoardController {
 
 
         //flash the car suggest to move
-        System.out.println("the car to flash: "+nextStep.getCarID());
         Car nextCar = currStat.get(nextStep.getCarID());
-//        nextCar.flash();
-        System.out.println("the chosen car is at " + nextCar.getGridX() + ", " + nextCar.getGridY());
-
-        //flash the grid suggest to move on
+        
+        //the dummy car originally inherits all physical locations and appearance from nextCar
+        double dummyX = nextCar.getGridX() * GameController.GRID_SIZE;
+        double dummyY = nextCar.getGridY() * GameController.GRID_SIZE;
+        if(nextCar.getDir() == MoveDir.HORIZONTAL) {
+        	//physical location
+            carRectangle.setWidth(nextCar.getLen() * GameController.GRID_SIZE);
+            carRectangle.setHeight(GameController.GRID_SIZE);
+            //appearance
+            if(nextCar.getLen()==2) dummyCarImg.setStyle("-fx-background-image: url(\"/img/carDummy.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            else dummyCarImg.setStyle("-fx-background-image: url(\"/img/truckDummy.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+        }
+        else {
+        	//physical location
+        	carRectangle.setWidth(GameController.GRID_SIZE);
+            carRectangle.setHeight(nextCar.getLen() * GameController.GRID_SIZE); 
+            //appearance
+            if(nextCar.getLen()==2) dummyCarImg.setStyle("-fx-background-image: url(\"/img/carDummyV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+            else dummyCarImg.setStyle("-fx-background-image: url(\"/img/truckDummyV.png\");-fx-background-repeat: no-repeat;-fx-background-size: contain;");
+        }
+        carRectangle.setFill(Color.TRANSPARENT);
+        
+        dummyCar.relocate(dummyX, dummyY);
+        
+        //add animation transition to the dummy car
+        transition.setDuration(Duration.millis(1000));
+        transition.setNode(dummyCar);
+        System.out.println();
+        transition.setByX((co.y1-nextCar.getGridX()) * GameController.GRID_SIZE);
+        transition.setByY((co.x1-nextCar.getGridY())*GameController.GRID_SIZE);
+        transition.setCycleCount(Animation.INDEFINITE);
+        transition.playFromStart();
+        
+        //flash the destination grids
         for(int i = co.y1; i <= co.y2; i++) {
             for(int j = co.x1; j <= co.x2; j++) {
                 gridBoard[i][j].flash();
@@ -471,15 +525,13 @@ public class BoardController {
     }
 
 
-//    private void cleanHint() {
-//        for(Car each : currStat) {
-//            each.stopFlash();
-//        }
-//        for(int i = 0; i < 6; i++) {
-//            for(int j = 0; j < 6; j++) {
-//                gridBoard[i][j].stopFlash();
-//            }
-//        }
-//    }
+    private void cleanHint() {
+    	dummyCar.setVisible(false);
+        for(int i = 0; i < 6; i++) {
+            for(int j = 0; j < 6; j++) {
+                gridBoard[i][j].stopFlash();
+            }
+        }
+    }
 
 }

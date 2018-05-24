@@ -233,10 +233,12 @@ public class GameController {
     }
     
     //the undo function
+    //undo means go back to the previous status (including step count)
     @FXML
     private void undo() {
         SoundEffect.play("soundEffect/click.mp3");
     	boardController.undo();
+    	steps.set(steps.get()-1);
     }
 
     @FXML
