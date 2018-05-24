@@ -54,7 +54,6 @@ public class Level implements Serializable{
         //the generated set of arranged cars and the corresponding recommend steps are imported in
         Generator generator = new Generator();
 
-        int levelId = save.allLevels.indexOf(this);
 		// record the recommend step
         int steps;
 

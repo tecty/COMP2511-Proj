@@ -88,7 +88,7 @@ public class Car extends StackPane implements Serializable{
     /**
      * Refresh this car's position in GUI.
      */
-    public void refresh() {
+    void refresh() {
         // show in screen by it's grid coordinate
         relocate(
                 gridX * GameController.GRID_SIZE,
@@ -99,7 +99,7 @@ public class Car extends StackPane implements Serializable{
      * Check whether this car is the target car need to exit.
      * @return Whether this car is the target car.
      */
-    public boolean isTarget() {
+    boolean isTarget() {
     	// target car has root id (0)
         return getCarId() == 0;
     }
@@ -108,7 +108,7 @@ public class Car extends StackPane implements Serializable{
      * Get the ID of this car.
      * @return ID of this car.
      */
-    public int getCarId() {
+    int getCarId() {
         return carId;
     }
 

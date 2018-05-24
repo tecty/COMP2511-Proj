@@ -98,7 +98,7 @@ public class GameController {
 	};
     
     // the size of each grid
-    public final static int GRID_SIZE = 50;
+    final static int GRID_SIZE = 50;
 
     @FXML
     private void initialize(){
@@ -121,7 +121,7 @@ public class GameController {
         hint.setText("Hint :" + Setting.save.getHintNum());
     }
 
-    public void checkoutFinishPrompt()  {
+    void checkoutFinishPrompt()  {
     	//first stop the timer
     	timer.stop();
         //initial the start with no thing show
