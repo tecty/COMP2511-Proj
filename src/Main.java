@@ -1,29 +1,33 @@
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 import save.SaveManager;
 import setting.Bgm;
 import setting.Setting;
 
-import java.util.Set;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-
+/**
+ * JavaFx application.
+ */
 public class Main extends Application {
-	Stage window;
+	private Stage window;
 
+    /**
+     * Call javafx to lunch the UI
+     * @param args Command Line argument.
+     */
 	public static void main (String[] args) {
 		launch(args);
 	}
-	
+
+    /**
+     * JavaFx require method. Presenting the window.
+     * @param primaryStage The stage in the main window
+     * @throws Exception The exception may have.
+     */
 	@Override
 	public void start(Stage primaryStage) throws  Exception {
 		//add the title for the window
@@ -41,7 +45,7 @@ public class Main extends Application {
 		// set the scene by the fxml file
 		primaryStage.setScene(new Scene(root));
 
-		window.setOnCloseRequest(windowEvent -> {closeApp();});
+		window.setOnCloseRequest(windowEvent -> closeApp());
 
 		// show the window
 		window.show();
@@ -50,6 +54,10 @@ public class Main extends Application {
         Setting.puzzleCreator= Executors.newFixedThreadPool(2);
 	}
 
+    /**
+     * The app closing routine, save the game user is playing,
+     * then exit the programme.
+     */
 	private void closeApp(){
 	    // not a correct way to do this
 	    // A graceful way to close the game
@@ -58,10 +66,9 @@ public class Main extends Application {
 			SaveManager.save(Setting.save);
 		}
 
+		// force to stop the system
 		System.exit(0);
 
-		// stop the executor
-        Setting.puzzleCreator.shutdownNow();
     }
 
 }

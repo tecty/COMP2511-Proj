@@ -6,8 +6,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.time.Clock;
-
+/**
+ * Grid to show in GUI and record car's information.
+ */
 public class Grid extends Rectangle {
     // the small grid that contain each car
 
@@ -21,6 +22,11 @@ public class Grid extends Rectangle {
     FillTransition transition;
 
 
+    /**
+     * The basic information of this grid.
+     * @param x The grid X position of this grid.
+     * @param y The grid Y position of this grid.
+     */
     public Grid(int x, int y) {
         // set this rectangle's size by the settings
         // in game controller
@@ -52,14 +58,27 @@ public class Grid extends Rectangle {
         transition.setCycleCount(Animation.INDEFINITE);
     }
 
+    /**
+     * Whether this car has a car, use for detect a collision.
+     * @param car This car want to detect collection.
+     * @return Whether this car has a collision here.
+     */
     public boolean hasCar(Car car){
         return !(car == this.car ||this.car ==null);
     }
 
+    /**
+     * What car is in this position.
+     * @return The car in this grid.
+     */
     public Car getCar() {
         return car;
     }
 
+    /**
+     * Set a new car in here.
+     * @param car New car in this position.
+     */
     public void setCar(Car car) {
         // only can set car with no car in there
         // or clear this gird when moving out
@@ -68,10 +87,16 @@ public class Grid extends Rectangle {
         }
     }
 
+    /**
+     * flush this position to give a hint.
+     */
     public void flash() {
         transition.playFromStart();
     }
 
+    /**
+     * Stop this flash, because user has follow this hint.
+     */
     public void stopFlash() {
         transition.stop();
         this.setFill(Color.GREY);

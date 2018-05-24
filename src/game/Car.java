@@ -1,19 +1,12 @@
 package game;
 
-import java.io.Serializable;
-import java.net.MalformedURLException;
-import java.util.ArrayList;
-
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import selector.RandomSelector;
+
+import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Car extends StackPane implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -28,10 +21,15 @@ public class Car extends StackPane implements Serializable{
     
     private String appearance;
 
-    //animation stuff
-//    Pane img = null;
-//    Timeline timelineOn;
 
+    /**
+     * Create a car object by providing necessary information.
+     * @param dir The direction of this car.
+     * @param carId The id of this car.
+     * @param gridX The X position of this car.
+     * @param gridY The Y position of this car.
+     * @param len The length of this car.
+     */
     public Car( MoveDir dir,
                int carId, int gridX, int gridY,
                int len) {
@@ -84,15 +82,12 @@ public class Car extends StackPane implements Serializable{
 
         // set the color by given.
         carRectangle.setFill(Color.TRANSPARENT);
-//
-//        //set up animation property
-//        KeyFrame startFadeOut = new KeyFrame(Duration.seconds(0.0), new KeyValue(img.opacityProperty(), 1.0));
-//        KeyFrame endFadeOut = new KeyFrame(Duration.seconds(0.5), new KeyValue(img.opacityProperty(), 0.0));
-//        timelineOn = new Timeline(startFadeOut, endFadeOut);
-//        timelineOn.setAutoReverse(true);
-//        timelineOn.setCycleCount(Animation.INDEFINITE);
+
     }
-    
+
+    /**
+     * Refresh this car's position in GUI.
+     */
     public void refresh() {
         // show in screen by it's grid coordinate
         relocate(
@@ -100,12 +95,19 @@ public class Car extends StackPane implements Serializable{
                 gridY * GameController.GRID_SIZE);
     }
 
-
+    /**
+     * Check whether this car is the target car need to exit.
+     * @return Whether this car is the target car.
+     */
     public boolean isTarget() {
     	// target car has root id (0)
         return getCarId() == 0;
     }
-    
+
+    /**
+     * Get the ID of this car.
+     * @return ID of this car.
+     */
     public int getCarId() {
         return carId;
     }
@@ -132,14 +134,24 @@ public class Car extends StackPane implements Serializable{
         super.relocate(screenX, screenY);
     }
 
+    /**
+     * Refresh this car's position by mouse dragged offset.
+     * @param offsetX offsetX by user drag.
+     * @param offsetY OffsetY by user drag.
+     */
     public void relocateByOffset(double offsetX, double offsetY){
         // relocate this block by the mouse offset
         // assume the collision is protected by higher levels function
         relocate(getGridX()*GameController.GRID_SIZE + offsetX,
                  getGridY()*GameController.GRID_SIZE + offsetY);       
     }
-    
 
+
+    /**
+     * Refresh the position in grid.
+     * @param gridX Grid X position of this car.
+     * @param gridY Grid Y position of this car.
+     */
     public void setGrid(int gridX, int gridY){
         // set the grid and keep the Invariant:
         // in Horizontal car y = y_0
@@ -155,46 +167,64 @@ public class Car extends StackPane implements Serializable{
         }
     }
 
+    /**
+     * Get the grid X position of this car.
+     * @return Grid X position.
+     */
     public int getGridX() {
         return gridX;
     }
 
+    /**
+     * Get the grid Y position of this car.
+     * @return Grid Y position.
+     */
     public int getGridY() {
         return gridY;
     }
 
+    /**
+     * Get the direction of this car.
+     * @return Direction of this car.
+     */
     public MoveDir getDir() {
         return dir;
     }
 
+    /**
+     * Get the length of this car.
+     * @return This car's length.
+     */
     public int getLen() {
         return len;
     }
 
+    /**
+     * Get the appearance information of thi car.
+     * @return Aeration information.
+     */
     public String getAppearance() {
     	return appearance;
     }
-    
+
+    /**
+     * Dump this car's information for the purpose of debug.
+     */
     public void dumpCar(){
         System.out.println("Car "+ getCarId()+
                 " ("+getGridX()+","+getGridY()+")" + " Length: "+ getLen());
     }
 
+    /**
+     * Translate this car to the puzzleModel.car
+     * @return Corresponding puzzleModel car with same meaning.
+     */
     public puzzleModel.Car getAlgorithmCar(){
         ArrayList<puzzleModel.Coordinate> paths = new ArrayList<puzzleModel.Coordinate>();
         if(this.getDir()==MoveDir.HORIZONTAL) paths.add(new puzzleModel.Coordinate( this.getGridY(), this.getGridX(), this.getGridY(), this.getGridX()+this.getLen()-1));
         else paths.add(new puzzleModel.Coordinate(gridY, gridX, gridY+this.getLen()-1, gridX));
         puzzleModel.Car algCar = new puzzleModel.Car(this.getCarId(), paths);
-        System.out.println("alg car generated");
         return algCar;
     }
-//
-//    public void flash() {
-//        timelineOn.play();
-//    }
-//
-//    public void stopFlash() {
-//        timelineOn.stop();
-//        img.setOpacity(1.0);
-//    }
+
 }

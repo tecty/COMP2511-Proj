@@ -12,6 +12,9 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+/**
+ * Handle the page about toggle the settings.
+ */
 public class SettingController {
 	private static final long serialVersionUID = 1L;
 	
@@ -32,21 +35,28 @@ public class SettingController {
     @FXML
     Button creditBackButton;
 
-    @FXML
+	/**
+	 * initialize the environment of this controller.
+	 */
+	@FXML
     private void initialize() {
     	version.setText("This is the game Traffic Jam in Version "+serialVersionUID+" developed by:");
     	credit.setVisible(false);
     	credit.setDisable(true);
     	if(Bgm.getStat()) {
     		System.out.println("true");
-    		musicControll.setText("Music: On");;
+    		musicControll.setText("Music: On");
     	}
-    	else musicControll.setText("Music: Off");;
+    	else musicControll.setText("Music: Off");
     	if(SoundEffect.getStat()) soundEffectControll.setText("Sound Effect: On");
     	else soundEffectControll.setText("Sound Effect: Off");
     }
-    
-    @FXML
+
+	/**
+	 * Change whether user want to play bgm.
+	 * @param actionEvent The source trigger this event.
+	 */
+	@FXML
     private void changeBgm(ActionEvent actionEvent) {
     	SoundEffect.play("soundEffect/click.mp3");
     	if(musicControll.getText().equals("Music: On")) {
@@ -58,8 +68,12 @@ public class SettingController {
     		musicControll.setText("Music: On");
     	}
     }
-    
-    @FXML
+
+	/**
+	 * Change whether user want a sound effect.
+	 * @param actionEvent The source trigger this action.
+	 */
+	@FXML
     private void changeSoundEffect(ActionEvent actionEvent) {
     	SoundEffect.play("soundEffect/click.mp3");
     	if(soundEffectControll.getText().equals("Sound Effect: On")) {
@@ -71,13 +85,17 @@ public class SettingController {
     		soundEffectControll.setText("Sound Effect: On");
     	}
     }
-    
-    @FXML
+
+	/**
+	 * Get back to main scene.
+	 * @param actionEvent Source trigger this action.
+	 * @throws IOException Exception while load the scene.
+	 */
+	@FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
     	SoundEffect.play("soundEffect/click.mp3");
         // get the current Stage
         Stage primaryStage = (Stage)  backButton.getScene().getWindow();
-
 
         // try to load level select scene
         Parent root = FXMLLoader.load(getClass().getResource("../Main.fxml"));
@@ -86,14 +104,22 @@ public class SettingController {
         primaryStage.setScene(new Scene(root));
     }
 
-    @FXML
+	/**
+	 * Show the author of this application.
+	 * @param actionEvent Source trigger this action.
+	 */
+	@FXML
     private void creditOpen(ActionEvent actionEvent) {
     	SoundEffect.play("soundEffect/click.mp3");
     	credit.setVisible(true);
     	credit.setDisable(false);
     }
-    
-    @FXML
+
+	/**
+	 * Close the author box.
+	 * @param actionEvent Source trigger this event.
+	 */
+	@FXML
     private void creditClose(ActionEvent actionEvent) {
     	SoundEffect.play("soundEffect/click.mp3");
     	credit.setVisible(false);
