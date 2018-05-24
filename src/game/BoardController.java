@@ -54,6 +54,9 @@ public class BoardController {
     // boolean for the hint state
     boolean onHint = false;
 
+    /**
+     * Initialise the board by adding two groups of elements.
+     */
     @FXML private void initialize(){
         // load all the grid
         setBoard();
@@ -63,7 +66,10 @@ public class BoardController {
     }
 
 
-
+    /**
+     * Reset by a given level object.
+     * @param level The level object this board is going to reset to.
+     */
     public void reset(Level level){
     	cleanHint();
         if(currentLevel == level){
@@ -107,8 +113,9 @@ public class BoardController {
         mainController.resetSteps();
     }
 
-
-
+    /**
+     * Set up this board by creating all fresh grid object.
+      */
     private void setBoard() {
         // set up all the grid
         for (int x = 0; x < 6; x++) {
@@ -122,8 +129,14 @@ public class BoardController {
         }
     }
 
-
-    //check if the car making is valid
+    /**
+     * Check whether that position is valid for adding a car.
+     * @param gridX Position X need to be check.
+     * @param gridY Position Y need to be check.
+     * @param len Potential car length.
+     * @param dir Potential car direction.
+     * @return Whether is valid to add that car.
+     */
     private boolean validPosition(int gridX, int gridY, int len, MoveDir dir) {
         if(dir==MoveDir.HORIZONTAL) {
             for(int pos = gridX; pos < gridX+len; pos ++) {
@@ -138,6 +151,14 @@ public class BoardController {
         return true;
     }
 
+    /**
+     * Make a car into the system by providing it's information.
+     * @param dir The direction of that car.
+     * @param carId The carID.
+     * @param gridX The car's position X.
+     * @param gridY The car's position Y.
+     * @param len The car's length.
+     */
     private void makeCar(MoveDir dir,
                          int carId, int gridX,
                          int gridY, int len){
@@ -213,9 +234,9 @@ public class BoardController {
     }
     /**
      * Function use to move a car in the board. Handle user interaction
-     * @param car
-     * @param gridX
-     * @param gridY
+     * @param car The car need to move.
+     * @param gridX Position X need to be move to.
+     * @param gridY Position Y need to be move to.
      */
     private void moveCar(Car car, int gridX, int gridY) {
         /*
@@ -256,6 +277,12 @@ public class BoardController {
     }
 
 
+    /**
+     * Refresh the grid's record for a given car.
+     * @param car The car need to refresh the record.
+     * @param gridX X position need to be locate to.
+     * @param gridY Y position need to be locate to.
+     */
     private void refreshCarInBoard(Car car,
                                    int gridX,
                                    int gridY) {
@@ -313,7 +340,11 @@ public class BoardController {
         }
     }
 
-    //these functions are for checking if the level is cleared
+    /**
+     * these functions are for checking if the level is cleared
+     * @param car The car is changed in this move.
+     * @return Whether this level is cleared.
+     */
     private boolean checkLevelClear(Car car){
         if(car.isTarget() && car.getGridX()==4) return true;
         return false;
@@ -337,6 +368,11 @@ public class BoardController {
         return 0;
     }
 
+    /**
+     * Actual function directly handle collision from mouse.
+     * @param car The car mouse is dragging.
+     * @return Whether there is a collision.
+     */
     public boolean handleCollision(Car car){
 
         if (car.getDir() == MoveDir.HORIZONTAL){
@@ -361,7 +397,10 @@ public class BoardController {
         return false;
     }
 
-
+    /**
+     * Calculate the offset range of a car in GUI.
+     * @param car The car's offset need to be calculated.
+     */
     private void getOffsetRange(Car car){
         // Logic : [leftBoundary ,(minGridCar,) car , (maxGridCar,) rightBoundary]
 
@@ -399,6 +438,10 @@ public class BoardController {
         }
     }
 
+    /**
+     * Dump the sate of this board for the purpose of debugging.
+     * @param car The Car is changing, which needs to be print too.
+     */
     private void dumpState(Car car){
         // dump the current state of this board
         System.out.println("car"+ car.getCarId()+ " has grid "+ car.getGridX() + " ,"+ car.getGridY());
@@ -408,6 +451,9 @@ public class BoardController {
         System.out.println();
     }
 
+    /**
+     * Print the current board for the purpose of debugging.
+     */
     private void  printBoard(){
         // test function to print this board
         for (int y = 0; y < 6; y++) {
@@ -420,6 +466,10 @@ public class BoardController {
             System.out.print("\n");
         }
     }
+
+    /**
+     * Handle the undo instruction by user.
+     */
     public void undo(){
         //cannot undo at the stat of game
         if(history.isEmpty()) return;
@@ -442,12 +492,17 @@ public class BoardController {
         move.getCar().refresh();
     }
 
+    /**
+     * Inject main controller so this board can call back some function.
+     * @param mainController The main controller.
+     */
     protected void injectMainController(GameController mainController){
         this.mainController = mainController;
     }
 
-
-    //the followings are animation stuff
+    /**
+     * Handle user's instruction to show a hint in board.
+     */
     public void hintNextStep() {
         // initialise the dummy car object
         dummy = new DummyCar();
@@ -496,6 +551,9 @@ public class BoardController {
     }
 
 
+    /**
+     * clear all the GUI prompt create by giving a hint.
+     */
     private void cleanHint() {
         // remove the dummy car.
         if (dummy!= null)

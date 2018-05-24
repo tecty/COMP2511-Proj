@@ -2,7 +2,17 @@ package game;
 
 import java.util.Random;
 
+/**
+ * Static class for select image of a car.
+ */
 public class RandomSelector {
+	/**
+	 * Randomly select a image of the car.
+	 * @param len The length of the car.
+	 * @param dir The direction of this car.
+	 * @param target Whether this car is the target car.
+	 * @return A image name is selected.
+	 */
 	public static String selectImg(int len, MoveDir dir, boolean target) {
 		//this is a car
 		int choice = new Random().nextInt(5)+1;
@@ -21,13 +31,5 @@ public class RandomSelector {
 				return "truck"+ choice + "V.png";
 		}	
 	}
-	
-	public static String selectSound(int len) {
-		//this is a car
-		int choice = new Random().nextInt(2)+1;
-		if(len==2) 
-			return "soundEffect/carhorn"+choice + ".mp3";
-		else
-			return "soundEffect/truckhorn"+ choice + ".mp3";
-	}
+
 }

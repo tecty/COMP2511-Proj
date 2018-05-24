@@ -17,6 +17,9 @@ import setting.SoundEffect;
 
 import java.io.IOException;
 
+/**
+ * Controller directly handle all the interaction from user in game.
+ */
 public class GameController {
     // create game in this controller
 	@FXML //finish
