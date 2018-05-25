@@ -50,7 +50,7 @@ public class SaveslotSelect {
 			String slotText = each.substring(0,each.length()-4) + " - " +	//save-slot name
 							  saveSlot.printExpertMode() + "\n" +			//gaming mode
 							  SaveManager.lastModifiedTime(each) + "\n"  +		//last time played
-							  "Level: " + saveSlot.getLevelCleared() + "\t" +		//the highest level achieved
+							  "Level: " + (saveSlot.getLevelCleared()) + "\t" +		//the highest level achieved
 							  "Hint: " + saveSlot.getHintNum() + "\t" +			//number of remaining hint chances
 							  "Total Star: " + saveSlot.getTotalStar();		//number of star collected
 			slot.setText(slotText);
