@@ -1,7 +1,4 @@
-package saveslotSelect;
-
-import java.io.IOException;
-import java.util.ArrayList;
+package save;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -14,12 +11,15 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
-import levelSelect.LevelSelect;
-import save.GameSave;
-import save.SaveManager;
 import setting.Setting;
 import setting.SoundEffect;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
+/**
+ * Controller handle the save to load by user.
+ */
 public class SaveslotSelect {
 	//components on FXML file
 	//static panes
@@ -28,9 +28,13 @@ public class SaveslotSelect {
 	//buttons
 	@FXML
 	Button back;
-	
+
+	/**
+	 * Initialize the UI component that contain save's information.
+	 * @throws IOException Exception may happen when loading a scene.
+	 */
 	@FXML
-	private void initialize() throws ClassNotFoundException, IOException {
+	private void initialize() throws IOException {
 		VBox list = new VBox();
 		list.setPrefWidth(Control.USE_COMPUTED_SIZE);
 		// try to load level select scene
@@ -42,16 +46,21 @@ public class SaveslotSelect {
 			slot.setPrefHeight(80);
 			slot.setPrefWidth(482);
 
+			// show the button's text
 			String slotText = each.substring(0,each.length()-4) + " - " +	//save-slot name
 							  saveSlot.printExpertMode() + "\n" +			//gaming mode
 							  SaveManager.lastModifiedTime(each) + "\n"  +		//last time played
 							  "Level: " + saveSlot.getLevelCleared() + "\t" +		//the highest level achieved
-							  "Hint: " + saveSlot.getHintRemain() + "\t" +			//number of remaining hint chances
+							  "Hint: " + saveSlot.getHintNum() + "\t" +			//number of remaining hint chances
 							  "Total Star: " + saveSlot.getTotalStar();		//number of star collected
 			slot.setText(slotText);
 			slot.setTextAlignment(TextAlignment.CENTER);
 			list.getChildren().add(slot);
-			
+
+			// try to repair that save
+			SaveManager.tryRepairSave(saveSlot);
+
+
 			slot.setOnMouseClicked(e -> {
 				SoundEffect.play("soundEffect/click.mp3");
 				FXMLLoader loader = new FXMLLoader();
@@ -75,8 +84,12 @@ public class SaveslotSelect {
 		}
 		slotPage.setContent(list);
 	}
-	
-	
+
+	/**
+	 * If user want to get to main scene.
+	 * @param actionEvent Source trigger this action.
+	 * @throws IOException Exception may occur by loading a scene.
+	 */
 	@FXML
     private void backAction(ActionEvent actionEvent) throws IOException {
 		SoundEffect.play("soundEffect/click.mp3");

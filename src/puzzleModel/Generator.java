@@ -3,9 +3,18 @@ package puzzleModel;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Board Generator class generate the game initial boards
+ */
 public class Generator {
     private static final Random RANDOM = new Random();
 
+    /**
+     * main function for generate a board
+     * @param desiredLength the solution length of output board and it needs to have greater than or equal solution path compare to desired path
+     * @param startTime the use of algorithm time it should not be too long
+     * @return a board with initial state and car list
+     */
     public Board generateRandomBoard(int desiredLength, long startTime) {
         ArrayList<Car> someCars = new ArrayList<Car>();
 
@@ -16,12 +25,24 @@ public class Generator {
         oro.add(ori);
         someCars.add(new Car(0, oro));
 
-        // create a new board
+        // create a new board with the first red car
         Board board = new Board(someCars, new ArrayList<Integer>());
         // gridMatrix.printB(board);
 
+        //path length is the solution length of current board
         int pathLength = 0;
-
+        
+        /** Main loop of this generator algorithm 
+         * while(the solution length of current board < desired length){
+         *      if the board is generator for a long time restart it
+         *      if the board has no solution restart it
+         *      if the board is full of car but the path length is not enough restart
+         *      if the board is nearly full and the gaps between desired length and path length is too large restart it
+         *      if the board still have enough space to place car 
+         *      	random a car and check if it can fit the board place it else rerandom it
+         *          if the car can fit the board however it has no solution after place it delete this car 
+         * }
+         */
         while (pathLength < desiredLength) {
 
             if (System.currentTimeMillis() - startTime > 10000) {
@@ -71,9 +92,9 @@ public class Generator {
                         board.carList.remove(board.carList.size() - 1);
                     }
                 }
-            } else {
-                return generateRandomBoard(desiredLength, startTime);
-            }
+            }else {
+            	return generateRandomBoard(desiredLength, startTime);
+            } 
         }
         return board;
     }
@@ -84,7 +105,13 @@ public class Generator {
                 System.currentTimeMillis()
         );
     }
-
+    
+    /**
+     * isFree function check the if is free to add this car to this board
+     * @param gameboard board that going to place a new car
+     * @param b car that needs to be placed
+     * @return boolean value, true for free to add false is car clash
+     */
     private boolean isFree(int[][] gameboard, Car b) {
         if (b.Paths.get(0).x1 == b.Paths.get(0).x2) {
             for (int i = b.Paths.get(0).y1; i <= b.Paths.get(0).y2; i++) {
@@ -102,14 +129,18 @@ public class Generator {
         return true;
     }
 
+    /**
+     * getRandomCar function for random a car
+     * @param Cid the car id of this random car
+     * @return a car that has random coordinate on the board
+     */
     private Car getRandomCar(int Cid) {
         boolean isHorz = RANDOM.nextBoolean();
         int id = Cid;
         int size = getRandomSize();
 
         // blocks start col and row
-        // if horizontal, we can't have it on the prisoner row
-
+        // if horizontal, we can't have it on the 2 row which has red car on it
         if (isHorz) {
             int y1 = RANDOM.nextInt(6 - size);
             int y2 = y1 + size - 1;
@@ -122,6 +153,7 @@ public class Generator {
             nextP.add(next);
             return new Car(id, nextP);
         }
+        //otherwise is a vertical car it can have any coordinate that it wants
         int x1 = RANDOM.nextInt(6 - size);
         int x2 = x1 + size - 1;
         int col = RANDOM.nextInt(6);
@@ -130,7 +162,10 @@ public class Generator {
         nextP.add(next);
         return new Car(id, nextP);
     }
-
+    /**
+     * getRandomSize function random the size of car whether is 2 or 3
+     * @return the size of car 2 or 3
+     */
     private int getRandomSize() {
         if (RANDOM.nextInt(4) == 0)
             return 3;

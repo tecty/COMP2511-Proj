@@ -1,4 +1,4 @@
-package levelSelect;
+package modeSelect;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,17 +7,19 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+/**
+ * Controller for the waiting scene while generating new puzzle.
+ */
 public class LoadPuzzle{
 	
 	@FXML
 	Label loading;
- 
-//	@FXML
-//	private void initialize() {
-//		System.out.println("here5");
-//		this.load();
-//	}
-//	
+
+	/**
+	 * load the level select scene because some of
+	 * the puzzle can be play by user.
+	 * @throws Exception Exception may be trigger by user.
+	 */
 	public void load() throws Exception{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("../levelSelect/LevelSelect.fxml"));

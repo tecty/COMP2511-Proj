@@ -1,14 +1,7 @@
 package game;
 
-import java.io.IOException;
-
 import javafx.animation.AnimationTimer;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -22,6 +15,11 @@ import save.Level;
 import setting.Setting;
 import setting.SoundEffect;
 
+import java.io.IOException;
+
+/**
+ * Controller directly handle all the interaction from user in game.
+ */
 public class GameController {
     // create game in this controller
 	@FXML //finish
@@ -100,7 +98,7 @@ public class GameController {
 	};
     
     // the size of each grid
-    public final static int GRID_SIZE = 50;
+    final static int GRID_SIZE = 50;
 
     @FXML
     private void initialize(){
@@ -120,10 +118,10 @@ public class GameController {
 
     private void refreshHint(){
         // setting the hint by save
-        hint.setText("Hint :" + Setting.save.getHintRemain());
+        hint.setText("Hint :" + Setting.save.getHintNum());
     }
 
-    public void checkoutFinishPrompt()  {
+    void checkoutFinishPrompt()  {
     	//first stop the timer
     	timer.stop();
         //initial the start with no thing show
@@ -154,8 +152,8 @@ public class GameController {
 
 
         //update the up-till-now cleared level number
-        Setting.save.setLevelCleared(currentLevel);
-        System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).userStar());
+        Setting.save.addLevelCleared(currentLevel);
+        System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).calStar());
 
         //take care the availability of playing the next level
     	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
@@ -171,6 +169,8 @@ public class GameController {
     }
 
     public void resetLevel(int level){
+    	boardController.turnOffHint();
+    	
         // set up new current level
         currentLevel = level;
 
@@ -189,13 +189,11 @@ public class GameController {
 
         // reset the rec step and time
         recommendSteps.setText("/"+thisLevel.getRecommendStep());
-        recommendSec.setText("/"+thisLevel.recommendTime());
+        recommendSec.setText("/"+String.format("%.0f",thisLevel.recommendTime()));
 
         // reset the time
 
         timer.start();
-
-
     }
 
     //The followings are button-linked functions
@@ -233,16 +231,18 @@ public class GameController {
     }
     
     //the undo function
+    //undo means go back to the previous status (including step count)
     @FXML
     private void undo() {
         SoundEffect.play("soundEffect/click.mp3");
     	boardController.undo();
+    	steps.set(steps.get()-1);
     }
 
     @FXML
     private void hintAction(){
         // reduce the hint count and refresh the text
-        if (Setting.save.useHint()){
+        if (Setting.save.getLevel(currentLevel).useHint()){
             // hint the next step in the board
             boardController.hintNextStep();
             // reduce the hint count in the save

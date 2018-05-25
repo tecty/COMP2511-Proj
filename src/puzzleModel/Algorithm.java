@@ -1,11 +1,14 @@
 package puzzleModel;
 
-import java.util.*;
 /**
  * Algorithm contains a solve function that implements Dijkstra's algorithm
  * @author Huiyue Zhang
  *
  */
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
+
 public class Algorithm {
 	/**
 	 * function that get a Board, and tries to solve the puzzle

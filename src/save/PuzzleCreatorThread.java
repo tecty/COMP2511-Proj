@@ -1,11 +1,10 @@
 package save;
 
-import puzzleModel.Algorithm;
-import puzzleModel.Board;
-import puzzleModel.Generator;
-
+/**
+ * Thread object for load a puzzle to a given level
+ */
 public class PuzzleCreatorThread implements Runnable {
-    Level level;
+    private Level level;
 
     /**
      * Inject the tread's task by level and how many the step
@@ -15,6 +14,10 @@ public class PuzzleCreatorThread implements Runnable {
     public PuzzleCreatorThread(Level level){
         this.level = level;
     }
+
+    /**
+     * Run the thread to load puzzle.
+     */
     @Override
     public void run() {
         if (level == null){
@@ -24,8 +27,6 @@ public class PuzzleCreatorThread implements Runnable {
         // load the new puzzle and correct
         // recommend step into this save
         level.loadPuzzle();
-
-        return;
     }
 
 
