@@ -146,21 +146,24 @@ public class GameSave implements Serializable{
 			allLevels.add(new Level(this, i));
 		}
 
-		// load two puzzle in front ground
-        allLevels.get(0).loadPuzzle();
-        allLevels.get(1).loadPuzzle();
-        allLevels.get(2).loadPuzzle();
-        allLevels.get(3).loadPuzzle();
-        allLevels.get(4).loadPuzzle();
+        
         // use background daemon to load the rest.
-        for (int i = 5; i < NUM_OF_LEVEL; i++) {
-			// create a prepare to run thread
-            PuzzleCreatorThread thisThread =
-                    new PuzzleCreatorThread(allLevels.get(i));
-
-			// send the generate task to
-            // background executor
-            Setting.puzzleCreator.submit(thisThread);
+        for (int i = 0; i < NUM_OF_LEVEL; i++) {
+		
+        	if((this.isExpertMode()&& i <2)
+        			|| (!this.isExpertMode() && i <5)) {
+        		
+        		allLevels.get(i).loadPuzzle();
+        	}
+        	else {
+        		// create a prepare to run thread
+        		PuzzleCreatorThread thisThread =
+        				new PuzzleCreatorThread(allLevels.get(i));
+        		
+        		// send the generate task to
+        		// background executor
+        		Setting.puzzleCreator.submit(thisThread);
+        	}
 		}
 
 	}
