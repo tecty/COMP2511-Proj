@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * @author Huiyue Zhang, Ziqing Yan
  *
  */
-class Car {
+public class Car {
 	//record car ID of a car (should be all unique)
     public int carID;
     //record the path of how the car moved

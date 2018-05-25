@@ -214,7 +214,7 @@ public class Algorithm {
      * @param b
      * @return boolean
      */
-    private boolean unlockCar(Board b) {
+    public boolean unlockCar(Board b) {
         // get coordinates of Car0
         Car c = b.carList.get(0);
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
