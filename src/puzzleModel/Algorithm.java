@@ -1,11 +1,33 @@
 package puzzleModel;
 
+/**
+ * Algorithm contains a solve function that implements Dijkstra's algorithm
+ * @author Huiyue Zhang
+ *
+ */
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Algorithm {
-
+	/**
+	 * function that get a Board, and tries to solve the puzzle
+	 * returns Board if puzzle has solution, otherwise returns null 
+	 * 
+	 * Theory:
+	 * while(queue not empty){
+	 * 		b = pop queue
+	 * 		if (visited contains b) continue
+	 * 		
+	 * 		add b to visited
+	 * 		if (car0 in  b can move to (2,4) (2,5) )
+	 * 			return b
+	 * 		
+	 * 		addPossibleBoardsToQueue(queue, b)
+	 * }
+	 * @param board
+	 * @return Board
+	 */
     public Board solve(Board board) {
 
         Set<Board> visited = new HashSet<Board>();
@@ -16,70 +38,67 @@ public class Algorithm {
             // gridMatrix b = queue.poll();
             Board b = queue.remove(0);
 
-            if (b.carID.size() > 17) {
-//				System.out.println("SIZE " + b.carID.size());
-                return null;
-            }
-
+            //check if state of b is already seen
             if (visited.contains(b)) {
                 continue;
             }
-
+            //add b to visited
             visited.add(b);
 
             // check final state
             if (unlockCar(b)) {
                 return b;
             }
-
+            //add possile boards to queue
             addPossibleBoardsToQueue(queue, b);
         }
-
-        // return board;
+        // if the given board has no solution, return null
         return null;
     }
-
-    private boolean listContainBoard(ArrayList<Board> list, Board b) {
-        if (list.size() == 0) return false;
-
-        boolean t = false;
-
-        // for each board
-        for (int j = 0; j < list.size(); j++) {
-
-            // get curr board
-            Board curr = list.get(j);
-
-            // for each car in curr board
-            for (int k = 0; k < curr.carList.size(); k++) {
-
-                // get curr car, and b.carList
-                Car car = curr.carList.get(k);
-                Car c = b.carList.get(k);
-
-                // get last coordinate of corresponding car
-                Coordinate co = car.Paths.get(car.Paths.size() - 1);
-                Coordinate oco = c.Paths.get(c.Paths.size() - 1);
-
-                if (co.x1 == oco.x1 && co.x2 == oco.x2 && co.y1 == oco.y1 && co.y2 == oco.y2) {
-                    continue;
-                }
-                if (k == curr.carList.size())
-                    return true;
-                break;
-            }
-        }
-        return false;
-    }
-
-    private void printQueue(ArrayList<Board> queue) {
-        System.out.println();
-        for (Board b : queue) {
-            b.printB(b);
-            System.out.println();
-        }
-    }
-
+    
+    
+   
+    /**
+     * function to add possible movements of every car to the queue
+     * 
+     * Theory:
+     * for(each car in carList){
+     *		if (car moves by row) {
+     *			if(car can  move left){
+     *				move car to as far left as it can
+     *				add its position to car.Paths
+     *				add its ID to the list carID
+     *				create new Board with car and carID
+     *				add the new Board to queue
+     *			}
+     *			if(car can  move right){
+     *				move car to as far right as it can
+     *				add its position to car1.Paths
+     *				add its ID to the list carID1
+     *				create new Board with car1 and carID1
+     *				add the new Board to queue
+     *			}
+     *		}else if (car moves by column) {
+     *			if(car can  move up){
+     *				move car to as far up as it can
+     *				add its position to car.Paths
+     *				add its ID to the list carID
+     *				create new Board with car and carID
+     *				add the new Board to queue
+     *			}
+     *			if(car can  move down){
+     *				move car to as far down as it can
+     *				add its position to car1.Paths
+     *				add its ID to the list carID1
+     *				create new Board with car1 and carID1
+     *				add the new Board to queue
+     *			}
+     *		}
+     * }
+     * 
+     * @param queue
+     * @param b
+     */
     private void addPossibleBoardsToQueue(ArrayList<Board> queue, Board b) {
 
         // add all next possible boards to queue
@@ -97,7 +116,7 @@ public class Algorithm {
                 // move left
                 if (co.y1 > 0 && b.gridMatrix[co.x1][co.y1 - 1] == -1) {
 
-                    // move car to furthest distance
+                    // move car to furtherest distance
                     int count = co.y1;
                     int length = co.y2 - co.y1;
 
@@ -140,7 +159,7 @@ public class Algorithm {
 
                 }
 
-                // move by column
+            // move by column
             } else if (co.y1 == co.y2) {
 
                 // move up
@@ -189,14 +208,18 @@ public class Algorithm {
         }
     }
 
-    // check final state
-    public boolean unlockCar(Board b) {
-
+    
+    /**
+     * function that checks if car0 can move to (2,4) (2,5)
+     * @param b
+     * @return boolean
+     */
+    private boolean unlockCar(Board b) {
         // get coordinates of Car0
         Car c = b.carList.get(0);
         Coordinate co = c.Paths.get(c.Paths.size() - 1);
 
-        // if the right of Car0 is empty, the game is cleared
+        // if the left of Car0 is car free, the game is cleared
         for (int i = co.y2; i < 6; i++) {
             if (b.gridMatrix[co.x1][i] != -1 && b.gridMatrix[co.x1][i] != c.carID) {
                 return false;
@@ -204,4 +227,19 @@ public class Algorithm {
         }
         return true;
     }
+    
+    
+    /**
+     * for debug
+     * function to print every board in the queue
+     * @param queue
+     */
+    private void printQueue(ArrayList<Board> queue) {
+        System.out.println();
+        for (Board b : queue) {
+            b.printB(b);
+            System.out.println();
+        }
+    }
+    
 }
