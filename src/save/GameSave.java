@@ -182,8 +182,10 @@ public class GameSave implements Serializable{
 	public void addLevelCleared(int levelCleared) {
 	    // only can have more level clear when this
         // level is not finished before.
-	    if (levelCleared == this.levelCleared)
-	    	this.levelCleared =  levelCleared+1;
+	    if (levelCleared == this.levelCleared) {
+			this.levelCleared =  levelCleared+1;
+		}
+//		System.out.println("levelCleared "+ levelCleared + " , this level cleared is changed to "+ this.levelCleared );
 	}
 
 
