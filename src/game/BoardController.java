@@ -19,7 +19,7 @@ public class BoardController {
     Pane root;
     
     //animation class
-    private DummyCar dummy;
+    private Group dummyGroup = new Group();
     
     // store all the car in this game
     Group carGroup = new Group();
@@ -53,7 +53,7 @@ public class BoardController {
     private ArrayList<Car> currStat = new ArrayList<>();
 
     // boolean for the hint state
-    private boolean onHint = false;
+    private boolean onHint;
 
     /**
      * Initialise the board by adding two groups of elements.
@@ -61,8 +61,12 @@ public class BoardController {
     @FXML private void initialize(){
         // load all the grid
         setBoard();
+        onHint = false;
         root.getChildren().addAll(gridGroup);
         root.getChildren().addAll(carGroup);
+        root.getChildren().addAll(dummyGroup);
+        //fit the groups into nice position
+        dummyGroup.toBack();
         gridGroup.toBack();
     }
 
@@ -72,7 +76,10 @@ public class BoardController {
      * @param level The level object this board is going to reset to.
      */
     public void reset(Level level){
+    	//clean all dummies
     	cleanHint();
+    	onHint = false;
+    	
         if(currentLevel == level){
             // not destroy the old car to prevent
             // the car from shifting colors
@@ -199,6 +206,7 @@ public class BoardController {
             thisCar.relocateByOffset(mouseOffsetX,mouseOffsetY);
         });
         thisCar.setOnMouseReleased(mouseEvent -> {
+        	this.cleanHint();
             mouseOffsetX = mouseEvent.getSceneX() - mouseOriginX;
             mouseOffsetY = mouseEvent.getSceneY() - mouseOriginY;
 
@@ -225,12 +233,14 @@ public class BoardController {
                 mainController.checkoutFinishPrompt();
             }
 
+            //novice mode will continue showing hint if hint is switched on
             if (onHint && !Setting.save.isExpertMode()){
                 // if an not expert, pay for a hint,
 
                 // then hint till this session end  end.
                 hintNextStep();
             }
+            else onHint = false;
         });
     }
     /**
@@ -472,6 +482,7 @@ public class BoardController {
      * Handle the undo instruction by user.
      */
     public void undo(){
+    	cleanHint();
         //cannot undo at the stat of game
         if(history.isEmpty()) return;
 
@@ -506,16 +517,11 @@ public class BoardController {
      */
     public void hintNextStep() {
     	onHint = true;
-        // initialise the dummy car object
-        dummy = new DummyCar();
-        // show the dummy car
-        root.getChildren().add(dummy);
-        //the dummy should not cover the real cars
-        dummy.toFront();
-        // car group should be most front
-        carGroup.toFront();
+		// create a new dummy car object
+        DummyCar dummy = new DummyCar();
+        // add this dummycar
+        dummyGroup.getChildren().add(dummy);
 
-        onHint = true;
         ArrayList<puzzleModel.Car> cars = new ArrayList<>();
         if(currStat.isEmpty()) System.out.println("empty");
         for(Car each : currStat) {
@@ -547,9 +553,6 @@ public class BoardController {
                 gridBoard[i][j].flash();
             }
         }
-//        System.out.println("Move the car " +
-//                nextStep.getCarID() + " to (" + co.x1 + ", "+co.y1+")," +
-//                " ("+co.x2+", "+co.y2+")");
     }
 
 
@@ -557,20 +560,15 @@ public class BoardController {
      * clear all the GUI prompt create by giving a hint.
      */
     private void cleanHint() {
-        // remove the dummy car.
-        if (dummy!= null)
-            root.getChildren().remove(dummy);
+        // remove all dummy car.
+        dummyGroup.getChildren().removeAll(dummyGroup.getChildren());
+    	
         // remove all the grid that is flashing.
         for(int i = 0; i < 6; i++) {
             for(int j = 0; j < 6; j++) {
                 gridBoard[i][j].stopFlash();
             }
         }
-    }
-    
-    public void turnOffHint() {
-    	cleanHint();
-    	onHint = false;
     }
 
 }

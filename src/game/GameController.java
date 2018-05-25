@@ -168,9 +168,7 @@ public class GameController {
         refreshHint();
     }
 
-    public void resetLevel(int level){
-    	boardController.turnOffHint();
-    	
+    public void resetLevel(int level){  	
         // set up new current level
         currentLevel = level;
 
