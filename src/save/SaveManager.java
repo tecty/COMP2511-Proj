@@ -53,6 +53,8 @@ public class SaveManager {
      * @param newSave Given save which need to save in file system.
      */
 	public static void save(GameSave newSave)  {
+		File dir = new File("saving");
+		dir.mkdir();
 		File file = new File(newSave.getFileName());
 		//always refresh the file(whether it is existing or not)
 		file.delete();
