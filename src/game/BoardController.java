@@ -569,6 +569,7 @@ public class BoardController {
     }
     
     public void turnOffHint() {
+    	cleanHint();
     	onHint = false;
     }
 

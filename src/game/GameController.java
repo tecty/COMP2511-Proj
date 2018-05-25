@@ -156,7 +156,7 @@ public class GameController {
         System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).calStar());
 
         //take care the availability of playing the next level
-    	if(Setting.save.getLevelCleared()>8) next.setDisable(true);
+    	if(currentLevel > Setting.save.getLevelCleared() || currentLevel >= 8) next.setDisable(true);
 
     	//result interface now visible
     	levelClear.setVisible(true);
