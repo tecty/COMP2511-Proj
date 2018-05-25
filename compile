@@ -1,0 +1,23 @@
+#! /bin/sh
+rm -rf bin
+# mkdir -p bin
+
+# copy source
+cp src ./bin -a
+
+# find all java source files in src directory
+FILES=$(find bin -iname "*.java")
+
+
+# compile each source file into bin directory, exiting on compilation failure
+for file in $FILES
+do
+    echo "compiling $file"
+    javac -cp "./bin/" -d bin $file
+
+    rm $file
+    if [ $? -ne 0 ]
+    then
+        exit 1
+    fi
+done
