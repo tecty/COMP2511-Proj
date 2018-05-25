@@ -131,9 +131,11 @@ public class GameController {
 
         //local variable for this level
         Level level = Setting.save.getLevel(currentLevel);
-
+        //update the up-till-now cleared level number
+        Setting.save.addLevelCleared(currentLevel);
         // try to update the game info
         level.update(steps.get(), time.doubleValue());
+
         // show the star's judgement by this game's performance
         switch (level.calStar(steps.get(), time.doubleValue())){
             case 1:
@@ -151,8 +153,7 @@ public class GameController {
         }
 
 
-        //update the up-till-now cleared level number
-        Setting.save.addLevelCleared(currentLevel);
+
         System.out.println("get Starts "+ Setting.save.getLevel(currentLevel).calStar());
 
         //take care the availability of playing the next level
@@ -165,7 +166,6 @@ public class GameController {
 
         // star may be gain while game is succeed
         refreshHint();
-
     }
 
     public void resetLevel(int level){
